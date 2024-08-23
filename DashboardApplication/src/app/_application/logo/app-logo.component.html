@@ -1,0 +1,21 @@
+<h3 class="mb-0" [ngClass]="cssClass">
+  @defer {
+  @if(loadLogoImage){
+  <img aria-label="''"
+       [className]="'cursor-hand'"
+       [src]="imageSource"
+       [title]="title"
+       [alt]="alternativeText"
+       (error)="onLoadLogoError()" />
+       <!-- (click)="headerService.onClickLogo()" -->
+  }@else{
+  <div class="app-logo-loader" [text]="alternativeText"></div>
+  }
+  }
+  @placeholder {
+  <div class="app-logo-loader" [text]="alternativeText"></div>
+  }
+  @loading (minimum 2s){
+  <div class="app-logo-loader" [text]="alternativeText"></div>
+  }
+</h3>

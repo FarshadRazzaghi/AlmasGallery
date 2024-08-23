@@ -1,0 +1,685 @@
+@use "sass:list";
+
+@import "fonts";
+@import "externals";
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: $font-color-primary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $application-primary-color;
+
+  &:hover {
+    background: $gray-color-500;
+  }
+}
+
+.h-inherit {
+  height: inherit;
+}
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+.cursor-hand {
+  cursor: pointer;
+}
+
+.custom-scroll-body {
+  height: auto !important;
+
+  .custom-scroll {
+    max-height: 220px;
+    width: auto;
+    height: 314.797px;
+
+    &.custom-scroll {
+      &-y {
+        overflow-y: scroll;
+      }
+
+      &-x {
+        overflow-x: scroll;
+      }
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      visibility: hidden;
+      background: rgb(158, 165, 171);
+      opacity: 0.4;
+      @include border-radius($applyAll: 10px);
+
+      &:hover {
+        background: #555;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  }
+}
+
+.spinner {
+  display: inline-block;
+  @include spinner(1.1s, infinite, linear);
+}
+
+body {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  color: $application-primary-color;
+  background-color: $gray-color-200;
+  font-family: $font-family;
+}
+
+a {
+  color: $application-primary-color-lighter;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+code {
+  color: #e01a76;
+}
+
+li {
+  list-style: none;
+}
+
+.pointer-hand {
+  cursor: pointer;
+}
+
+.btn {
+  color: $white-color;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  @include default-border-radius();
+
+  &.width- {
+    &xs {
+      min-width: 80px;
+    }
+
+    &sm {
+      min-width: 95px;
+    }
+
+    &md {
+      min-width: 110px;
+    }
+
+    &lg {
+      min-width: 140px;
+    }
+
+    &xl {
+      min-width: 160px;
+    }
+  }
+
+  &.btn- {
+    &rounded {
+      @include border-radius($applyAll: 2rem);
+    }
+
+    &xs {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      @include border-radius($applyAll: 0.15rem);
+    }
+
+    &sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      @include default-border-radius();
+    }
+
+    &lg {
+      padding: 0.5rem 1rem;
+      font-size: 1.125rem;
+      line-height: 1.5;
+      @include border-radius($applyAll: 0.3rem);
+    }
+
+    &link {
+      padding: 0;
+      white-space: pre-wrap;
+    }
+  }
+
+  &:hover {
+    color: $font-color-primary;
+    text-decoration: none;
+  }
+
+  &.focus,
+  &:focus {
+    outline: 0;
+    @include box-shadow(0, 0, 0, rgb(110 140 215 / 25%), $spread: 0.15rem);
+  }
+
+  &.disabled,
+  &:disabled {
+    opacity: 0.65;
+  }
+}
+
+$buttons: ("primary", $primary-color)
+, ("secondary", $gray-color-600), ("success", $green-color), ("info", $cyan-color), ("warning", $yellow-color), ("danger", $red-color), ("dark", $gray-color-900), ("light", $gray-color-100)
+;
+
+@each $button in $buttons {
+  @include create-button(list.nth($button, 1), list.nth($button, 2));
+}
+
+$numbers: 1, 2, 3, 4, 5, 6;
+
+@each $number in $numbers {
+  .h#{$number},
+  h#{$number} {
+    font-family: $font-family;
+    color: $application-primary-color;
+  }
+}
+
+p {
+  line-height: 1.8;
+}
+
+$font-sizes: 13, 14, 16, 18, 20, 22, 24, 70;
+
+@each $size in $font-sizes {
+  @include font-size($size);
+}
+
+$font-colors: ("gray-300", $gray-color-300)
+, ("gray-500", $gray-color-500),
+("gray-600", $gray-color-600), ("gray-700", $gray-color-700),
+("primary", $primary-color), ("secondary", $gray-color-600),
+("success", $green-color), ("info", $cyan-color), ("warning", $yellow-color),
+("danger", $red-color), ("dark", $gray-color-900), ("light", $gray-color-100),
+("white", $white-color)
+;
+
+@each $color in $font-colors {
+  @include font-color(list.nth($color, 1), list.nth($color, 2));
+}
+
+$bg-colors: ("primary", $primary-color)
+, ("secondary", $gray-color-600),
+("success", $green-color), ("info", $cyan-color), ("warning", $yellow-color),
+("danger", $red-color), ("dark", $gray-color-900), ("light", $gray-color-100),
+("white", $white-color)
+;
+
+@each $color in $bg-colors {
+  @include bg-color(list.nth($color, 1), list.nth($color, 2));
+}
+
+.sub-header {
+  margin-bottom: 24px;
+  color: #98a6ad;
+}
+
+.small,
+small {
+  font-weight: 400;
+}
+
+.line-2 {
+  line-height: 2;
+}
+
+.bg-theme {
+  background-color: $application-primary-color;
+}
+
+.dropdown-menu {
+  z-index: 1000;
+  min-width: 10rem;
+  margin: 0;
+  font-size: 0.9rem;
+  text-align: left;
+  list-style: none;
+  background-color: $white-color;
+  background-clip: padding-box;
+  border: 1px solid #eaeaea;
+  @include default-border-radius();
+
+  .dropdown-item {
+    &:focus,
+    &:hover {
+      color: #16181b;
+      text-decoration: none;
+      background-color: #f3f3f3;
+    }
+  }
+}
+
+.list-group-item {
+  color: inherit !important;
+}
+
+.blockquote {
+  font-size: 0.9rem;
+}
+
+.card- {
+  &group {
+    & > card {
+      display: flex;
+    }
+  }
+
+  &header-tabs {
+    border-bottom: 0;
+    margin-bottom: -1rem;
+    margin-right: -0.625rem;
+    margin-left: -0.625rem;
+  }
+}
+
+.progress {
+  @include no-box-shadow();
+  margin-bottom: 18px;
+  overflow: hidden;
+  height: 0.7rem;
+  background-color: #f5f5f5;
+  @include default-border-radius();
+
+  .progress-bar {
+    background-color: $primary-color;
+  }
+}
+
+.font-weight-bold {
+  font-weight: 600 !important;
+}
+
+.text-pre {
+  white-space: pre !important;
+}
+
+.font-english {
+  .form-control {
+    font-family: $english-font-family;
+    font-weight: 500 !important;
+  }
+
+  font-family: $english-font-family;
+  font-weight: 500 !important;
+}
+
+.alert {
+  @include default-border-radius();
+}
+
+html[dir="ltr"] {
+  .button-list {
+    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .page-options {
+    button,
+    a {
+      margin-right: calc($size-1 * 2);
+
+      @include mediaQuery(md) {
+        margin-right: $size-0;
+        margin-bottom: $size-1;
+      }
+
+      &:last-child {
+        margin-bottom: $size-0;
+        margin-right: $size-0;
+      }
+    }
+  }
+
+  fieldset {
+    border: 1px solid $gray-color-300;
+    position: relative;
+    margin-top: 1.2rem;
+    padding: 2rem 2rem;
+    @include default-border-radius();
+
+    @include mediaQuery(md) {
+      padding: 1rem;
+      padding-top: 2rem;
+    }
+
+    .legend,
+    legend {
+      right: auto;
+      width: auto;
+      text-align: left;
+      background: $white-color;
+      padding: 0.5rem 1rem;
+      background-color: $light-gray-color;
+      font-size: 16px;
+      font-weight: 600;
+      color: $font-color-primary;
+
+      @include absolute($top: -20px, $left: 8px);
+      @include border("", 1, $gray-color-300);
+      @include default-border-radius();
+
+      &.reverse {
+        left: auto;
+        right: 8px;
+      }
+
+      &.transparent {
+        background-color: transparent;
+        border: 1px solid transparent;
+      }
+    }
+  }
+
+  .pagination {
+    .page- {
+      &link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-right: -1px;
+        line-height: 1.25;
+        color: #666f7b;
+        background-color: $white-color;
+        border: 1px solid #eaeaea;
+      }
+
+      &item {
+        &:last-child .page-link {
+          @include border-radius($topRight: 0.2rem, $bottomRight: 0.2rem);
+        }
+
+        &:first-child .page-link {
+          margin-left: 0;
+          @include border-radius($topRight: 0.2rem, $bottomRight: 0.2rem);
+        }
+
+        &.active .page-link {
+          z-index: 3;
+          color: $white-color;
+          background-color: $primary-color;
+          border-color: $primary-color;
+        }
+      }
+    }
+
+    &-split li {
+      margin-left: 5px;
+
+      a {
+        @include border-radius($applyAll: 3px);
+      }
+    }
+  }
+
+  @include mediaQuery(sm) {
+    .card-group {
+      & > card {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 0 0%;
+        flex: 1 0 0%;
+
+        &:not(:last-child) > .card {
+          @include border-radius($applyAll: 0);
+          margin-left: 0;
+          border-left: 0;
+
+          .card-header,
+          .card-img-top {
+            @include border-radius($applyAll: 0);
+          }
+        }
+
+        &:not(:first-child) > .card {
+          @include border-radius($applyAll: 0);
+          margin-right: 0;
+          border-right: 0;
+
+          .card-header,
+          .card-img-top {
+            @include border-radius($applyAll: 0);
+          }
+        }
+      }
+    }
+  }
+
+  @include mediaQuery(lg) {
+    .offset-lg-3 {
+      margin-right: 25%;
+    }
+  }
+}
+
+html[dir="rtl"] {
+  .button-list {
+    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .page-options {
+    button,
+    a {
+      margin: calc($size-1/2);
+      min-width: 80px;
+
+      &.btn-icon {
+        min-width: 77px;
+      }
+
+      @include mediaQuery(md) {
+        margin-left: $size-0;
+        margin-bottom: $size-1;
+      }
+    }
+  }
+
+  fieldset {
+    border: 1px solid $gray-color-300;
+    position: relative;
+    margin-top: 1.2rem !important;
+    padding: 2rem 2rem 1rem;
+    @include default-border-radius();
+
+    @include mediaQuery(md) {
+      padding: 2rem 1rem 1rem;
+    }
+
+    .legend,
+    legend {
+      right: auto;
+      width: auto;
+      text-align: left;
+      background: $white-color;
+      padding: 0.5rem 1rem;
+      background-color: $light-gray-color;
+      font-size: 16px;
+      font-weight: 600;
+      color: $font-color-primary;
+      @include border("", 1, $gray-color-300);
+      @include absolute($top: -20px, $left: 8px);
+      @include default-border-radius();
+
+      &.reverse {
+        left: auto;
+        right: 8px;
+      }
+
+      &.transparent {
+        background-color: transparent;
+        border: 1px solid transparent;
+      }
+    }
+  }
+
+  .pagination {
+    .page- {
+      &link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #666f7b;
+        background-color: $white-color;
+        border: 1px solid #eaeaea;
+      }
+
+      &item {
+        &:last-child .page-link {
+          @include border-radius($topLeft: 0.2rem, $bottomLeft: 0.2rem);
+        }
+
+        &:first-child .page-link {
+          margin-left: 0;
+          @include border-radius($topLeft: 0.2rem, $bottomLeft: 0.2rem);
+        }
+
+        &.active .page-link {
+          z-index: 3;
+          color: $white-color;
+          background-color: $primary-color;
+          border-color: $primary-color;
+        }
+      }
+    }
+
+    &-split li {
+      margin-left: 5px;
+
+      a {
+        @include border-radius($applyAll: 3px);
+      }
+    }
+  }
+
+  @include mediaQuery(sm) {
+    .card-group {
+      & > card {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 0 0%;
+        flex: 1 0 0%;
+
+        &:not(:last-child) > .card {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          margin-right: 0;
+          border-right: 0;
+
+          .card-header,
+          .card-img-top {
+            border-top-left-radius: 0;
+          }
+        }
+
+        &:not(:first-child) > .card {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          margin-left: 0;
+          border-left: 0;
+
+          .card-header,
+          .card-img-top {
+            border-top-right-radius: 0;
+          }
+        }
+      }
+    }
+  }
+
+  @include mediaQuery(lg) {
+    .offset-lg-3 {
+      margin-left: 25%;
+    }
+  }
+}
+
+@include mediaQuery(sm) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-gap: 1.25rem;
+    -moz-column-gap: 1.25rem;
+    column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
+
+    & > card {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  .modal-dialog {
+    max-width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@include mediaQuery(lg) {
+  .modal- {
+    &md {
+      max-width: 500px;
+    }
+
+    &lg {
+      max-width: 800px;
+    }
+
+    &xl {
+      max-width: 800px;
+    }
+  }
+}
+
+@include mediaQuery(xl) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@import "app.component";
+@import "application";

@@ -1,0 +1,51 @@
+@import "fonts";
+@import "externals";
+
+$background-color: #fafafd;
+$border-color: #eef2f7;
+
+@mixin topUserPanel() {
+  background: $background-color;
+  color: $gray-color-600;
+
+  @include height($header-height-md, $header-height-md);
+  @include border($direction: x, $width: 1, $color: $border-color);
+
+  &:hover {
+    color: $application-light-secondary-font-color !important;
+  }
+}
+
+@mixin avatarImage() {
+  @include border-radius($applyAll: 50%);
+
+  img {
+    @include height(32px);
+    @include width(32px);
+    @include border-radius($applyAll: 50%);
+  }
+}
+
+html[dir="rtl"] {
+  app-user-dropdown {
+    .top-user-panel {
+      @include topUserPanel();
+
+      .avatar-image {
+        @include avatarImage();
+      }
+    }
+  }
+}
+
+html[dir="ltr"] {
+  app-user-dropdown {
+    .top-user-panel {
+      @include topUserPanel();
+
+      .avatar-image {
+        @include avatarImage();
+      }
+    }
+  }
+}

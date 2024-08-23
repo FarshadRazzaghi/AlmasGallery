@@ -1,0 +1,18 @@
+<div class="top-user-panel top-nav-menu px-3 cursor-hand dropdown" frDropdown>
+  <div class="d-flex align-items-center justify-content-around h-inherit">
+    <div class="avatar-image overflow-hidden cursor-hand">
+      <img src="https://picsum.photos/32/32" alt="avatar-image" />
+    </div>
+
+    @if(!displayViewPorts([viewPorts.sm, viewPorts.md])){
+    <div class="user-info d-flex flex-column" [ngClass]="{'pe-3 text-end': direction === 'rtl', 'ps-3 text-start': direction === 'ltr'}">
+      <span><b>HELLO WORLD</b></span>
+      <span class="font-13">Developer</span>
+    </div>
+    }
+  </div>
+
+  <div class="dropdown-menu p-2">
+    <span>app-user-result works!</span>
+  </div>
+</div>

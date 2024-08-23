@@ -1,0 +1,13 @@
+<fr-modal [id]="id" [size]="ModalSize.extraLarge" [hasHeaderDismissButton]="true">
+    <div class="text-danger font-24 d-flex justify-content-end" fr-modal-header>
+        <i class="ri-alert-fill px-2"></i>
+        An Error Accourred
+    </div>
+
+    {{errorMessage}}
+
+    @if(errorStack){
+    <hr />
+    {{errorStack}}
+    }
+</fr-modal>

@@ -1,0 +1,167 @@
+<fr-card #testCard="fr-card"
+         [id]="'TEST'"
+         [isCollapsible]="true"
+         [isDeletable]="true"
+         [isUpdatable]="true"
+         [headerTitle]="'CARD HEADER'"
+         [cssClass]="['hello']"
+         [bodyCssClass]="['hello-body']"
+         [headerCssClass]="['hello-header']"
+         [footerCssClass]="['hello-footer']"
+         (afterDelete)="onCardDelete($event)"
+         (afterUpdate)="onCardUpdate($event)">
+
+    <div fr-card-footer class="d-flex p-3 align-items-center w-100">
+        <div>
+            {{resource?.alerts}}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <button (click)="onToggleTextBox()" class="btn btn-primary">
+            TOGGLE TEXT BOX
+        </button>
+    </div>
+
+    <fr-form [id]="'FORM'" [formControls]="{}" [cssClass]="['row']">
+        <fr-form-control control-number
+                         [presenter]="'FirstName'"
+                         [id]="'FirstName'"
+                         [showLabel]="true"
+                         [label]="'First Name'"
+                         [cssClass]="['col-md-6', 'col-12']"
+                         [controlCssClass]="['col-12']"
+                         [helpText]="'First Name is Required'"
+                         [validators]="firstNameValidators"
+                         [value]="0"
+                         [allowNull]="true"
+                         [allowNegative]="false"
+                         [placeHolder]="'First Name FormControl'"
+                         [isEnable]="isTextboxEnabled"
+                         [isVisible]="true">
+        </fr-form-control>
+
+        <fr-form-control control-button
+                         [presenter]="'helloWorldButton'"
+                         [id]="'helloWorldButton'"
+                         [cssClass]="['col-md-6', 'col-12']"
+                         [buttonCssClass]="['col-md-auto', 'col-12']"
+                         [text]="'HELLO WORLD BUTTON'"
+                         [iconClass]="'ri-add-circle-line'"
+                         [buttonType]="'submit'"
+                         [buttonColor]="'danger'"
+                         [title]="'HELLO WORLD BUTTON'"
+                         [isEnable]="isTextboxEnabled"
+                         [isVisible]="isTextboxEnabled"
+                         (click)="onHelloWorldClick($event)">
+        </fr-form-control>
+
+        <!--
+           <fr-form-control control-textbox
+                                [presenter]="'FirstName'"
+                                [id]="'FirstName'"
+                                [showLabel]="true"
+                                [label]="'First Name'"
+                                [cssClass]="['col-md-6', 'col-12']"
+                                [controlCssClass]="['col-12']"
+                                [helpText]="'First Name is Required'"
+                                [validators]="firstNameValidators"
+                                [value]="'Default Value For Firstname'"
+                                [placeHolder]="'First Name FormControl'"
+                                [autoComplete]="'off'"
+                                [isEnable]="isTextboxEnabled"
+                                [isVisible]="true"
+                                (change)="onFirstNameChange($event)">
+               </fr-form-control>
+
+               <fr-form-control control-email
+                                [presenter]="'EMAIL'"
+                                [id]="'EMAIL'"
+                                [showLabel]="true"
+                                [label]="'EMAIL'"
+                                [cssClass]="['col-md-6', 'col-12']"
+                                [controlCssClass]="['col-12']"
+                                [helpText]="'EMAIL is Required'"
+                                [validators]="firstNameValidators"
+                                [value]="'f.razaghi22@gmail.com'"
+                                [placeHolder]="'EMAIL FormControl'"
+                                [autoComplete]="'off'"
+                                [isEnable]="isTextboxEnabled"
+                                [isVisible]="true"
+                                (change)="onFirstNameChange($event)">
+               </fr-form-control>
+
+               <fr-form-control control-checkbox
+                                [presenter]="'Married'"
+                                [id]="'Married'"
+                                [showLabel]="false"
+                                [label]="'Are you Married?'"
+                                [cssClass]="['col-md-6', 'col-12']"
+                                [controlCssClass]="['col-12']"
+                                [helpText]="'Married'"
+                                [validators]="firstNameValidators"
+                                [value]="true"
+                                [isEnable]="isTextboxEnabled"
+                                [isVisible]="isTextboxEnabled"
+                                (change)="onLastNameChange($event)">
+               </fr-form-control>
+
+               <fr-form-control control-radio
+                                [presenter]="'SelectOne'"
+                                [id]="'SelectOne'"
+                                [showLabel]="false"
+                                [label]="'Please Select One?'"
+                                [cssClass]="['col-12']"
+                                [controlCssClass]="['col-md-12', 'col-12', 'd-md-flex', 'd-block']"
+                                [itemsCssClass]="getRadioClass"
+                                [helpText]="'SelectOne'"
+                                [items]="selectOneRadioItems"
+                                [isEnable]="true"
+                                [isVisible]="isTextboxEnabled"
+                                (change)="onSelectOnChanged($event)">
+               </fr-form-control>
+
+               <fr-form-control control-label
+                                [presenter]="'Country'"
+                                [id]="'country'"
+                                [showLabel]="true"
+                                [label]="'Country'"
+                                [helpText]="'country'"
+                                [cssClass]="['col-md-6', 'col-12']"
+                                [controlCssClass]="['col-12', 'mb-0']"
+                                [value]="'My Country Is Iran'"
+                                [isVisible]="true">
+               </fr-form-control>
+
+               <fr-form-control control-separator
+                                [presenter]="'seperator'"
+                                [id]="'seperator'"
+                                [cssClass]="['col-md-6', 'col-12', 'd-md-block', 'd-none']"
+                                [isVisible]="isTextboxEnabled">
+               </fr-form-control>
+
+               <fr-form-control control-link
+                                [presenter]="'helloWorldLink'"
+                                [id]="'helloWorldLink'"
+                                [cssClass]="['col-md-6', 'col-12']"
+                                [buttonCssClass]="['col-md-auto', 'col-12']"
+                                [text]="'HELLO WORLD LINK'"
+                                [buttonType]="'submit'"
+                                [buttonColor]="'primary'"
+                                [title]="'HELLO WORLD LINK'"
+                                [isEnable]="true"
+                                [isVisible]="true"
+                                [allowRouting]="false"
+                                [target]="'_blank'"
+                                [routerLink]="'http://www.google.com'">
+               </fr-form-control>
+
+               <fr-form-control control-hidden
+                                [presenter]="'AGE'"
+                                [id]="'Age'"
+                                [label]="'Last Name'"
+                                [value]="'23'">
+               </fr-form-control>
+        -->
+    </fr-form>
+</fr-card>
