@@ -3,12 +3,12 @@ import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { AppRoutes } from './helper/app.routes';
 import { CustomErrorHandler } from './error.handler';
-import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(AppRoutes),
     provideClientHydration(),
     provideAnimationsAsync(),
     {

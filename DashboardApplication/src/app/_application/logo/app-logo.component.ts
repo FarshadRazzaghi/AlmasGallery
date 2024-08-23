@@ -16,7 +16,7 @@ export class AppLogoComponent {
       return `Logo`;
     }
 
-    return `Almas-Gallery Logo`;
+    return `LOGO`;
   }
 
   protected get alternativeText(): string {
@@ -24,13 +24,20 @@ export class AppLogoComponent {
       return `Logo`;
     }
 
-    return `Almas-Gallery Logo`;
+    return `LOGO`;
   }
+
+  protected get imageSource(): string {
+    if (this.minimal) {
+      return 'https://picsum.photos/70/70'
+    }
+
+    return 'https://picsum.photos/260/70'
+  };
 
   @Input({ required: true }) public minimal: boolean = false;
   @Input() public cssClass: string = '';
 
-  protected imageSource: string = 'assets/images/logo-transparent.png';
   protected loadLogoImage: boolean = true;
 
   protected onLoadLogoError = () => {

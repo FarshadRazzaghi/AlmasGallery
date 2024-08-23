@@ -5,7 +5,6 @@ import { FrLocalizationConfiguration } from '@fr-theme/common';
 import { ApplicationLanguage } from '../helper/inner.types';
 
 import { Resource } from '../_i18n/resource/resource';
-import { GermanResource, ThemeGermanResource } from '../_i18n/resource/german.resource';
 import { EnglishResource } from '../_i18n/resource/english.resource';
 import { PersianResource } from '../_i18n/resource/persian.resource';
 
@@ -14,10 +13,7 @@ import { PersianResource } from '../_i18n/resource/persian.resource';
 })
 export class LocalizationService {
 
-  private german: ApplicationLanguage = 'de';
-
   private languageResource: { language: ApplicationLanguage, resource: Resource }[] = [
-    { language: 'de', resource: new GermanResource },
     { language: 'en', resource: new EnglishResource },
     { language: 'fa', resource: new PersianResource },
   ];
@@ -27,27 +23,15 @@ export class LocalizationService {
   constructor() { }
 
   public get validLanguages(): ApplicationLanguage[] {
-    return [this.german, 'fa', 'en'];
+    return ['fa', 'en'];
   }
 
-  public init = () => {
-    const germanLanguage: FrLocalization = {
-      calendarType: 'gregorian',
-      currencySign: '€',
-      currency: 'euro',
-      direction: 'ltr',
-      language: <FrLanguage>this.german,
-      name: 'Deutsche',
-      resource: ThemeGermanResource,
-    }
-
-    this.localizationService.addNewLocalization(germanLanguage);
-  }
+  public init = () => { }
 
   public get themeConfiguration(): FrLocalizationConfiguration {
     return {
-      allowMultiLanguage: true,
-      defaultLanguage: <FrLanguage>this.german,
+      allowMultiLanguage: false,
+      defaultLanguage: 'fa',
       validLanguages: <FrLanguage[]>this.validLanguages,
     };
   }

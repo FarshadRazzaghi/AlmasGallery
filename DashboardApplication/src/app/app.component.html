@@ -1,35 +1,3 @@
 <div id="wrapper">
-    <fr-theme ngSkipHydration>
-        <ng-template #themeLogoHolder>
-            <app-logo [minimal]="true"></app-logo>
-        </ng-template>
-
-        <ng-template #themeSidebarLogoHolder>
-            <app-logo [minimal]="isSidebarCollapsed"
-                      [cssClass]="'text-white'">
-            </app-logo>
-        </ng-template>
-
-        <ng-template #themeSearchResultHolder>
-            <app-search-result></app-search-result>
-        </ng-template>
-
-        <ng-template #themeUserPanelHolder>
-            <app-user-dropdown></app-user-dropdown>
-        </ng-template>
-
-        <ng-template #themeNotificationDropDownHolder>
-            <app-notification-dropdown></app-notification-dropdown>
-        </ng-template>
-
-        <ng-template #themeContentHolder>
-            <div #contentPage class="pt-3">
-                <router-outlet (activate)="contentPage.scrollTop = 0"></router-outlet>
-            </div>
-        </ng-template>
-    </fr-theme>
+    <router-outlet></router-outlet>
 </div>
-
-@if(errorModal){
-<ng-container *ngComponentOutlet="errorModal.component; inputs: errorModal.inputs;" />
-}
