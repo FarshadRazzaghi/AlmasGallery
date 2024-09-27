@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿global using Catalog.Domain.Model;
+global using Catalog.Application.Model;
+
+using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Catalog.Common.DependencyInjection")]
 [assembly: InternalsVisibleTo("Catalog.Application.Business")]

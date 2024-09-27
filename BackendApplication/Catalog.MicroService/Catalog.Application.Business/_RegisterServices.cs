@@ -1,5 +1,4 @@
 ﻿using Catalog.Application.Business.UseCase;
-using Catalog.Application.Contract.UseCase;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.Application.Business;

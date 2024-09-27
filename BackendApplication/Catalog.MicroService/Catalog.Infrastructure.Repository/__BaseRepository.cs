@@ -1,7 +1,4 @@
-﻿using Catalog.Application.Contract.Repository;
-using Catalog.Domain.Model;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Catalog.Infrastructure.Repository;

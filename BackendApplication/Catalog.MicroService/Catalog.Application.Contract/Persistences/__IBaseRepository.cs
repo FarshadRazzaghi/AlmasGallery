@@ -1,8 +1,6 @@
-﻿using Catalog.Domain.Model;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace Catalog.Application.Contract.Repository;
+namespace Catalog.Application.Contract.Persistence;
 
 internal partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
 {

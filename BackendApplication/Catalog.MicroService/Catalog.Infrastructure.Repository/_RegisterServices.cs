@@ -1,5 +1,4 @@
-﻿using Catalog.Application.Contract.Repository;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.Infrastructure.Repository;
 

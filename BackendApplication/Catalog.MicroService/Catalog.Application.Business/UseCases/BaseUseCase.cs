@@ -1,8 +1,4 @@
-﻿using Catalog.Application.Contract.Repository;
-using Catalog.Application.Contract.UseCase;
-using Catalog.Domain.Model;
-
-namespace Catalog.Application.Business.UseCase;
+﻿namespace Catalog.Application.Business.UseCase;
 
 internal partial class BaseUseCase<TEntity>(IBaseRepository<TEntity> repository)
     : IBaseUseCase<TEntity> where TEntity : class, IBaseEntity
