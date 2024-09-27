@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Catalog.Abstraction\Catalog.Abstraction.csproj" />
+	  <ProjectReference Include="..\Catalog.Application.Model\Catalog.Application.Model.csproj" />
 	  <ProjectReference Include="..\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
 	</ItemGroup>
 

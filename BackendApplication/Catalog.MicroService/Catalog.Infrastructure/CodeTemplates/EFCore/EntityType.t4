@@ -65,7 +65,7 @@ namespace <#= NamespaceHint #>;
         }
     }
 #>
-public partial class <#= EntityType.Name #> : BaseEntity
+public partial class <#= EntityType.Name #> : IBaseEntity
 {
 <#
     var firstProperty = true;

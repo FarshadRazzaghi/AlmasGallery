@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure;
 
-internal partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)
+public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)
 {
     public virtual DbSet<Product> Products { get; set; }
 

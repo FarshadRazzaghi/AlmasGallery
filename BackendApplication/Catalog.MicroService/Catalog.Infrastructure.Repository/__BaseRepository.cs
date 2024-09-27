@@ -1,11 +1,13 @@
 ﻿using Catalog.Application.Contract.Repository;
 using Catalog.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace Catalog.Infrastructure.Repository;
 
 internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManager)
-    : IBaseRepository<TEntity> where TEntity : BaseEntity
+    : IBaseRepository<TEntity> where TEntity : class, IBaseEntity
 {
     #region Initialize
     private bool _disposed = false;
@@ -13,8 +15,25 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     protected DbSet<TEntity> DbSet => Context.Set<TEntity>();
     #endregion
 
-    public async Task<List<TEntity>> GetListAsNoTrackingAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<ICollection<TEntity>> GetListAsNoTrackingAsync(CancellationToken cancellationToken = default)
         => await DbSet.AsNoTracking().ToListAsync(cancellationToken);
+
+    public virtual async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(expression);
+        return await DbSet.AsNoTracking().FirstOrDefaultAsync(expression, cancellationToken);
+    }
+
+    public virtual void Create(TEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.DateStamp = DateTime.UtcNow;
+        entity.Status = 1;
+        DbSet.Add(entity);
+
+        SaveChanges();
+    }
 
     #region Save/Discard
     public virtual void DiscardChanges()

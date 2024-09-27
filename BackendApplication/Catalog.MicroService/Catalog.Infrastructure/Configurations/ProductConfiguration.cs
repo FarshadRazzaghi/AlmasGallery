@@ -3,9 +3,11 @@ using Catalog.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+#nullable disable
+
 namespace Catalog.Infrastructure.Configurations;
 
-internal partial class ProductConfiguration : IEntityTypeConfiguration<Product>
+public partial class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> entity)
     {
@@ -23,11 +25,8 @@ internal partial class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsUnicode(false);
         entity.Property(e => e.Image).IsUnicode(false);
         entity.Property(e => e.ModifiedAt).HasColumnType("datetime");
-        entity.Property(e => e.Name)
-            .IsRequired()
-            .HasMaxLength(128);
+        entity.Property(e => e.Name).HasMaxLength(128);
         entity.Property(e => e.Sku)
-            .IsRequired()
             .HasMaxLength(32)
             .IsUnicode(false)
             .HasColumnName("SKU");
