@@ -1,0 +1,56 @@
+<div class="row">
+    <fr-form #productInformationForm="fr-form"
+             [id]="'ProductInformationForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-textbox
+                         [presenter]="'Name'"
+                         [id]="'ProductName'"
+                         [showLabel]="true"
+                         [label]="productResource.name"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productNameValidators"
+                         [autoComplete]="'off'">
+        </fr-form-control>
+
+        <fr-form-control control-number
+                         [presenter]="'Sku'"
+                         [id]="'ProductSKU'"
+                         [showLabel]="true"
+                         [label]="productResource.stockKeepingUnit"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productSKUValidators"
+                         [allowNegative]="false"
+                         [allowNull]="true"
+                         [showSpinner]="false">
+        </fr-form-control>
+
+        <fr-form-control control-textbox
+                         [presenter]="'Bar_Code'"
+                         [id]="'ProductBarCode'"
+                         [showLabel]="true"
+                         [label]="productResource.barCode"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [controlCssClass]="['col-12', 'dir-ltr']"
+                         [validators]="productBarCodeValidators"
+                         [autoComplete]="'off'">
+        </fr-form-control>
+
+        <fr-form-control control-texteditor
+                         [presenter]="'Description'"
+                         [id]="'ProductDescription'"
+                         [showLabel]="true"
+                         [label]="productResource.description"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productDescriptionValidators"
+                         [autoComplete]="'off'"
+                         [placeHolder]="productResource.description"
+                         [toolbarOptions]="productDescriptionToolbarOptions">
+        </fr-form-control>
+    </fr-form>
+</div>

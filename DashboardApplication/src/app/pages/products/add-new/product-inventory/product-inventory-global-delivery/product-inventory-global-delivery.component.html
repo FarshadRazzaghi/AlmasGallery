@@ -1,0 +1,34 @@
+<div class="row">
+    <p>{{ productResource.globalDelivery }}</p>
+
+    <fr-form #productInventoryGlobalDeliveryForm="fr-form"
+             [id]="'ProductInventoryGlobalDeliveryForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-radio
+                         [presenter]="'Global_Delivery_Type'"
+                         [id]="'ProductGlobalDeliveryType'"
+                         [showLabel]="false"
+                         [label]="''"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [itemsCssClass]="['col-12', 'mb-2']"
+                         [items]="ProductGlobalDeliveryTypeItems"
+                         (change)="onSelectGlobalDeliveryType($event)">
+        </fr-form-control>
+
+        <fr-form-control control-chips
+                         [presenter]="'Global_Delivery_Countries'"
+                         [id]="'ProductGlobalDeliveryCountries'"
+                         [showLabel]="false"
+                         [label]="productResource.selectedCountries"
+                         [placeHolder]="productResource.selectedCountries"
+                         [cssClass]="['col-12']"
+                         [isEnable]="isGlobalDeliveryCountriesEnable"
+                         [validators]="productGlobalDeliveryCountriesValidators"
+                         [controlCssClass]="['col-12']">
+        </fr-form-control>
+    </fr-form>
+</div>

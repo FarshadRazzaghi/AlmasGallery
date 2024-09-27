@@ -1,0 +1,71 @@
+<div class="row">
+    <fr-form #productPricingForm="fr-form"
+             [id]="'ProductPricingForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-number
+                         [presenter]="'Base_Price'"
+                         [id]="'ProductBasePrice'"
+                         [showLabel]="true"
+                         [label]="productResource.basePrice"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productBasePriceValidators"
+                         [allowNull]="false"
+                         [allowNegative]="false"
+                         [showSpinner]="false">
+        </fr-form-control>
+
+        <fr-form-control control-number
+                         [presenter]="'Discount_Price'"
+                         [id]="'ProductDiscount'"
+                         [showLabel]="true"
+                         [label]="productResource.discount"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productDiscountValidators"
+                         [allowNull]="true"
+                         [allowNegative]="false"
+                         [showSpinner]="false">
+        </fr-form-control>
+
+        <fr-form-control control-checkbox
+                         [presenter]="'Has_Charge_Tax'"
+                         [id]="'ProductChargeTax'"
+                         [showLabel]="false"
+                         [label]="productResource.chargeTax"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']">
+        </fr-form-control>
+
+        <fr-form-control control-separator
+                         [presenter]="'Price_Seperator'"
+                         [id]="'ProductPriceSeperator'"
+                         [cssClass]="['col-12', 'mb-0', 'pb-1', 'border-top']">
+        </fr-form-control>
+
+        <fr-form-group [id]="'ProductInStockGroup'"
+                       [groupName]="'ProductInStockGroup'"
+                       [cssClasses]="['justify-content-between', 'align-items-center']">
+
+            <fr-form-control control-label
+                             [presenter]="'Product_In_Stock_Label'"
+                             [id]="'ProductIsInStockLabel'"
+                             [showLabel]="false"
+                             [label]="''"
+                             [cssClass]="['col-auto', 'align-self-auto']"
+                             [value]="productResource.inStock">
+            </fr-form-control>
+
+            <fr-form-control control-switch
+                             [presenter]="'Is_In_Stock'"
+                             [id]="'ProductIsInStock'"
+                             [showLabel]="false"
+                             [label]="''"
+                             [cssClass]="['col-auto', 'align-self-auto']">
+            </fr-form-control>
+        </fr-form-group>
+    </fr-form>
+</div>

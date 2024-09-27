@@ -1,0 +1,34 @@
+<div class="row">
+    <p>{{ productResource.advanced }}</p>
+
+    <fr-form #productInventoryAdvancedForm="fr-form"
+             [id]="'ProductInventoryAdvancedForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-dropdown
+                         [presenter]="'Identifier_Type'"
+                         [id]="'ProductIdentifierType'"
+                         [showLabel]="true"
+                         [label]="productResource.identifierType"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [controlCssClass]="['col-12']"
+                         [items]="productIdentifierTypeItems"
+                         [allowNull]="false"
+                         [value]="1"
+                         (change)="onProductIdentifierTypeChange($event)">
+        </fr-form-control>
+
+        <fr-form-control control-textbox
+                         [presenter]="'Identifier'"
+                         [id]="'ProductIdentifier'"
+                         [showLabel]="true"
+                         [label]="productResource.identifier"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [placeHolder]="productIdentifierPlaceHolder"
+                         [validators]="productIdentifierValidators"
+                         [controlCssClass]="['col-12']">
+        </fr-form-control>
+    </fr-form>
+</div>

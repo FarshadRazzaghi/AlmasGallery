@@ -1,0 +1,22 @@
+<div class="row">
+    <p>{{ productResource.shippingType }}</p>
+
+    <fr-form #productInventoryShippingForm="fr-form"
+             [id]="'ProductInventoryShippingForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-radio
+                         [presenter]="'ShippingType'"
+                         [id]="'ProductShippingType'"
+                         [showLabel]="false"
+                         [label]="''"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [itemsCssClass]="['col-12', 'mb-2']"
+                         [items]="ProductShippingTypeItems"
+                         [validators]="productShippingTypeValidators">
+        </fr-form-control>
+    </fr-form>
+</div>

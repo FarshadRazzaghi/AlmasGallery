@@ -30,21 +30,27 @@ export class LocalizationService {
 
   public get themeConfiguration(): FrLocalizationConfiguration {
     return {
-      allowMultiLanguage: false,
+      allowMultiLanguage: true,
       defaultLanguage: 'fa',
       validLanguages: <FrLanguage[]>this.validLanguages,
     };
   }
 
-  public get resource(): Resource | null {
+  public get resource(): Resource {
     const localizationLanguage = this.localizationService.currentLocalization;
     const language = this.languageResource.find(lr => lr.language == localizationLanguage.language);
-    if (!language) return null;
+    if (!language) {
+      return new EnglishResource;
+    }
 
     return language.resource;
   }
 
   public get currentLanguage(): FrLocalization {
     return this.localizationService.currentLocalization;
+  }
+
+  public get isRTL(): boolean {
+    return this.currentLanguage.direction === 'rtl';
   }
 }

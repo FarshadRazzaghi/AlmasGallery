@@ -1,6 +1,72 @@
-import { Resource } from "./resource";
+import { ProductResource, Resource, RoutingResource } from "./resource";
 
 export class EnglishResource implements Resource {
-  navigation: string = 'Navigation';
-  dashboards: string = 'Dashboards';
+  remove = 'Remove';
+  recommended = 'Recommended';
+
+  routingResource: RoutingResource = {
+    navigation: 'Navigation',
+    dashboards: 'Dashboards',
+    APPS: 'APPs',
+    products: 'Products',
+    productsAdd: 'Add New Product',
+  };
+  dropDown = {
+    selectItem: 'Please Select an Item',
+  };
+  productResource: ProductResource = {
+    productInformation: 'Product Information',
+    productImage: 'Product Image',
+    productPricing: 'Pricing',
+    productOrganization: 'Organize',
+    productVariant: 'Variant',
+    productInventory: 'Inventory',
+    name: 'Name',
+    description: 'Description',
+    image: 'Image',
+    stockKeepingUnit: 'SKU',
+    barCode: 'Barcode',
+    basePrice: 'Base Price',
+    discount: 'Discount',
+    chargeTax: 'Charge Tax on This product',
+    inStock: 'Product In Stock',
+    vendor: 'Vendor',
+    category: 'Category',
+    collection: 'Collection',
+    publishStatus: 'Status',
+    tags: 'Tags',
+    options: 'Options',
+    variantValue: 'Value',
+    addNewVariant: 'Add New Variant',
+    addNewCategory: 'Add New Category',
+    restock: 'Restock',
+    shipping: 'Shipping',
+    globalDelivery: 'Global Delivery',
+    attributes: 'Attributes',
+    advanced: 'Advanced',
+    addToStocks: 'Add To Stocks',
+    quantity: "Quantity",
+    currentQuantity: 'Product in stock now',
+    deliveryQuantity: 'Product in transit',
+    restockedLastTime: 'Last time restocked',
+    overallQuantity: 'Total stock over lifetime',
+    shippingType: 'Shipping Type',
+    sellerFulfilled: 'Fullfilled by seller',
+    sellerFulfilledDescription: `You'll be responsible for product delivery. Any damage or delay during shipping may cost you a Damage fee.`,
+    companyFullfilled: 'Fullfilled by Almas Gallery',
+    companyFullfilledDescription: 'Your product, Our responsibility. For a measly fee, we will handle the delivery process for you.',
+    worldwideDelivery: 'Worldwide Delivery',
+    worldwideDeliveryDescription: "Only available with Shipping method: Fulfilled by Almas Gallery",
+    selectedCountries: "Selected Countries",
+    localDelivery: "Local Delivery",
+    localDeliveryDescription: "Deliver to your country of residence : Change profile address",
+    isFragile: 'Fragile Product',
+    isBiodegradable: 'Biodegradable Product',
+    isFrozen: 'Frozen Product',
+    maxAllowedTemperature: 'Max Allowed Tempreture',
+    expiryDate: 'Expiry Date Of Product',
+    identifierType: 'Product ID Type',
+    identifier: 'Product ID',
+    identifirePlaceHolder: '{0} Number',
+  };
 }

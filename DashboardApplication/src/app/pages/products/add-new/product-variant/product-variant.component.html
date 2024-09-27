@@ -1,0 +1,57 @@
+@for (item of productVariants; track item; let index = $index) {
+<fr-form [id]="'ProductVariantForm' + item"
+         [isAbsoluteError]="true"
+         [formControls]="{}"
+         [cssClass]="['row','variant-group']">
+
+    <fr-form-group [id]="'ProductVariantGroup' + item"
+                   [groupName]="'ProductVariantGroup' + item"
+                   [cssClasses]="['justify-content-between', 'align-items-center']">
+
+        <fr-form-control control-dropdown
+                         [presenter]="'Option' + item"
+                         [id]="'ProductVariantOption' + item"
+                         [showLabel]="true"
+                         [label]="productResource.options"
+                         [cssClass]="['col-sm-3', 'col-md-5']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productVariantOptionValidators"
+                         [items]="ProductVariantOptionItems">
+        </fr-form-control>
+
+        <fr-form-control control-textbox
+                         [presenter]="'Value' + item"
+                         [id]="'ProductVariantValue' + item"
+                         [showLabel]="true"
+                         [label]="''"
+                         [cssClass]="['col', 'mb-2', 'align-self-auto', 'px-2']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productVariantValueValidators"
+                         [autoComplete]="'off'">
+        </fr-form-control>
+
+        <fr-form-control control-button
+                         [presenter]="'Remove' + item"
+                         [id]="'ProductVariantRemove' + item"
+                         [text]="''"
+                         [buttonColor]="'danger'"
+                         [iconClass]="'ri-close-line'"
+                         [title]="appplicationResource.remove"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'mb-2', 'align-self-end']"
+                         (click)="onRemoveVariant(item)">
+        </fr-form-control>
+    </fr-form-group>
+</fr-form>
+}
+
+<div class="col-12">
+    <button frButtonIcon
+            [title]="productResource.addNewVariant"
+            [iconClass]="'ri-add-line'"
+            [color]="'primary'"
+            [type]="'button'"
+            (click)="onAddNewVariant()">
+        {{productResource.addNewVariant}}
+    </button>
+</div>

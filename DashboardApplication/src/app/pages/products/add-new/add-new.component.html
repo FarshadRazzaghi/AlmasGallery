@@ -1,0 +1,73 @@
+<div class="row pb-5">
+    <div class="col-12 col-lg-6 col-xl-8">
+        @if(productLoaded){
+        <button class="btn btn-primary mb-2" (click)="onSubmit()">
+            Submit
+        </button>
+
+        <fr-card #productInformationCard="fr-card"
+                 [id]="'ProductInformationCard'"
+                 [headerTitle]="productResource.productInformation"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-information [id]="''"></product-information>
+        </fr-card>
+
+        <fr-card #productImageCard="fr-card"
+                 [id]="'ProductImageCard'"
+                 [headerTitle]="productResource.productImage"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-image [id]="''"></product-image>
+        </fr-card>
+
+        <fr-card #productInventoryCard="fr-card"
+                 [id]="'ProductInventoryCard'"
+                 [headerTitle]="productResource.productInventory"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-inventory [id]="''"></product-inventory>
+        </fr-card>
+        }
+    </div>
+
+    <div class="col-12 col-lg-6 col-xl-4">
+        @if(productLoaded){
+        <fr-card #productPricingCard="fr-card"
+                 [id]="'ProductPricingCard'"
+                 [headerTitle]="productResource.productPricing"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-pricing [id]="''"></product-pricing>
+        </fr-card>
+
+        <fr-card #productOrganizeCard="fr-card"
+                 [id]="'ProductOrgaizeCard'"
+                 [headerTitle]="productResource.productOrganization"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-organize [id]="''"></product-organize>
+        </fr-card>
+
+        <fr-card #productVariantCard="fr-card"
+                 [id]="'ProductVariantCard'"
+                 [headerTitle]="productResource.productVariant"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-variant [id]="''"></product-variant>
+        </fr-card>
+        }
+    </div>
+</div>
