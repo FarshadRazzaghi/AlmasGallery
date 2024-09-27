@@ -3,6 +3,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="dist\project\" />
-    <Folder Include="src\app\helper\" />
   </ItemGroup>
 </Project>

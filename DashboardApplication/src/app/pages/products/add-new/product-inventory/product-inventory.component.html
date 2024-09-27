@@ -1,0 +1,28 @@
+<div class="row">
+    <fr-tab #productInventoryTab="fr-tab"
+            [id]="'productInventoryTab'"
+            [buttonType]="'pills'"
+            [navigationDirection]="'left'"
+            [cssClass]="['col-12']">
+
+        <fr-tab-item [id]="'RestockTabItem'" [isActive]="true" [title]="restockTitle">
+            <product-inventory-restock [id]="''" (validate)="getValidate($event, 1)"></product-inventory-restock>
+        </fr-tab-item>
+
+        <fr-tab-item [id]="'ShippingTabItem'" [title]="shippingTitle">
+            <product-inventory-shipping [id]="''" (validate)="getValidate($event, 2)"></product-inventory-shipping>
+        </fr-tab-item>
+
+        <fr-tab-item [id]="'globalDeliveryTabItem'" [title]="globalDeliveryTitle">
+            <product-inventory-global-delivery [id]="''" (validate)="getValidate($event, 3)"></product-inventory-global-delivery>
+        </fr-tab-item>
+
+        <fr-tab-item [id]="'attributesTabItem'" [title]="attributesTitle">
+            <product-inventory-attribute [id]="''" (validate)="getValidate($event, 4)"></product-inventory-attribute>
+        </fr-tab-item>
+
+        <fr-tab-item [id]="'advancedTabItem'" [title]="advancedTitle">
+            <product-inventory-advanced [id]="''" (validate)="getValidate($event, 5)"></product-inventory-advanced>
+        </fr-tab-item>
+    </fr-tab>
+</div>

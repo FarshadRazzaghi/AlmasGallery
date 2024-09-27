@@ -1,0 +1,44 @@
+<div class="row">
+    <p>{{ productResource.restock }}</p>
+
+    <fr-form #productInventoryRestockForm="fr-form"
+             [id]="'ProductInventoryRestockForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-number
+                         [presenter]="'Quantity'"
+                         [id]="'ProductQuantity'"
+                         [showLabel]="true"
+                         [label]="productResource.addToStocks"
+                         [placeHolder]="productResource.quantity"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productQuantityValidators"
+                         [allowNegative]="false"
+                         [allowNull]="true"
+                         [showSpinner]="false">
+        </fr-form-control>
+    </fr-form>
+
+    <p class="fw-normal mb-2">
+        {{ productResource.currentQuantity }}:
+        <span class="text-body small">{{ currentQuantity }}</span>
+    </p>
+
+    <p class="fw-normal mb-2">
+        {{ productResource.deliveryQuantity }}:
+        <span class="text-body small">{{ deliveryQuantity }}</span>
+    </p>
+
+    <p class="fw-normal mb-2">
+        {{ productResource.restockedLastTime }}:
+        <span class="text-body small">{{ restockedLastTime }}</span>
+    </p>
+
+    <p class="fw-normal mb-0">
+        {{ productResource.overallQuantity }}:
+        <span class="text-body small">{{ overallQuantity }}</span>
+    </p>
+</div>

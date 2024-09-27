@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { FrThemeNavigationGroup, FrThemeNavigationItem } from '@fr-theme/common';
 
 import { LocalizationService } from './localization.service';
-import { Resource } from '../_i18n/resource/resource';
+import { RoutingResource } from '../_i18n/resource/resource';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +28,37 @@ export class RoutingService {
         }
       ],
     },
+    {
+      id: 1,
+      label: 'APPS',
+      visible: true,
+      showLabel: true,
+      items: [
+        {
+          id: 0,
+          label: 'products',
+          icon: 'ri-box-3-line',
+          visible: true,
+          enabled: true,
+          routeLink: '/products',
+          children: [
+            {
+              id: 1,
+              label: 'productsAdd',
+              visible: true,
+              enabled: true,
+              routeLink: '/products/add',
+            },
+          ]
+        },
+      ]
+    },
   ];
 
   constructor() { }
 
   public get navigationGroup(): FrThemeNavigationGroup[] {
-    const currrentResource: Resource | null = this.localizationService.resource;
+    const currrentResource: RoutingResource | undefined = this.localizationService.resource?.routingResource;
     const clonedNavigtion: FrThemeNavigationGroup[] = JSON.parse(JSON.stringify(this.navigation));
 
     clonedNavigtion.forEach((group: FrThemeNavigationGroup) => {

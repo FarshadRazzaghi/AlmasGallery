@@ -32,7 +32,7 @@ export class AppLogoComponent {
       return 'https://picsum.photos/70/70'
     }
 
-    return 'https://picsum.photos/260/70'
+    return 'https://picsum.photos/150/150'
   };
 
   @Input({ required: true }) public minimal: boolean = false;

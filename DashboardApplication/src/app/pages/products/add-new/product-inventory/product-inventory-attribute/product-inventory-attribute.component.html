@@ -1,0 +1,79 @@
+<div class="row">
+    <p>{{ productResource.attributes }}</p>
+
+    <fr-form #productInventoryAttributeForm="fr-form"
+             [id]="'ProductInventoryAttributeForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-checkbox
+                         [presenter]="'Is_Fragile'"
+                         [id]="'ProductIsFragile'"
+                         [showLabel]="false"
+                         [label]="productResource.isFragile"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [value]="false">
+        </fr-form-control>
+
+        <fr-form-control control-checkbox
+                         [presenter]="'Is_Biodegradable'"
+                         [id]="'ProductIsBiodegradable'"
+                         [showLabel]="false"
+                         [label]="productResource.isBiodegradable"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [value]="false">
+        </fr-form-control>
+
+        <fr-form-control control-checkbox
+                         [presenter]="'Is_Frozen'"
+                         [id]="'ProductIsFrozen'"
+                         [showLabel]="false"
+                         [label]="productResource.isFrozen"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [value]="isFrozenSelected"
+                         (change)="onIsFrozenChanged($event)">
+        </fr-form-control>
+
+        <fr-form-control control-number
+                         [presenter]="'Allowed_Temperature'"
+                         [id]="'ProductAllowedTemperature'"
+                         [showLabel]="false"
+                         [label]="productResource.maxAllowedTemperature"
+                         [placeHolder]="productResource.maxAllowedTemperature"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [controlCssClass]="['col-12']"
+                         [allowNull]="true"
+                         [allowNegative]="true"
+                         [showSpinner]="false"
+                         [validators]="productAllowedTemperatureValidators"
+                         [isEnable]="isFrozenSelected">
+        </fr-form-control>
+
+        <fr-form-control control-checkbox
+                         [presenter]="'Has_Expiry_Date'"
+                         [id]="'ProductHasExpiryDate'"
+                         [showLabel]="false"
+                         [label]="productResource.expiryDate"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [value]="hasExpiryDateSelected"
+                         (change)="onHasExpiryDateChanged($event)">
+        </fr-form-control>
+
+        <fr-form-control control-date
+                         [presenter]="'Expiry_Date'"
+                         [id]="'ProductExpiryDate'"
+                         [showLabel]="false"
+                         [label]="productResource.expiryDate"
+                         [cssClass]="['col-12', 'col-md-6']"
+                         [controlCssClass]="['col-12']"
+                         [calendarType]="'persian'"
+                         [validators]="productExpiryDateValidators"
+                         [isEnable]="hasExpiryDateSelected">
+        </fr-form-control>
+    </fr-form>
+</div>
