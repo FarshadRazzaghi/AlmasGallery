@@ -1,5 +1,4 @@
-﻿
-using Catalog.Domain.Model;
+﻿using Catalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure;

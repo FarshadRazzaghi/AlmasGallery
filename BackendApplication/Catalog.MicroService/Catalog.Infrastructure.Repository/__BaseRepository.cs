@@ -32,6 +32,16 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
         SaveChanges();
     }
 
+    public void Update(TEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        entity.DateStamp = DateTime.UtcNow;
+        entity.ModifiedAt = DateTime.UtcNow;
+
+        DbSet.Entry(entity).State = EntityState.Modified;
+        SaveChanges();
+    }
+
     #region Save/Discard
     public virtual void DiscardChanges()
     {

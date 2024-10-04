@@ -4,7 +4,7 @@
    "ContextNamespace": "Catalog.Infrastructure",
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "ModelNamespace": "Catalog.Domain.Model",
+   "ModelNamespace": "Catalog.Domain.Models",
    "OutputContextPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Infrastructure\\",
    "OutputPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Domain.Model\\Entities\\",
    "PreserveCasingWithRegex": true,

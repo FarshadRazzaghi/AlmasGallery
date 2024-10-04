@@ -1,4 +1,4 @@
-﻿global using Catalog.Domain.Model;
+﻿global using Catalog.Domain.Models;
 global using Catalog.Application.Model;
 
 using System.Runtime.CompilerServices;

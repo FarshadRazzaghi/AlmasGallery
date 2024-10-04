@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Model;
+﻿namespace Catalog.Domain.Models;
 
 public partial class Product : IBaseEntity
 {

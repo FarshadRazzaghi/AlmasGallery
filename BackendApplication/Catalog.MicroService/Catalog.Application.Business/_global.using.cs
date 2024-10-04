@@ -1,7 +1,7 @@
 ﻿global using Catalog.Application.Contract.Persistence;
 global using Catalog.Application.Contract.UseCase;
 global using Catalog.Application.Model;
-global using Catalog.Domain.Model;
+global using Catalog.Domain.Models;
 
 using System.Runtime.CompilerServices;
 
