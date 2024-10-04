@@ -15,6 +15,7 @@ export interface RoutingResource {
   APPS: string;
   products: string;
   productsAdd: string;
+  productsList: string;
 }
 
 export interface ProductResource {
@@ -26,7 +27,6 @@ export interface ProductResource {
   productInventory: string;
   name: string;
   description: string;
-  image: string;
   stockKeepingUnit: string;
   barCode: string;
   basePrice: string;

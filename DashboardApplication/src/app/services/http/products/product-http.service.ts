@@ -1,8 +1,8 @@
-import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { lastValueFrom } from "rxjs";
 
 import { HttpServiceGeneric } from "../http.service";
-import { ProductRequest } from "../../../types/products/http/product-request.type";
+import { ProductUpsertRequest } from "../../../types/products/http/product-request.type";
 
 import * as apiUrl from "../../../helper/http/http.helper";
 
@@ -12,63 +12,26 @@ import * as apiUrl from "../../../helper/http/http.helper";
 export class ProductHttpService {
 
   constructor(
-    private getListResponse: HttpServiceGeneric<ProductRequest[]>,
-    private getSingleResponse: HttpServiceGeneric<ProductRequest>) { }
+    private getListResponse: HttpServiceGeneric<ProductUpsertRequest[]>,
+    private getSingleResponse: HttpServiceGeneric<ProductUpsertRequest>) { }
 
-  public getList = async (): Promise<ProductRequest[]> => {
-    return await this.getListResponse.get(apiUrl.productGetList)
-      .then(async (res: ProductRequest[] | HttpErrorResponse) => {
-
-        if (res instanceof HttpErrorResponse) {
-          return [];
-        }
-
-        if (!res) {
-          return [];
-        }
-
-        return res;
-      })
-      .catch(() => {
-        return [];
-      });
+  public getList = async (): Promise<ProductUpsertRequest[]> => {
+    const getListProducts = this.getListResponse.get(apiUrl.productGetList);
+    return lastValueFrom(getListProducts);
   }
 
-  public getSingle = async (id: number): Promise<ProductRequest | null> => {
-    return await this.getSingleResponse.get(apiUrl.productGetSingle, [`${id}`])
-      .then(async (res: ProductRequest | null | HttpErrorResponse) => {
-
-        if (res instanceof HttpErrorResponse) {
-          return null;
-        }
-
-        if (!res) {
-          return null;
-        }
-
-        return res;
-      })
-      .catch(() => {
-        return null;
-      });
+  public getSingle = async (productId: number): Promise<ProductUpsertRequest | null> => {
+    const getSingleProduct = this.getSingleResponse.get(apiUrl.productGetSingle, [productId.toString()]);
+    return lastValueFrom(getSingleProduct);
   }
 
-  public create = async (product: ProductRequest): Promise<ProductRequest | null> => {
-    return await this.getSingleResponse.post(apiUrl.productCreate, product)
-      .then(async (res: ProductRequest | null | HttpErrorResponse) => {
+  public create = async (product: ProductUpsertRequest): Promise<ProductUpsertRequest | null> => {
+    var createProduct = this.getSingleResponse.post(apiUrl.productCreate, product);
+    return lastValueFrom(createProduct);
+  }
 
-        if (res instanceof HttpErrorResponse) {
-          return null;
-        }
-
-        if (!res) {
-          return null;
-        }
-
-        return res;
-      })
-      .catch(() => {
-        return null;
-      });
+  public update = async (productId: number, product: ProductUpsertRequest): Promise<ProductUpsertRequest | null> => {
+    var createProduct = this.getSingleResponse.post(apiUrl.productUpdate, product, [productId.toString()]);
+    return lastValueFrom(createProduct);
   }
 }

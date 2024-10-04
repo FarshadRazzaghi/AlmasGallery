@@ -70,6 +70,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxies/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "almas-gallery:build:production"

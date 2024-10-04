@@ -9,6 +9,7 @@ export class EnglishResource implements Resource {
     dashboards: 'Dashboards',
     APPS: 'APPs',
     products: 'Products',
+    productsList: 'Products List',
     productsAdd: 'Add New Product',
   };
   dropDown = {
@@ -23,7 +24,6 @@ export class EnglishResource implements Resource {
     productInventory: 'Inventory',
     name: 'Name',
     description: 'Description',
-    image: 'Image',
     stockKeepingUnit: 'SKU',
     barCode: 'Barcode',
     basePrice: 'Base Price',

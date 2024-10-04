@@ -1,0 +1,22 @@
+<div class="row pb-5">
+    <div class="col-12">
+        <fr-card #productListCard="fr-card"
+                 [id]="'ProductListCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <fr-dataGrid #productListDataGrid="fr-dataGrid"
+                         [id]="'ProductListDataGrid'"
+                         [columns]="columns"
+                         [showRowNumber]="true">
+
+                <ng-template #actionButtons let-record>
+                    <a [routerLink]="'/products/' + record.data.id + '/edit'">
+                        EDIT
+                    </a>
+                </ng-template>
+            </fr-dataGrid>
+        </fr-card>
+    </div>
+</div>

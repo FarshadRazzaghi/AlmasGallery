@@ -30,6 +30,7 @@ import { AppUserDropdownComponent } from '../../_application/user-dropdown/app-u
   styleUrl: './default.component.scss'
 })
 export class DefaultComponent implements OnInit {
+
   protected get errorModal(): ErrorHandler {
     return this.errorHandlerService.getError;
   }

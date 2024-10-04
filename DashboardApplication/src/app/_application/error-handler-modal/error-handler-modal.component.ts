@@ -28,7 +28,7 @@ export class ErrorModalComponent implements AfterViewInit, OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //console.log(changes);
+    if (changes) { }
   }
 
   ngAfterViewInit(): void {
