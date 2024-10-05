@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Abstraction", "Cata
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog.Infrastructure", "Catalog.Infrastructure", "{2E2A955F-24CA-4D18-B90B-6F7EFC868103}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure", "Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{9A45514F-489F-435D-A785-6A3ADA4A3AC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure.Persistence", "Catalog.Infrastructure.Persistence\Catalog.Infrastructure.Persistence.csproj", "{9A45514F-489F-435D-A785-6A3ADA4A3AC3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure.Repository", "Catalog.Infrastructure.Repository\Catalog.Infrastructure.Repository.csproj", "{04125F66-AF64-4E95-B677-3B8A6BAF0C04}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Catalog.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Application.Model", "Catalog.Application.Model\Catalog.Application.Model.csproj", "{661EBC10-42DC-4B1B-ACDE-0F61B0EB4C55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Common.DependencyInjection", "Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj", "{2D82FC4B-8518-45DE-B272-164DB5955848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Common.DependencyInjection", "Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj", "{2D82FC4B-8518-45DE-B272-164DB5955848}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

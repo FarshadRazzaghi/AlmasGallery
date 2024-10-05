@@ -1,7 +1,7 @@
 ﻿using Catalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.Persistence;
 
 public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)
 {

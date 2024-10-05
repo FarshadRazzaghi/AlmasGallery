@@ -1,5 +1,5 @@
 ﻿global using Catalog.Domain.Models;
-global using Catalog.Application.Model;
+global using Catalog.Application.Models;
 
 using System.Runtime.CompilerServices;
 

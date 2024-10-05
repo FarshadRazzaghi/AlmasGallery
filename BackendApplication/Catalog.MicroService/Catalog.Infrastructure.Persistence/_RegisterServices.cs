@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.Persistence;
 
 internal static class RegisterServices
 {

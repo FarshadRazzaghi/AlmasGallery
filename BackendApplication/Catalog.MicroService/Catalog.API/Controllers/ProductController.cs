@@ -1,5 +1,5 @@
 ﻿using Catalog.Application.Contract.UseCase;
-using Catalog.Application.Model;
+using Catalog.Application.Models;
 using Catalog.Domain.Models;
 using Catalog.Domain.Models.Errors;
 using Microsoft.AspNetCore.Mvc;

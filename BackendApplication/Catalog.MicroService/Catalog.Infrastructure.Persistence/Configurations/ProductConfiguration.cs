@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 #nullable disable
 
-namespace Catalog.Infrastructure.Configurations;
+namespace Catalog.Infrastructure.Persistence.Configurations;
 
 public partial class ProductConfiguration : IEntityTypeConfiguration<Product>
 {

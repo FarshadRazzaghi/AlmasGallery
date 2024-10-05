@@ -11,7 +11,7 @@
 		<ProjectReference Include="..\Catalog.Application.Business\Catalog.Application.Business.csproj" />
 		<ProjectReference Include="..\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
 		<ProjectReference Include="..\Catalog.Infrastructure.Repository\Catalog.Infrastructure.Repository.csproj" />
-		<ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
+		<ProjectReference Include="..\Catalog.Infrastructure.Persistence\Catalog.Infrastructure.Persistence.csproj" />
 		<ProjectReference Include="..\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
 	</ItemGroup>
 
