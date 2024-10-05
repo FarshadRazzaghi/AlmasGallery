@@ -87,7 +87,7 @@ public class ProductController(IProductUseCase productUseCase) : Controller
     [ProducesResponseType(typeof(BadRequestError), 400)]
     [ProducesResponseType(typeof(ProblemDetails), 401)]
     [ProducesResponseType(500)]
-    public async Task<IResult> CreateProduct(AddProductDto product, CancellationToken cancellationToken = default!)
+    public async Task<IResult> CreateProduct(ProductDto product, CancellationToken cancellationToken = default!)
     {
         try
         {
@@ -124,7 +124,7 @@ public class ProductController(IProductUseCase productUseCase) : Controller
     [ProducesResponseType(typeof(ProblemDetails), 401)]
     [ProducesResponseType(typeof(NotFoundError), 404)]
     [ProducesResponseType(500)]
-    public async Task<IResult> UpdateProduct(long id, AddProductDto product, CancellationToken cancellationToken = default!)
+    public async Task<IResult> UpdateProduct(long id, ProductDto product, CancellationToken cancellationToken = default!)
     {
         try
         {

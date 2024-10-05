@@ -1,14 +1,12 @@
-﻿using Catalog.Application.Business.UseCase;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Application.Business;
+namespace Catalog.Application.Business.UseCase;
 
-internal static class RegisterServices
+internal partial class RegisterServices
 {
-    public static void Configuration(IServiceCollection services)
+    internal static void Configuration(IServiceCollection services)
     {
         services.AddScoped(typeof(IBaseUseCase<>), typeof(BaseUseCase<>));
-
-        services.AddScoped<IProductUseCase, ProductUseCase>();
+        UseCaseConfiguration(services);
     }
 }

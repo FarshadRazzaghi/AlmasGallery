@@ -8,7 +8,8 @@ public static class RegisterServices
     {
         Infrastructure.Persistence.RegisterServices.Configuration(services, connectionString);
         Infrastructure.Repository.RegisterServices.Configuration(services);
-        Application.Business.RegisterServices.Configuration(services);
+
+        Application.Business.UseCase.RegisterServices.Configuration(services);
         Application.Contract.RegisterServices.Configuration(services);
     }
 }

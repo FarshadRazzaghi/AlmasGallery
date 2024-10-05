@@ -1,9 +1,8 @@
-﻿
-namespace Catalog.Infrastructure.Repository;
+﻿namespace Catalog.Infrastructure.Repository;
 
-internal partial class UnitOfWork : IUnitOfWork
+internal partial class UnitOfWork : IUnitOfWork, IDisposable
 {
-    protected AlmasGalleryContext? Context { get; }
+    protected AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
 
     public virtual void DiscardChanges()
     {
@@ -55,10 +54,4 @@ internal partial class UnitOfWork : IUnitOfWork
 
         Context?.Dispose();
     }
-}
-
-internal partial class UnitOfWork(IProductRepository productRepository, IProductCategoryRepository productCategoryRepository) : IUnitOfWork
-{
-    public IProductRepository ProductRepository { get; } = productRepository;
-    public IProductCategoryRepository ProductCategoryRepository { get; } = productCategoryRepository;
 }

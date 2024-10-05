@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Application.Models;
 
-public class AddProductDto
+public class ProductDto
 {
     public byte PublishStatus { get; set; }
     public string Name { get; set; } = null!;
@@ -29,4 +29,9 @@ public class AddProductDto
     public long VendorId { get; set; }
     public long ProductCategoryId { get; set; }
     public long? CollectionId { get; set; }
+}
+
+public class ProductCategoryDto
+{
+
 }

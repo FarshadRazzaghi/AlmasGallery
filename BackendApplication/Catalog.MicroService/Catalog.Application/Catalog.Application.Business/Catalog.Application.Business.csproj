@@ -7,9 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Catalog.Infrastructure\Catalog.Infrastructure.Repository\Catalog.Infrastructure.Repository.csproj" />
+		<ProjectReference Include="..\..\_Generator\Generator.Infrastructure\Generator.Infrastructure.Repository\Generator.Infrastructure.Repository.csproj" />
 		<ProjectReference Include="..\..\_Shared\Catalog.Abstraction\Catalog.Abstraction.csproj" />
 		<ProjectReference Include="..\..\Catalog.Application\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
 		<ProjectReference Include="..\..\Catalog.Domain\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
+		<ProjectReference Include="..\..\_Generator\Generator.Application\Generator.Application.Business\Generator.Application.Business.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>

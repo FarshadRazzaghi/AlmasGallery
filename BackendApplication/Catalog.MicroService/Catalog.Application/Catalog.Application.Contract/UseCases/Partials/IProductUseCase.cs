@@ -2,6 +2,6 @@
 
 public partial interface IProductUseCase : IBaseUseCase<Product>
 {
-    Task<Product> CreateAsync(AddProductDto product, CancellationToken cancellationToken = default!);
-    Task<Product?> UpdateAsync(long productId, AddProductDto product, CancellationToken cancellationToken);
+    Task<Product> CreateAsync(ProductDto product, CancellationToken cancellationToken = default!);
+    Task<Product?> UpdateAsync(long productId, ProductDto product, CancellationToken cancellationToken);
 }
