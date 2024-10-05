@@ -6,3 +6,9 @@ internal partial interface IUnitOfWork
     void SaveChanges();
     Task SaveChangesAsync();
 }
+
+internal partial interface IUnitOfWork
+{
+    IProductRepository ProductRepository { get; }
+    IProductCategoryRepository ProductCategoryRepository { get; }
+}

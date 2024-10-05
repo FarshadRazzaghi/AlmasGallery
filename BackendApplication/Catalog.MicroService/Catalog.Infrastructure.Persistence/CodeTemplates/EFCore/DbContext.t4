@@ -39,6 +39,7 @@
         usings.Add(Options.ModelNamespace);
     }
 
+
     if (!string.IsNullOrEmpty(NamespaceHint))
     {
 #>
@@ -47,24 +48,8 @@ namespace <#= NamespaceHint #>;
 <#
     }
 #>
-public partial class <#= Options.ContextName #> : DbContext
+public partial class <#= Options.ContextName #>(DbContextOptions<<#= Options.ContextName #>> options) : DbContext(options)
 {
-<#
-    if (!Options.SuppressOnConfiguring)
-    {
-#>
-    public <#= Options.ContextName #>()
-    {
-    }
-
-<#
-    }
-#>
-    public <#= Options.ContextName #>(DbContextOptions<<#= Options.ContextName #>> options)
-        : base(options)
-    {
-    }
-
 <#
     foreach (var entityType in Model.GetEntityTypes().Where(e => !e.IsSimpleManyToManyJoinEntityType()))
     {

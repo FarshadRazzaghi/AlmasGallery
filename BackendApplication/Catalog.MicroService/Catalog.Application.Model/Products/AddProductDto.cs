@@ -27,6 +27,6 @@ public class AddProductDto
     public byte? GlobalDeliveryType { get; set; }
     public DateTime? ExpiryDate { get; set; }
     public long VendorId { get; set; }
-    public long CategoryId { get; set; }
+    public long ProductCategoryId { get; set; }
     public long? CollectionId { get; set; }
 }

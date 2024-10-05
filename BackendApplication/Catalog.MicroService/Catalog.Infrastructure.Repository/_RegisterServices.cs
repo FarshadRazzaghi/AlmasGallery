@@ -10,5 +10,6 @@ internal static class RegisterServices
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
     }
 }

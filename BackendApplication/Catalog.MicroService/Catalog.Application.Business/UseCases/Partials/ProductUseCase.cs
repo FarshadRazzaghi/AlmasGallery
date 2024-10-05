@@ -8,7 +8,7 @@ internal partial class ProductUseCase(IProductRepository productRepository) : Ba
         {
             AllowedTemperature = product.AllowedTemperature,
             BarCode = product.BarCode,
-            CategoryId = product.CategoryId,
+            ProductCategoryId = product.ProductCategoryId,
             CollectionId = product.CollectionId,
             Description = product.Description,
             DiscountPrice = product.DiscountPrice,
@@ -58,7 +58,7 @@ internal partial class ProductUseCase(IProductRepository productRepository) : Ba
 
             AllowedTemperature = product.AllowedTemperature,
             BarCode = product.BarCode,
-            CategoryId = product.CategoryId,
+            ProductCategoryId = product.ProductCategoryId,
             CollectionId = product.CollectionId,
             Description = product.Description,
             DiscountPrice = product.DiscountPrice,
