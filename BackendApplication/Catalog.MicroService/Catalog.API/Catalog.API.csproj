@@ -14,10 +14,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
-		<ProjectReference Include="..\Catalog.Application.Model\Catalog.Application.Model.csproj" />
-		<ProjectReference Include="..\Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj" />
-		<ProjectReference Include="..\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
+		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
+		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Model\Catalog.Application.Model.csproj" />
+		<ProjectReference Include="..\Catalog.Common\Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj" />
+		<ProjectReference Include="..\Catalog.Domain\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
 	</ItemGroup>
 
 </Project>
