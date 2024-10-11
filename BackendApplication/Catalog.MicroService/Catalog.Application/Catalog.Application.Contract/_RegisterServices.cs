@@ -4,5 +4,5 @@ namespace Catalog.Application.Contract;
 
 internal static class RegisterServices
 {
-    public static void Configuration(IServiceCollection services) { }
+    //public static void Configuration(IServiceCollection services) { }
 }

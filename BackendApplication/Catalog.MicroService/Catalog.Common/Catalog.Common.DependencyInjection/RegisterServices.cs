@@ -10,6 +10,6 @@ public static class RegisterServices
         Infrastructure.Repository.RegisterServices.Configuration(services);
 
         Application.Business.UseCase.RegisterServices.Configuration(services);
-        Application.Contract.RegisterServices.Configuration(services);
+        //Application.Contract.RegisterServices.Configuration(services);
     }
 }

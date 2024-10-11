@@ -5,8 +5,8 @@
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "Catalog.Domain.Models",
-   "OutputContextPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Infrastructure.Persistence\\",
-   "OutputPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Domain.Model\\Entities\\",
+   "OutputContextPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Infrastructure\\Catalog.Infrastructure.Persistence\\",
+   "OutputPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Domain\\Catalog.Domain.Model\\Entities\\",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": null,
    "Schemas": null,
@@ -15,11 +15,35 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[CustomField]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomFieldGroup]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Inventory]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Product]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[ProductCategory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductCategoryCustomFieldGroup]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductInventory]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ProductPrice]",
          "ObjectType": 0
       }
    ],

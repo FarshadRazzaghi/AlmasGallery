@@ -10,15 +10,17 @@ using System.Collections.Generic;
 
 namespace Catalog.Infrastructure.Persistence.Configurations
 {
-    public partial class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCategory>
+    public partial class ProductPriceConfiguration : IEntityTypeConfiguration<ProductPrice>
     {
-        public void Configure(EntityTypeBuilder<ProductCategory> entity)
+        public void Configure(EntityTypeBuilder<ProductPrice> entity)
         {
-            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_ProductCategory_ProductCategory");
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductPrices)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductPrice_Product");
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<ProductCategory> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<ProductPrice> entity);
     }
 }

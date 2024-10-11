@@ -24,11 +24,10 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     public virtual void Create(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        entity.CreatedAt = DateTime.UtcNow;
         entity.DateStamp = DateTime.UtcNow;
         entity.Status = 1;
-        DbSet.Add(entity);
 
+        DbSet.Add(entity);
         SaveChanges();
     }
 
@@ -36,7 +35,6 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     {
         ArgumentNullException.ThrowIfNull(entity);
         entity.DateStamp = DateTime.UtcNow;
-        entity.ModifiedAt = DateTime.UtcNow;
 
         DbSet.Entry(entity).State = EntityState.Modified;
         SaveChanges();

@@ -9,6 +9,7 @@
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<NoWarn>IDE0130</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿#nullable disable
+
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,7 +55,8 @@ internal static class Helper
         }
 
         return [.. domainModel.Where(m => Constants.DomainModelExcludedSymbols.Any(x => x != m.MetadataName))
-                              .Where(m => !m.MetadataName.EndsWith("Mapper"))];
+                              .Where(m => !m.MetadataName.EndsWith("Mapper"))
+                              .OrderBy(m => m.MetadataName)];
     }
 
     internal static bool IsDebugger(Compilation compilation)

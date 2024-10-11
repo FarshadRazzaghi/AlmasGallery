@@ -91,7 +91,7 @@ public class TheGenerator : IIncrementalGenerator
         {
             var property = $"{nodes[i].MetadataName.ToRepository(true)} {nodes[i].MetadataName.ToRepository()} {{ get; }}";
             IUoWSB.AppendLine(property.TabIndent(1));
-            UoWSB.AppendLine($"public virtual {property} = {nodes[i].MetadataName.ToRepository().Parameter()};".TabIndent(1));
+            UoWSB.AppendLine($"public virtual {property} = {nodes[i].MetadataName.ToRepository(true).Parameter()};".TabIndent(1));
         }
 
         IUoWSB.AppendLine($"}}");
