@@ -3,6 +3,8 @@ import { FrBaseComponent } from '@fr-widget/sdk';
 
 import { LocalizationService } from '../services/localization.service';
 import { Resource } from '../_i18n/resource/resource';
+import { DocumentService } from '../services/document.service';
+import { HeaderActionButton } from '../types/button.interface';
 
 @Component({
   selector: 'base',
@@ -18,6 +20,9 @@ export abstract class _BaseComponent extends FrBaseComponent {
   }
 
   protected applicationLocalizationService: LocalizationService = inject(LocalizationService);
+  protected applicationDocumentService: DocumentService = inject(DocumentService);
+
+  //protected abstract actionButtons: HeaderActionButton[];
 
   protected override onChanges(changes: SimpleChanges): void {
     if (changes) {
@@ -26,7 +31,8 @@ export abstract class _BaseComponent extends FrBaseComponent {
   }
 
   protected override onInit(): void {
-    // throw new Error('Method not implemented.');
+    this.applicationDocumentService.setButtons([]);
+    //this.applicationDocumentService.setButtons(this.actionButtons);
   }
 
   protected override doCheck(): void {
@@ -50,7 +56,7 @@ export abstract class _BaseComponent extends FrBaseComponent {
   }
 
   protected override onDestroy(): void {
-    // throw new Error('Method not implemented.');
+    this.applicationDocumentService.setButtons([]);
   }
 
   protected override onResize(): void {

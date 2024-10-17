@@ -7,6 +7,7 @@ import { ProductUpsert, convertToModel } from '../../../types/products/product-u
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrDataGrid from '@fr-widget/sdk/data-grid';
+import { HeaderActionButton } from '../../../types/button.interface';
 
 @Component({
   selector: 'product-list',
@@ -27,6 +28,30 @@ export class ProductListComponent extends _ProductBaseComponent {
   @ViewChild('productListDataGrid') dataGrid!: FrDataGrid.FrDataGridComponent<ProductUpsert>;
 
   protected productHttpService: ProductHttpService = inject(ProductHttpService);
+
+  protected get actionButtons(): HeaderActionButton[] {
+    const actionButtons: HeaderActionButton[] = [
+      {
+        directive: 'link',
+        color: 'primary',
+        identifierName: 'AddNewProduct',
+        text: '',
+        isVisible: true,
+        isEnable: true,
+        target: '_self',
+        isExternalLink: false,
+        routeLink: '/products/add'
+      }
+    ];
+
+    Object.defineProperties(actionButtons.find(x => x.identifierName === 'AddNewProduct'), {
+      text: {
+        get: () => { return this.applicationLocalizationService.resource.routingResource.productsAdd; }
+      }
+    });
+
+    return actionButtons;
+  }
 
   protected get columns(): FrDataGrid.FrDataGridColumn[] {
     return [
@@ -68,11 +93,18 @@ export class ProductListComponent extends _ProductBaseComponent {
     ];
   }
 
+  private isWaiting: boolean = false;
+
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }
 
+  protected override onInit(): void {
+    this.applicationDocumentService.setButtons(this.actionButtons);
+  }
+
   protected override async afterViewInit(): Promise<void> {
+    //this.isWaiting = true;
     var list = await this.productHttpService.getList();
 
     if (list) {
@@ -82,6 +114,10 @@ export class ProductListComponent extends _ProductBaseComponent {
         this.dataGrid.setRecords(model);
       })
     }
+
+    //setTimeout(() => {
+    //  this.isWaiting = false;
+    //}, 3000)
   }
 
   protected override onDestroy(): void { }
