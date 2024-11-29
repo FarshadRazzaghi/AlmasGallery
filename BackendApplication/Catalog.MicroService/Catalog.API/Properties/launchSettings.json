@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Catalog.API.Http": {
+    "Http.Catalog.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Catalog.API.Https": {
+    "Https.Catalog.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

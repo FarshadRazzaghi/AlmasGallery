@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace Catalog.API.Helper;
+namespace Catalog.API.Helpers;
 
 public enum AuthenticationScheme : byte
 {

@@ -6,13 +6,12 @@ namespace Catalog.Common.DependencyInjection;
 
 public static class RegisterServices
 {
-    public static void Configuration(this IServiceCollection services, IConfigurationManager configuration, string? connectionString)
+    public static void Configuration(this IServiceCollection services, IConfigurationManager configuration)
     {
+        var connectionString = configuration.GetConnectionString("AlmasGallery");
         Infrastructure.Persistence.RegisterServices.Configuration(services, connectionString);
         Infrastructure.Repository.RegisterServices.Configuration(services);
 
         Application.Business.UseCase.RegisterServices.Configuration(services);
-
-        services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
     }
 }

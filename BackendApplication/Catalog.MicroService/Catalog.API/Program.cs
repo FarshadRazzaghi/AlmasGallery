@@ -1,48 +1,27 @@
 using Carter;
-using Catalog.API.Helper;
-using Microsoft.AspNetCore.Authorization;
+using Catalog.API.Extensions;
 using Serilog;
-using Serilog.Events;
-using Serilog.Templates.Themes;
-using SerilogTracing;
-using SerilogTracing.Expressions;
 
-Log.Logger = new LoggerConfiguration()
-               .Enrich.FromLogContext()
-               .Enrich.WithProperty("Application", "Almas Gallery")
-               .MinimumLevel.Information()
-               .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
-               .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
-               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-               .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Literate))
-               .WriteTo.Seq(serverUrl: "http://127.0.0.100:5341", apiKey: "ZBTFmIjzeijozv5GlIES")
-               .CreateLogger();
-
-using var listener = new ActivityListenerConfiguration()
-                   .Instrument.AspNetCoreRequests()
-                   .TraceToSharedLogger();
+Catalog.API.Extensions.LoggerExtensions.InitLogger();
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddHttpContextAccessor();
 
-    builder.Services.AddAuthentication().AddBearerToken();
-    builder.Services.AddAuthorizationBuilder().AddPolicy("Authentication", p => p.AddRequirements(new AuthorizationRequirement()));
-    builder.Services.AddSingleton<IAuthorizationHandler, AuthorizationHandler>();
-
-    builder.Services.AddCarter();
-    builder.Services.AddSerilog();
+    builder.Services.AddCustomCors();
+    builder.Services.AddCustomAuthentication();
 
     var connectionString = builder.Configuration.GetConnectionString("AlmasGallery");
-    Catalog.Common.DependencyInjection.RegisterServices.Configuration(builder.Services, builder.Configuration, connectionString);
+    builder.Services.AddDependencies(builder.Configuration);
 
     var app = builder.Build();
-
     app.UseHttpsRedirection();
+    app.UseCustomCors();
+
     app.UseSerilogRequestLogging();
+
     app.MapCarter();
 
     await app.RunAsync();

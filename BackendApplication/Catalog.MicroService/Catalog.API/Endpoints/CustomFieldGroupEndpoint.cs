@@ -11,6 +11,19 @@ public class CustomFieldGroupEndpoint : ICarterModule
     {
         var map = app.MapGroup("api/v2/custom-field-group");
 
+        map.MapGet("get",
+                  async (ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
+                  {
+                      return TypedResults.Ok(await customFieldGroupService.GetListAsync(cancellation));
+                  })
+           .WithGroupName("CustomFieldGroup")
+           .WithName("CustomFieldGroupGetList")
+           .WithDescription("Returns list of all customFieldGroups")
+           .Produces<Product[]>(StatusCodes.Status200OK)
+           .Produces(StatusCodes.Status401Unauthorized)
+           .Produces(StatusCodes.Status500InternalServerError)
+           .RequireAuthorization("Authentication");
+
         map.MapGet("get/{id}",
                   async (long id, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
                   {
