@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
 namespace Catalog.Infrastructure.Repository;
@@ -25,13 +26,13 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     {
         ArgumentNullException.ThrowIfNull(entity);
         entity.DateStamp = DateTime.UtcNow;
-        entity.Status = 1;
+        entity.Status = (byte)Common.EntityStatus.Active;
 
         DbSet.Add(entity);
         SaveChanges();
     }
 
-    public void Update(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
         entity.DateStamp = DateTime.UtcNow;
@@ -39,6 +40,9 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
         DbSet.Entry(entity).State = EntityState.Modified;
         SaveChanges();
     }
+
+    public virtual Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+        => Context.Database.BeginTransactionAsync(cancellationToken);
 
     #region Save/Discard
     public virtual void DiscardChanges()
@@ -69,13 +73,13 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
         }
     }
 
-    public virtual async Task SaveChangesAsync()
+    public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             if (Context != null)
             {
-                await Context.SaveChangesAsync();
+                await Context.SaveChangesAsync(cancellationToken);
                 Dispose();
             }
         }

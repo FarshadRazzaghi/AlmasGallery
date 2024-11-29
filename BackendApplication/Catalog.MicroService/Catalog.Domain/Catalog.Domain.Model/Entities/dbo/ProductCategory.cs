@@ -36,15 +36,15 @@ public partial class ProductCategory : IBaseEntity
     public long? ParentId { get; set; }
 
     [InverseProperty("Parent")]
-    public virtual ICollection<ProductCategory> InverseParent { get; set; } = [];
+    public virtual ICollection<ProductCategory> InverseParent { get; set; } = new List<ProductCategory>();
 
     [ForeignKey("ParentId")]
     [InverseProperty("InverseParent")]
     public virtual ProductCategory? Parent { get; set; }
 
     [InverseProperty("ProductCategory")]
-    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = [];
+    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = new List<ProductCategoryCustomFieldGroup>();
 
     [InverseProperty("ProductCategory")]
-    public virtual ICollection<Product> Products { get; set; } = [];
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

@@ -30,5 +30,7 @@ internal class Constants
 
     internal const string RepositoryPostfix = "Repository";
     internal const string UseCasePostfix = "UseCase";
+
+    internal const string BaseEntityInterfaceName = "IBaseEntity";
     #endregion String
 }

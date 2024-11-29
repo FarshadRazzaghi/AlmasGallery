@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Catalog.Common\Catalog.Common\Catalog.Common.csproj" />
 		<ProjectReference Include="..\..\_Shared\Catalog.Abstraction\Catalog.Abstraction.csproj" />
 	</ItemGroup>
 

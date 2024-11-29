@@ -18,6 +18,8 @@ namespace Catalog.Infrastructure.Persistence.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CustomField_CustomFieldGroup");
 
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_CustomField_CustomField");
+
             OnConfigurePartial(entity);
         }
 

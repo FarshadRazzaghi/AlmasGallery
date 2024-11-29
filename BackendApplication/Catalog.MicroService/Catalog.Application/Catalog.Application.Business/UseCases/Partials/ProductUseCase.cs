@@ -17,7 +17,7 @@ internal partial class ProductUseCase : IProductUseCase
         return model;
     }
 
-    public async Task<Product?> UpdateAsync(long productId, ProductDto product, CancellationToken cancellationToken)
+    public async Task<Product?> UpdateAsync(long productId, ProductDto product, CancellationToken cancellationToken = default)
     {
         var existedProduct = await GetByIdAsync(productId, cancellationToken);
         if (existedProduct == null)

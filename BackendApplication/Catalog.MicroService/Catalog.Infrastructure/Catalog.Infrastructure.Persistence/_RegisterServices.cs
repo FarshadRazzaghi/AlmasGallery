@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace Catalog.Infrastructure.Persistence;
 
@@ -9,7 +11,17 @@ internal static class RegisterServices
     {
         ArgumentNullException.ThrowIfNull(connectionString);
 
-        services.AddDbContext<AlmasGalleryContext>(options => options.UseSqlServer(connectionString, x => x.UseNetTopologySuite()));
+        services.AddDbContext<AlmasGalleryContext>(options =>
+        {
+            options.UseSqlServer(connectionString);
+
+            options.LogTo((message) => Debug.Write(message),
+                        Microsoft.Extensions.Logging.LogLevel.Information,
+                        DbContextLoggerOptions.SingleLine);
+
+            options.EnableDetailedErrors();
+        });
+
         services.AddScoped<DbContext, AlmasGalleryContext>();
     }
 }

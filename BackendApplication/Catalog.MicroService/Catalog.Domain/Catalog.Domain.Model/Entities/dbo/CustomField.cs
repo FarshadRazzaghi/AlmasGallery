@@ -21,6 +21,18 @@ public partial class CustomField : IBaseEntity
     [StringLength(128)]
     public string Name { get; set; } = null!;
 
+    [StringLength(256)]
+    public string? ParentCondition { get; set; }
+
+    [StringLength(256)]
+    public string? HelpText { get; set; }
+
+    [StringLength(256)]
+    public string? InitialValue { get; set; }
+
+    [StringLength(256)]
+    public string? Validation { get; set; }
+
     public byte ValueType { get; set; }
 
     public bool IsSingleton { get; set; }
@@ -29,7 +41,16 @@ public partial class CustomField : IBaseEntity
 
     public long CustomFieldGroupId { get; set; }
 
+    public long? ParentId { get; set; }
+
     [ForeignKey("CustomFieldGroupId")]
     [InverseProperty("CustomFields")]
     public virtual CustomFieldGroup CustomFieldGroup { get; set; } = null!;
+
+    [InverseProperty("Parent")]
+    public virtual ICollection<CustomField> InverseParent { get; set; } = new List<CustomField>();
+
+    [ForeignKey("ParentId")]
+    [InverseProperty("InverseParent")]
+    public virtual CustomField? Parent { get; set; }
 }

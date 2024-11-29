@@ -58,8 +58,8 @@ public partial class Product : IBaseEntity
     public virtual ProductCategory ProductCategory { get; set; } = null!;
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = [];
+    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductPrice> ProductPrices { get; set; } = [];
+    public virtual ICollection<ProductPrice> ProductPrices { get; set; } = new List<ProductPrice>();
 }

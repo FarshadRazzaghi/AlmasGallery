@@ -22,7 +22,7 @@ public class TheGenerator : IIncrementalGenerator
 
     private void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<ClassDeclarationSyntax> list) tuple)
     {
-        var members = Helper.GetDomainModelMembers(tuple.compilation, false);
+        var members = Helper.GetDomainModelMembers(tuple.compilation, false, true);
 
         GenerateRepository(context, members);
         GenerateUnitOfWork(context, members);

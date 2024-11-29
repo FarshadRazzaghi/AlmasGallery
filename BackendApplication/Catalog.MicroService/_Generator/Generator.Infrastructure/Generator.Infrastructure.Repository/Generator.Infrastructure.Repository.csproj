@@ -8,7 +8,7 @@
 		<ImplicitUsings>true</ImplicitUsings>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<NoWarn>IDE0130</NoWarn>
 	</PropertyGroup>
 
@@ -25,6 +25,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+		<PackageReference Include="System.CodeDom" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

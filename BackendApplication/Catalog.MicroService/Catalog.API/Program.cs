@@ -1,50 +1,59 @@
-var builder = WebApplication.CreateBuilder(args);
+using Carter;
+using Catalog.API.Helper;
+using Microsoft.AspNetCore.Authorization;
+using Serilog;
+using Serilog.Events;
+using Serilog.Templates.Themes;
+using SerilogTracing;
+using SerilogTracing.Expressions;
 
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+Log.Logger = new LoggerConfiguration()
+               .Enrich.FromLogContext()
+               .Enrich.WithProperty("Application", "Almas Gallery")
+               .MinimumLevel.Information()
+               .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+               .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+               .WriteTo.Console(Formatters.CreateConsoleTextFormatter(theme: TemplateTheme.Literate))
+               .WriteTo.Seq(serverUrl: "http://127.0.0.100:5341", apiKey: "ZBTFmIjzeijozv5GlIES")
+               .CreateLogger();
+
+using var listener = new ActivityListenerConfiguration()
+                   .Instrument.AspNetCoreRequests()
+                   .TraceToSharedLogger();
+
+try
 {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Version = "v1",
-        Title = "Catalog API",
-        Description = "An ASP.NET Core Web API for managing Product and related Objects.",
-    });
+    var builder = WebApplication.CreateBuilder(args);
 
-    var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    builder.Services.AddRouting(options => options.LowercaseUrls = true);
+    builder.Services.AddHttpContextAccessor();
 
-    options.OperationFilter<Catalog.API.Filters.AddRequiredHeaderParameter>();
-});
+    builder.Services.AddAuthentication().AddBearerToken();
+    builder.Services.AddAuthorizationBuilder().AddPolicy("Authentication", p => p.AddRequirements(new AuthorizationRequirement()));
+    builder.Services.AddSingleton<IAuthorizationHandler, AuthorizationHandler>();
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+    builder.Services.AddCarter();
+    builder.Services.AddSerilog();
 
-var connectionString = builder.Configuration.GetValue<string>("DatabaseSettings:ConnectionString");
-Catalog.Common.DependencyInjection.RegisterServices.Configuration(builder.Services, connectionString);
+    var connectionString = builder.Configuration.GetConnectionString("AlmasGallery");
+    Catalog.Common.DependencyInjection.RegisterServices.Configuration(builder.Services, builder.Configuration, connectionString);
 
-builder.Services.AddLogging();
+    var app = builder.Build();
 
-var app = builder.Build();
+    app.UseHttpsRedirection();
+    app.UseSerilogRequestLogging();
+    app.MapCarter();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    await app.RunAsync();
+    return 0;
 }
-
-app.UseHttpsRedirection();
-
-app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
-            options =>
-            {
-                options.UseMiddleware<Catalog.API.Middlewares.ExtractCustomHeaderMiddleware>();
-            });
-
-app.UseMiddleware<Catalog.API.Middlewares.GlobalUnhandledExceptionMiddleware>();
-
-app.UseAuthorization();
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception");
+    return 1;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}

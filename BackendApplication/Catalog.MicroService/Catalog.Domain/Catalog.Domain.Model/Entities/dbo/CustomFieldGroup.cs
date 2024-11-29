@@ -23,8 +23,8 @@ public partial class CustomFieldGroup : IBaseEntity
     public byte EntityType { get; set; }
 
     [InverseProperty("CustomFieldGroup")]
-    public virtual ICollection<CustomField> CustomFields { get; set; } = [];
+    public virtual ICollection<CustomField> CustomFields { get; set; } = new List<CustomField>();
 
     [InverseProperty("CustomFieldGroup")]
-    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = [];
+    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = new List<ProductCategoryCustomFieldGroup>();
 }

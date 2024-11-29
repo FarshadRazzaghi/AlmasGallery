@@ -8,7 +8,7 @@ namespace Generator.Shared;
 
 internal static class Helper
 {
-    internal static INamedTypeSymbol[] GetDomainModelMembers(Compilation compilation, bool direct)
+    internal static INamedTypeSymbol[] GetDomainModelMembers(Compilation compilation, bool direct, bool dataBaseObjectsOnly)
     {
         INamespaceSymbol symbol = null;
         if (direct && !IsDebugger(compilation))
@@ -54,9 +54,18 @@ internal static class Helper
             }
         }
 
-        return [.. domainModel.Where(m => Constants.DomainModelExcludedSymbols.Any(x => x != m.MetadataName))
-                              .Where(m => !m.MetadataName.EndsWith("Mapper"))
-                              .OrderBy(m => m.MetadataName)];
+        var allModels = domainModel.Where(m => Constants.DomainModelExcludedSymbols.Any(x => x != m.MetadataName))
+                                   .Where(m => !m.MetadataName.EndsWith("Mapper"))
+                                   .OrderBy(m => m.MetadataName);
+
+        if (dataBaseObjectsOnly)
+        {
+            return allModels.Where(x => x.Interfaces.Length > 0)
+                            .Where(x => x.Interfaces.Any(x => x.Name.Equals(Constants.BaseEntityInterfaceName)))
+                            .ToArray();
+        }
+
+        return [.. allModels];
     }
 
     internal static bool IsDebugger(Compilation compilation)

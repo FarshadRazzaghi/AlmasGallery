@@ -31,5 +31,5 @@ public partial class Inventory : IBaseEntity
     public long? ModifierId { get; set; }
 
     [InverseProperty("Inventory")]
-    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = [];
+    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
 }

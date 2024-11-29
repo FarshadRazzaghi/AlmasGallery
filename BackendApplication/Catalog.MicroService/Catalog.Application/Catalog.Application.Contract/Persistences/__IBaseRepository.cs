@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Linq.Expressions;
 
 namespace Catalog.Application.Contract.Persistence;
 
@@ -8,4 +9,6 @@ public partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     Task<ICollection<TEntity>> GetListAsNoTrackingAsync(CancellationToken cancellationToken = default!);
     void Create(TEntity entity);
     void Update(TEntity entity);
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default!);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default!);
 }

@@ -1,8 +1,6 @@
-﻿using Catalog.Domain.Models;
+﻿
+using Catalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-
 namespace Catalog.Infrastructure.Persistence;
 
 public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)
@@ -22,6 +20,8 @@ public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> o
     public virtual DbSet<ProductInventory> ProductInventories { get; set; }
 
     public virtual DbSet<ProductPrice> ProductPrices { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
