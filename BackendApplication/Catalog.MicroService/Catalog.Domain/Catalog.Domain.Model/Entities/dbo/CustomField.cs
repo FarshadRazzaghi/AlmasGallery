@@ -28,6 +28,9 @@ public partial class CustomField : IBaseEntity
     public string? HelpText { get; set; }
 
     [StringLength(256)]
+    public string? PlaceHolder { get; set; }
+
+    [StringLength(256)]
     public string? InitialValue { get; set; }
 
     [StringLength(256)]

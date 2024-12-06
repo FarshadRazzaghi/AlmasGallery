@@ -1,6 +1,9 @@
 ﻿
 using Catalog.Domain.Models;
+using Catalog.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 namespace Catalog.Infrastructure.Persistence;
 
 public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)

@@ -1,26 +1,43 @@
-using Carter;
-using Catalog.API.Extensions;
+using Catalog.Common.Exceptions;
+using FluentValidation;
 using Serilog;
+using System.Text.Json.Serialization;
 
-Catalog.API.Extensions.LoggerExtensions.InitLogger();
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
+builder.Services.InitLogger();
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddHttpContextAccessor();
 
-    builder.Services.AddCustomCors();
+    builder.Services.AddControllers()
+                    .AddJsonOptions(x =>
+                    {
+                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    });
+
+    builder.Services.AddValidatorsFromAssemblyContaining<PaginationFilterValidator>();
+
     builder.Services.AddCustomAuthentication();
+    builder.Services.AddCustomCors();
 
     var connectionString = builder.Configuration.GetConnectionString("AlmasGallery");
     builder.Services.AddDependencies(builder.Configuration);
 
     var app = builder.Build();
-    app.UseHttpsRedirection();
-    app.UseCustomCors();
 
+    app.UseResponseCaching();
+
+    app.UseExceptionHandler(options => { });
+
+    app.UseHttpsRedirection();
     app.UseSerilogRequestLogging();
+    app.UseAuthorization();
+    app.UseCustomCors();
 
     app.MapCarter();
 

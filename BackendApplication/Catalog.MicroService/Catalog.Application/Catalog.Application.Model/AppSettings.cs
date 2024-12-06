@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Model;
+﻿namespace Catalog.Application.Models;
 
 public class AppSettings
 {

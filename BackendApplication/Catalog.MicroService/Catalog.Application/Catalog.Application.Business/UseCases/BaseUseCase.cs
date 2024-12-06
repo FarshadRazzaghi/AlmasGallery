@@ -11,6 +11,9 @@ internal partial class BaseUseCase<TEntity>(IBaseRepository<TEntity> repository,
     public async Task<TEntity[]> GetListAsync(CancellationToken cancellationToken = default)
         => [.. (await Repository.GetListAsNoTrackingAsync(cancellationToken))];
 
+    public async Task<TEntity[]> GetListAsync(int page = 1, int pageSize = 100, CancellationToken cancellationToken = default)
+        => [.. (await Repository.GetListAsNoTrackingAsync(page, pageSize, cancellationToken))];
+
     public async Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
     {
         if (id == 0)
