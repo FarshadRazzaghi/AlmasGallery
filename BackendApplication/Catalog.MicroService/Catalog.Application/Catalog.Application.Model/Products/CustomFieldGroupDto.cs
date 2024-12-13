@@ -6,15 +6,15 @@ public class CustomFieldGroupDtoValidator : AbstractValidator<CustomFieldGroupDt
 {
     public CustomFieldGroupDtoValidator()
     {
-        RuleFor(x => x.GroupName).NotNull().NotEmpty();
-        RuleFor(x => x.GroupType).NotNull().NotEmpty();
-        RuleForEach(x => x.Options).SetValidator(new CustomFieldDtoValidator());
+        RuleFor(x => x.Name).NotNull().NotEmpty();
+        RuleFor(x => x.EntityType).NotNull().NotEmpty();
+        RuleForEach(x => x.CustomFields).SetValidator(new CustomFieldDtoValidator());
     }
 }
 
 public class CustomFieldGroupDto
 {
-    public string GroupName { get; set; } = null!;
-    public byte GroupType { get; set; }
-    public CustomFieldDto[] Options { get; set; } = [];
+    public string Name { get; set; } = null!;
+    public byte EntityType { get; set; }
+    public CustomFieldDto[] CustomFields { get; set; } = [];
 }

@@ -26,7 +26,13 @@ public class CustomFieldGroupEndpoint : ICarterModule
                   async (long id, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
                   {
                       var customField = await customFieldGroupService.GetSingleIncludingCustomFieldsAsync(id, cancellation);
-                      return customField != null ? TypedResults.Ok(AsObjectResult([customField])) : Results.NotFound();
+                      if (customField == null)
+                      {
+                          return Results.NotFound();
+                      }
+
+                      var castedModel = AsObjectResult([customField]).FirstOrDefault();
+                      return castedModel == null ? Results.NotFound() : TypedResults.Ok(castedModel);
                   })
            .WithName("CustomFieldGroupGetById")
            .WithDescription("Returns single customFieldGroup by given Id")
@@ -50,11 +56,6 @@ public class CustomFieldGroupEndpoint : ICarterModule
         map.MapPost("create",
                    async (CustomFieldGroupDto customFieldGroup, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
                    {
-                       if (customFieldGroup == null)
-                       {
-                           return Results.BadRequest();
-                       }
-
                        var insertedModel = await customFieldGroupService.CreateAsync(customFieldGroup, cancellation);
                        return TypedResults.CreatedAtRoute("CustomFieldGroupGetById", new { id = insertedModel.Id });
                    })
@@ -63,6 +64,26 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .Produces<CustomFieldGroup>(StatusCodes.Status201Created)
            .Produces(StatusCodes.Status400BadRequest)
            .Produces(StatusCodes.Status401Unauthorized)
+           .Produces(StatusCodes.Status500InternalServerError);
+
+        map.MapPut("update/{id}",
+                   async (long id, CustomFieldGroupDto customFieldGroup, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
+                   {
+                       var updatedModel = await customFieldGroupService.UpdateAsync(id, customFieldGroup, cancellation);
+                       if (updatedModel == null)
+                       {
+                           return Results.NotFound();
+                       }
+
+                       var castedModel = AsObjectResult([updatedModel]).FirstOrDefault();
+                       return castedModel == null ? Results.NotFound() : TypedResults.Ok(castedModel);
+                   })
+           .WithName("UpdateCustomField")
+           .WithDescription("Updates existed CustomFieldGroup")
+           .Produces<CustomFieldGroup>(StatusCodes.Status200OK)
+           .Produces(StatusCodes.Status400BadRequest)
+           .Produces(StatusCodes.Status401Unauthorized)
+           .Produces(StatusCodes.Status404NotFound)
            .Produces(StatusCodes.Status500InternalServerError);
 
         map.MapDelete("delete/{id}",
@@ -80,7 +101,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .Produces(StatusCodes.Status500InternalServerError);
     }
 
-    private static object? AsObjectResult(CustomFieldGroup[] result)
+    private static object[] AsObjectResult(CustomFieldGroup[] result)
     {
         return result
                .Select(r => new
@@ -99,7 +120,8 @@ public class CustomFieldGroupEndpoint : ICarterModule
                                        cf.PlaceHolder,
                                        cf.InitialValue,
                                        cf.Validation,
-                                       cf.ValueType,
+                                       cf.DataType,
+                                       cf.IsActive,
                                        children = r.CustomFields
                                                    .Where(ch => ch.ParentId == cf.Id)
                                                    .Select(ch => new
@@ -111,11 +133,13 @@ public class CustomFieldGroupEndpoint : ICarterModule
                                                        ch.HelpText,
                                                        ch.InitialValue,
                                                        ch.Validation,
-                                                       ch.ValueType,
+                                                       ch.DataType,
+                                                       ch.IsActive,
                                                        ch.ParentId,
                                                        ch.ParentCondition
                                                    })
                                    })
-               });
+               })
+               .ToArray();
     }
 }

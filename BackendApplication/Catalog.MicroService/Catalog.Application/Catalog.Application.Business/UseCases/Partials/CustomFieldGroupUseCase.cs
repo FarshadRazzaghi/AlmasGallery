@@ -23,19 +23,19 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
     }
 
     public async Task<CustomFieldGroup?> GetSingleIncludingCustomFieldsAsync(long Id, CancellationToken cancellationToken = default)
-        => await Repository.GetSingleAsync(expression: x => true,
+        => await Repository.GetSingleAsync(expression: x => x.Id == Id,
                                            includeExpressions: [x => x.CustomFields],
                                            cancellationToken: cancellationToken);
 
     public async Task<CustomFieldGroup> CreateAsync(CustomFieldGroupDto customFieldGroup, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(customFieldGroup);
-        ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.GroupName);
+        ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
 
         using var trans = await Repository.BeginTransactionAsync(cancellationToken);
         try
         {
-            var existedGroup = await Repository.GetSingleAsync(x => x.Name == customFieldGroup.GroupName, cancellationToken);
+            var existedGroup = await Repository.GetSingleAsync(x => x.Name == customFieldGroup.Name, cancellationToken);
             if (existedGroup != null)
             {
                 throw new DuplicateNameException();
@@ -43,57 +43,65 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
 
             var group = new CustomFieldGroup()
             {
-                Name = customFieldGroup.GroupName,
-                EntityType = customFieldGroup.GroupType,
+                Name = customFieldGroup.Name,
+                EntityType = customFieldGroup.EntityType,
             };
             Repository.Create(group);
 
-            var options = customFieldGroup.Options;
-            for (int i = 0; i < options.Length; i++)
-            {
-                var customField = options[i];
-                var entity = new CustomField()
-                {
-                    CustomFieldGroupId = group.Id,
-                    InitialValue = customField.InitialValue,
-                    HelpText = customField.HelpText,
-                    PlaceHolder = customField.PlaceHolder,
-                    Name = customField.Name,
-                    IsRequired = customField.IsRequired,
-                    Validation = customField.Validation,
-                    ValueType = customField.DataType,
-                    InverseParent = customField.Children
-                                               .Select(c => new CustomField()
-                                               {
-                                                   CustomFieldGroupId = group.Id,
-                                                   InitialValue = c.InitialValue,
-                                                   HelpText = c.HelpText,
-                                                   Name = c.Name,
-                                                   IsRequired = c.IsRequired,
-                                                   Validation = c.Validation,
-                                                   ValueType = c.DataType,
-                                                   DateStamp = DateTime.UtcNow,
-                                                   Status = (byte)Common.EntityStatus.Active,
-                                               })
-                                               .ToArray()
-                };
-                UnitOfWork.CustomFieldRepository.Create(entity);
-                group.CustomFields.Add(entity);
-            }
+            AddCustomFields(customFieldGroup, group);
 
             await trans.CommitAsync(cancellationToken);
-            return group!;
+            return group;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await trans.RollbackAsync(cancellationToken);
             throw;
         }
     }
 
-    public Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupDto CustomField, CancellationToken cancellationToken = default)
+    public async Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupDto customFieldGroup, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(customFieldGroup);
+        ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
+
+        using var trans = await Repository.BeginTransactionAsync(cancellationToken);
+        try
+        {
+            var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldId,
+                                                               includeExpressions: [x => x.CustomFields],
+                                                               cancellationToken: cancellationToken);
+            if (existedGroup == null)
+            {
+                return null;
+            }
+
+            var existedGroupByName = await Repository.GetSingleAsync(x => x.Name == customFieldGroup.Name && x.Id != customFieldId, cancellationToken);
+            if (existedGroupByName != null)
+            {
+                throw new DuplicateNameException();
+            }
+
+            existedGroup.Name = customFieldGroup.Name;
+            existedGroup.EntityType = customFieldGroup.EntityType;
+
+            var existedCustomFields = existedGroup.CustomFields.ToArray();
+            for (int i = 0; i < existedCustomFields.Length; i++)
+            {
+                UnitOfWork.CustomFieldRepository.Delete(new CustomField() { Id = existedCustomFields[i].Id });
+            }
+
+            AddCustomFields(customFieldGroup, existedGroup);
+
+            Repository.Update(existedGroup);
+            await trans.CommitAsync(cancellationToken);
+            return existedGroup;
+        }
+        catch (Exception ex)
+        {
+            await trans.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 
     public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken = default)
@@ -131,4 +139,43 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
                    Value = (byte)x
                })
                .ToArray();
+
+    private void AddCustomFields(CustomFieldGroupDto customFieldGroup, CustomFieldGroup group)
+    {
+        var options = customFieldGroup.CustomFields;
+        for (int i = 0; i < options.Length; i++)
+        {
+            var customField = options[i];
+            var entity = new CustomField()
+            {
+                CustomFieldGroupId = group.Id,
+                InitialValue = customField.InitialValue,
+                HelpText = customField.HelpText,
+                PlaceHolder = customField.PlaceHolder,
+                Name = customField.Name,
+                IsRequired = customField.IsRequired,
+                IsActive = customField.IsActive,
+                Validation = customField.Validation,
+                DataType = customField.DataType,
+                InverseParent = customField.Children
+                                           .Select(c => new CustomField()
+                                           {
+                                               CustomFieldGroupId = group.Id,
+                                               InitialValue = c.InitialValue,
+                                               HelpText = c.HelpText,
+                                               Name = c.Name,
+                                               IsActive = c.IsActive,
+                                               IsRequired = c.IsRequired,
+                                               Validation = c.Validation,
+                                               DataType = c.DataType,
+                                               DateStamp = DateTime.UtcNow,
+                                               Status = (byte)EntityStatus.Active,
+                                           })
+                                           .ToArray()
+            };
+
+            group.CustomFields.Add(entity);
+            UnitOfWork.CustomFieldRepository.Create(entity);
+        }
+    }
 }

@@ -14,6 +14,8 @@ namespace Catalog.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<CustomField> entity)
         {
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
             entity.HasOne(d => d.CustomFieldGroup).WithMany(p => p.CustomFields)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CustomField_CustomFieldGroup");
