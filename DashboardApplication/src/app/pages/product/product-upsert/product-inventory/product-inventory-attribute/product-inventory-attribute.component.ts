@@ -40,12 +40,12 @@ export class ProductInventoryAttributeComponent extends _ProductUpsertBaseCompon
   constructor(elementRef: ElementRef) {
     super(elementRef);
 
-    this.subscription = this.productService
+    this.subscription = this.applicationDocumentService
       .formValidation
       .subscribe(async () => {
         if (this.form) {
           var model = await this.form.onSubmit();
-          this.productService.addResult(this.form.id, model.isValid);
+          this.applicationDocumentService.addResult(this.form.id, model.isValid);
           this.validate.emit(model.isValid);
 
           if (this.product && model.isValid && model.data) {

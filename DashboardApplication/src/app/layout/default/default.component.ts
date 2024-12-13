@@ -1,6 +1,6 @@
 //#region imports
 import { DOCUMENT, NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, Renderer2, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 import { FrLocalizationService } from '@fr-widget/i18n';
@@ -21,6 +21,7 @@ import { AppUserDropdownComponent } from '../../_application/user-dropdown/app-u
 import { AppNotificationDropdownComponent } from '../../_application/notification-dropdown/app-notification-dropdown.component';
 
 import * as FrButton from '@fr-widget/sdk/button';
+import { Subscribable, Subscription } from 'rxjs';
 //#endregion imports
 
 @Component({
@@ -45,7 +46,7 @@ import * as FrButton from '@fr-widget/sdk/button';
   templateUrl: './default.component.html',
   styleUrl: './default.component.scss'
 })
-export class DefaultComponent implements OnInit {
+export class DefaultComponent implements OnInit, OnDestroy {
 
   protected get errorModal(): ErrorHandler {
     return this.errorHandlerService.getError;
@@ -81,10 +82,14 @@ export class DefaultComponent implements OnInit {
     return this._headerbuttons;
   }
 
+  private searchSubscription!: Subscription;
+  private languageChangeSubscription!: Subscription;
+  private headerButtonsSubscription!: Subscription;
+
   ngOnInit(): void {
     this.loadTheme();
 
-    this.themeService
+    this.searchSubscription = this.themeService
       .search
       .subscribe((searchedValue: string) => {
         if (searchedValue) {
@@ -95,19 +100,25 @@ export class DefaultComponent implements OnInit {
         }
       });
 
-    this.themeLocalizationService
+    this.languageChangeSubscription = this.themeLocalizationService
       .languageChange
       .subscribe(() => {
         this.themeService.initNavigation(this.navigationGroup);
       });
 
-    this.documentService
+    this.headerButtonsSubscription = this.documentService
       .headerButtons
       .subscribe((headerButtons: HeaderActionButton[]) => {
         setTimeout(() => {
           this.headerButtons = headerButtons;
         });
       });
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription.unsubscribe();
+    this.languageChangeSubscription.unsubscribe();
+    this.headerButtonsSubscription.unsubscribe();
   }
 
   private loadTheme = (): void => {

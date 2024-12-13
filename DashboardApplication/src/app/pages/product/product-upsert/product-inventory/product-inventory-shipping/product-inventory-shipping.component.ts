@@ -30,7 +30,7 @@ export class ProductInventoryShippingComponent extends _ProductUpsertBaseCompone
       selectable: true
     },
     {
-      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.companyFullfilled}<small class="badge bg-warning">${this.appplicationResource.recommended}</small></span><small>${this.productResource.companyFullfilledDescription}</small>`),
+      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.companyFullfilled}<small class="badge bg-warning">${this.applicationResource.recommended}</small></span><small>${this.productResource.companyFullfilledDescription}</small>`),
       value: 2,
       order: 1,
       selectable: true
@@ -50,12 +50,12 @@ export class ProductInventoryShippingComponent extends _ProductUpsertBaseCompone
   constructor(private sanitizer: DomSanitizer, elementRef: ElementRef) {
     super(elementRef);
 
-    this.subscription = this.productService
+    this.subscription = this.applicationDocumentService
       .formValidation
       .subscribe(async () => {
         if (this.form) {
           var model = await this.form.onSubmit();
-          this.productService.addResult(this.form.id, model.isValid);
+          this.applicationDocumentService.addResult(this.form.id, model.isValid);
           this.validate.emit(model.isValid);
 
           if (model.isValid && model.data) {

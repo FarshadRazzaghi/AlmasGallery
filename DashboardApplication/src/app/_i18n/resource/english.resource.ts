@@ -1,19 +1,29 @@
-import { ProductResource, Resource, RoutingResource } from "./resource";
+import { CustomFieldResource, EnumResource, ProductResource, Resource, RoutingResource } from "./resource";
 
 export class EnglishResource implements Resource {
   remove = 'Remove';
+  add = ' Add';
+  update = 'Update';
+  cancel = 'Cancel';
   recommended = 'Recommended';
+  backToPrevious = 'Back';
+  submit = 'Submit';
+  yes = 'Yes';
+  no = 'No';
+
+  dropDown = {
+    selectItem: 'Please Select an Item',
+  };
 
   routingResource: RoutingResource = {
     navigation: 'Navigation',
     dashboards: 'Dashboards',
-    APPS: 'APPs',
+    settings: 'Settings',
+    customFields: 'Custom Fields',
+    customFieldsAdd: 'Add New Custom Field',
     products: 'Products',
     productsList: 'Products List',
     productsAdd: 'Add New Product',
-  };
-  dropDown = {
-    selectItem: 'Please Select an Item',
   };
   productResource: ProductResource = {
     productInformation: 'Product Information',
@@ -68,5 +78,34 @@ export class EnglishResource implements Resource {
     identifierType: 'Product ID Type',
     identifier: 'Product ID',
     identifirePlaceHolder: '{0} Number',
+  };
+  customFieldResource: CustomFieldResource = {
+    groupName: 'Group Name',
+    groupType: 'Group Type',
+    name: 'Name',
+    dataType: 'Data Type',
+    helpText: 'Help Text',
+    placeHolder: 'Place Holder',
+    regex: 'Regex',
+    initValue: 'Init Value',
+    isRequired: 'Required',
+    isMultiLine: 'Multiline',
+    applyCurrentDate: 'Current Date',
+    isActive: 'Active',
+    maxValue: 'Min value',
+    minValue: 'Max Value',
+    numberDataType: 'Number',
+    stringDataType: 'String',
+    dateDataType: 'Date',
+    booleanDataType: 'Yes/No',
+    minValueCustomErrorMessage: "Can not be Equal or greater than Max Value.",
+    deleteConfirmationMessage: "Are you sure, abiout delete the CustomField?",
+    parent: "Parent",
+    parentCondition: "Parent Conditiona",
+  };
+  enumResources: EnumResource = {
+    CustomFieldGroupType: {
+      Product: 'Product',
+    }
   };
 }

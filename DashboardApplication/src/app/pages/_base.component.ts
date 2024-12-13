@@ -1,10 +1,10 @@
-import { Component, SimpleChanges, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ElementRef, SimpleChanges, ViewEncapsulation, inject } from '@angular/core';
 import { FrBaseComponent } from '@fr-widget/sdk';
 
-import { LocalizationService } from '../services/localization.service';
 import { Resource } from '../_i18n/resource/resource';
 import { DocumentService } from '../services/document.service';
-import { HeaderActionButton } from '../types/button.interface';
+import { LocalizationService } from '../services/localization.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'base',
@@ -15,7 +15,7 @@ import { HeaderActionButton } from '../types/button.interface';
 })
 export abstract class _BaseComponent extends FrBaseComponent {
 
-  protected get appplicationResource(): Resource {
+  protected get applicationResource(): Resource {
     return this.applicationLocalizationService.resource;
   }
 
@@ -31,7 +31,7 @@ export abstract class _BaseComponent extends FrBaseComponent {
   }
 
   protected override onInit(): void {
-    this.applicationDocumentService.setButtons([]);
+    //this.applicationDocumentService.setButtons([]);
     //this.applicationDocumentService.setButtons(this.actionButtons);
   }
 

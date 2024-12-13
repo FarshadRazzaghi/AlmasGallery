@@ -2,12 +2,13 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@an
 import { RouterLink } from '@angular/router';
 
 import { _ProductBaseComponent } from '../_product.base.component';
+import { HeaderActionButton } from '../../../types/button.interface';
+
 import { ProductHttpService } from '../../../services/http/products/product-http.service';
 import { ProductUpsert, convertToModel } from '../../../types/products/product-upsert.type';
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrDataGrid from '@fr-widget/sdk/data-grid';
-import { HeaderActionButton } from '../../../types/button.interface';
 
 @Component({
   selector: 'product-list',
@@ -93,8 +94,6 @@ export class ProductListComponent extends _ProductBaseComponent {
     ];
   }
 
-  private isWaiting: boolean = false;
-
   constructor(elementRef: ElementRef) {
     super(elementRef);
   }
@@ -104,21 +103,17 @@ export class ProductListComponent extends _ProductBaseComponent {
   }
 
   protected override async afterViewInit(): Promise<void> {
-    //this.isWaiting = true;
     var list = await this.productHttpService.getList();
-
-    if (list) {
-      var model = list.map(a => convertToModel(a));
+    if (list.status) {
+      var model = (list.data ?? []).map(a => convertToModel(a));
 
       setTimeout(() => {
         this.dataGrid.setRecords(model);
       })
     }
-
-    //setTimeout(() => {
-    //  this.isWaiting = false;
-    //}, 3000)
   }
 
-  protected override onDestroy(): void { }
+  protected override onDestroy(): void {
+    this.applicationDocumentService.setButtons([]);
+  }
 }

@@ -27,7 +27,7 @@
                     @if(button.isVisible ?? true){
                     @switch (button.directive) {
                     @case ('button'){
-                    <!---->
+                    <ng-container *ngTemplateOutlet="normalButton; context: {$implicit:button}"></ng-container>
                     }
 
                     @case ('waiting'){

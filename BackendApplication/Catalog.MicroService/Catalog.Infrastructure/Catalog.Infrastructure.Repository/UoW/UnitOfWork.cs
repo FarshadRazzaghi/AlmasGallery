@@ -2,7 +2,7 @@
 
 internal partial class UnitOfWork : IUnitOfWork, IDisposable
 {
-    protected AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
+    public AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
 
     public virtual void DiscardChanges()
     {

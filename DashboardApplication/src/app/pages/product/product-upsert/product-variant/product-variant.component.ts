@@ -40,12 +40,15 @@ export class ProductVariantComponent extends _ProductUpsertBaseComponent {
 
   private subscription: Subscription;
   private _forms: FrForm.FrFormComponent<ProductUpsertVariant>[] = [];
+
+  // #region Validators
   protected productVariantOptionValidators: FrForm.FrFormControlValidator = {
     required: true
   };
   protected productVariantValueValidators: FrForm.FrFormControlValidator = {
     required: true
   };
+  // #endregion Validators
 
   protected ProductVariantOptionItems: FrForm.FrInputValueItem<number>[] = [{
     key: 'ISBN',
@@ -75,7 +78,7 @@ export class ProductVariantComponent extends _ProductUpsertBaseComponent {
   constructor(elementRef: ElementRef) {
     super(elementRef);
 
-    this.subscription = this.productService
+    this.subscription = this.applicationDocumentService
       .formValidation
       .subscribe(async () => {
         if (this._forms.length > 0) {
@@ -83,7 +86,8 @@ export class ProductVariantComponent extends _ProductUpsertBaseComponent {
           this._forms.map(async (form, index) => {
             if (form) {
               var model = await form.onSubmit();
-              this.productService.addResult(form.id, model.isValid);
+              this.applicationDocumentService.addResult(form.id, model.isValid);
+
               if (model.isValid && model.data) {
                 variants.push({
                   option: (<any>model.data)['option' + this.productVariants[index]],

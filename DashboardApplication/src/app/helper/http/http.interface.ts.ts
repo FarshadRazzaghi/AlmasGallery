@@ -5,3 +5,13 @@ export interface BaseHttpRequest {
   modifiedAt?: Date,
   status?: number,
 }
+
+export interface BaseHttpResponse<TDataType> {
+  status: boolean;
+  message?: string;
+  data?: TDataType;
+}
+
+export interface PagintaionBaseHttpResponse<TDtaType> extends BaseHttpResponse<TDtaType> {
+  totalCount?: number;
+}

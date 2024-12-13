@@ -1,19 +1,29 @@
-import { ProductResource, Resource, RoutingResource } from "./resource";
+import { CustomFieldResource, EnumResource, ProductResource, Resource, RoutingResource } from "./resource";
 
 export class PersianResource implements Resource {
   remove = 'حذف';
+  add = 'افزودن';
+  update = 'بروزرسانی';
+  cancel = 'لغو';
   recommended = 'پیشنهادی';
+  backToPrevious = 'بازگشت';
+  submit = 'تایید';
+  yes = 'بله';
+  no = 'خیر';
+
+  dropDown = {
+    selectItem: 'یک آیتم انتخاب کنید',
+  };
 
   routingResource: RoutingResource = {
     navigation: 'جهت یابی',
     dashboards: 'داشبوردها',
-    APPS: 'برنامه',
+    settings: 'تنظیمات',
+    customFields: 'فیلدهای سفارشی',
+    customFieldsAdd: 'افزودن فیلد سفارشی جدید',
     products: 'محصولات',
     productsList: 'لیست محصولات',
     productsAdd: 'افزودن محصول جدید',
-  };
-  dropDown = {
-    selectItem: 'یک آیتم انتخاب کنید',
   };
   productResource: ProductResource = {
     productInformation: 'اطلاعات محصول',
@@ -68,5 +78,34 @@ export class PersianResource implements Resource {
     identifierType: 'نوع شناسه محصول',
     identifier: 'شناسه محصول',
     identifirePlaceHolder: 'شماره {0}',
+  };
+  customFieldResource: CustomFieldResource = {
+    groupName: 'نام گروه',
+    groupType: 'نوع گروه',
+    name: 'نام',
+    dataType: 'نوع مقدار',
+    helpText: 'متن کمکی',
+    placeHolder: 'Place Holder',
+    regex: 'Regex',
+    initValue: 'مقدار اولیه',
+    isRequired: 'الزامی',
+    isMultiLine: 'Multiline',
+    applyCurrentDate: 'تاریخ روز',
+    isActive: 'فعال',
+    maxValue: 'بیشترین مقدار',
+    minValue: 'کمترین مقدار',
+    numberDataType: 'مقدار عددی',
+    stringDataType: 'رشته کاراکتر متنی',
+    dateDataType: 'تاریخ',
+    booleanDataType: 'بله/خیر',
+    minValueCustomErrorMessage: "نمیتواند بزرگتر یا مساوی مقدار بیشترین مقدار باشد.",
+    deleteConfirmationMessage: "نسبت به حذف این فیلدسفارشی مطمئن هستید؟",
+    parent: "والد",
+    parentCondition: "شرط والد",
+  };
+  enumResources: EnumResource = {
+    CustomFieldGroupType: {
+      Product: 'محصول',
+    }
   };
 }

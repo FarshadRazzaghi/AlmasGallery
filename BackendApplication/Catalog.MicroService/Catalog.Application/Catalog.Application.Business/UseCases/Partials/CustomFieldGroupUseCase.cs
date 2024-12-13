@@ -88,7 +88,7 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
             var existedCustomFields = existedGroup.CustomFields.ToArray();
             for (int i = 0; i < existedCustomFields.Length; i++)
             {
-                UnitOfWork.CustomFieldRepository.Delete(new CustomField() { Id = existedCustomFields[i].Id });
+                UnitOfWork.CustomFieldRepository.Delete(existedCustomFields[i]);
             }
 
             AddCustomFields(customFieldGroup, existedGroup);
@@ -97,7 +97,7 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
             await trans.CommitAsync(cancellationToken);
             return existedGroup;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await trans.RollbackAsync(cancellationToken);
             throw;
@@ -145,37 +145,30 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         var options = customFieldGroup.CustomFields;
         for (int i = 0; i < options.Length; i++)
         {
-            var customField = options[i];
-            var entity = new CustomField()
-            {
-                CustomFieldGroupId = group.Id,
-                InitialValue = customField.InitialValue,
-                HelpText = customField.HelpText,
-                PlaceHolder = customField.PlaceHolder,
-                Name = customField.Name,
-                IsRequired = customField.IsRequired,
-                IsActive = customField.IsActive,
-                Validation = customField.Validation,
-                DataType = customField.DataType,
-                InverseParent = customField.Children
-                                           .Select(c => new CustomField()
-                                           {
-                                               CustomFieldGroupId = group.Id,
-                                               InitialValue = c.InitialValue,
-                                               HelpText = c.HelpText,
-                                               Name = c.Name,
-                                               IsActive = c.IsActive,
-                                               IsRequired = c.IsRequired,
-                                               Validation = c.Validation,
-                                               DataType = c.DataType,
-                                               DateStamp = DateTime.UtcNow,
-                                               Status = (byte)EntityStatus.Active,
-                                           })
-                                           .ToArray()
-            };
+            var entity = ToModel(options[i], group);
+            entity.InverseParent = options[i].Children
+                                             .Select(child => ToModel(child, group))
+                                             .ToArray();
 
             group.CustomFields.Add(entity);
             UnitOfWork.CustomFieldRepository.Create(entity);
         }
+    }
+
+    private static CustomField ToModel(CustomFieldDto dto, CustomFieldGroup group)
+    {
+        return new CustomField()
+        {
+            CustomFieldGroupId = group.Id,
+            InitialValue = dto.InitialValue,
+            HelpText = dto.HelpText,
+            Name = dto.Name,
+            IsActive = dto.IsActive,
+            IsRequired = dto.IsRequired,
+            Validation = dto.Validation,
+            DataType = dto.DataType,
+            DateStamp = DateTime.UtcNow,
+            Status = (byte)EntityStatus.Active,
+        };
     }
 }

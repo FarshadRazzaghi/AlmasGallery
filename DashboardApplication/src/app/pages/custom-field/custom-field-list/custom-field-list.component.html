@@ -1,0 +1,23 @@
+<div class="row pb-5">
+    <div class="col-12">
+        <fr-card #productListCard="fr-card"
+                 [id]="'CustomFieldListCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <fr-dataGrid #customFieldListDataGrid="fr-dataGrid"
+                         [id]="'CustomFieldListDataGrid'"
+                         [columns]="columns"
+                         [showRowNumber]="true">
+
+                <ng-template #actionButtons let-record>
+                    <a [routerLink]="'/custom-fields/' + record.data.id + '/edit'" (click)="onClick(record)">
+                        EDIT
+                    </a>
+                </ng-template>
+            </fr-dataGrid>
+        </fr-card>
+    </div>
+</div>
+

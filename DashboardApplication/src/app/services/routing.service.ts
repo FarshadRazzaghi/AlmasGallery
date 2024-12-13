@@ -16,7 +16,7 @@ export class RoutingService {
       id: 0,
       label: 'navigation',
       visible: true,
-      showLabel: true,
+      showLabel: false,
       items: [
         {
           id: 0,
@@ -30,7 +30,23 @@ export class RoutingService {
     },
     {
       id: 1,
-      label: 'APPS',
+      label: 'settings',
+      visible: true,
+      showLabel: true,
+      items: [
+        {
+          id: 0,
+          label: 'customFields',
+          icon: 'ri-list-settings-line',
+          visible: true,
+          enabled: true,
+          routeLink: '/custom-fields',
+        },
+      ]
+    },
+    {
+      id: 2,
+      label: 'products',
       visible: true,
       showLabel: true,
       items: [

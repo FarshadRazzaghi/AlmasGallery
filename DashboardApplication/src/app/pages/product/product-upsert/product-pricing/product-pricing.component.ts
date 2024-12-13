@@ -36,12 +36,12 @@ export class ProductPricingComponent extends _ProductUpsertBaseComponent {
   constructor(elementRef: ElementRef) {
     super(elementRef);
 
-    this.subscription = this.productService
+    this.subscription = this.applicationDocumentService
       .formValidation
       .subscribe(async () => {
         if (this.form) {
           var model = await this.form.onSubmit();
-          this.productService.addResult(this.form.id, model.isValid);
+          this.applicationDocumentService.addResult(this.form.id, model.isValid);
 
           if (model.isValid && model.data) {
             this.product.basePrice = model.data.basePrice;

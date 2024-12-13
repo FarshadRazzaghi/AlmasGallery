@@ -1,7 +1,6 @@
-import { HttpClient, HttpContext, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, catchError, lastValueFrom, of } from "rxjs";
-import { v7 as uuid } from 'uuid';
+import { Observable, catchError, first, throwError } from "rxjs";
 
 import { apiPrefix } from "../../helper/http/http.helper";
 
@@ -12,65 +11,29 @@ export class HttpServiceGeneric<DataType> {
 
   constructor(private http: HttpClient) { }
 
-  public get = (url: string, parameters?: string[]): Observable<DataType> => {
+  public get = (url: string, parameters?: string[]): Observable<HttpResponse<DataType>> => {
     const apiURL = this.generateUrl(url, parameters);
-    return this.http.get<DataType>(apiURL, { reportProgress: true, responseType: 'json', headers: this.addHeader(), withCredentials: true }).pipe(catchError(this.handleError<DataType>('get')));
+    return this.http.get<DataType>(apiURL, { headers: this.addHeader(), observe: 'response' }).pipe(first(), catchError(this.handleError<HttpResponse<DataType>>()));
   }
 
-  public post = (url: string, data?: DataType, parameters?: string[]): Observable<DataType> => {
+  public post = (url: string, data?: DataType, parameters?: string[]): Observable<HttpResponse<DataType>> => {
     const apiURL = this.generateUrl(url, parameters);
-    return this.http.post<DataType>(apiURL, data, { reportProgress: true, responseType: 'json', headers: this.addHeader(), withCredentials: true }).pipe(catchError(this.handleError<DataType>('post')));
+    return this.http.post<DataType>(apiURL, data, { headers: this.addHeader(), observe: 'response' }).pipe(first(), catchError(this.handleError<HttpResponse<DataType>>()));
   }
 
-  public put = async (url: string, data?: DataType, parameters?: string[]): Promise<DataType> => {
+  public put = (url: string, data?: DataType, parameters?: string[]): Observable<HttpResponse<DataType>> => {
     const apiURL = this.generateUrl(url, parameters);
-
-    try {
-      const res = await lastValueFrom(
-        this.http.put<DataType>(apiURL, data, {
-          reportProgress: true,
-          responseType: 'json',
-          headers: this.addHeader()
-        }));
-      return res;
-    } catch (err) {
-      // TODO - SHOW ALERT MESSAGE ON ERROR
-      throw err;
-    }
+    return this.http.put<DataType>(apiURL, data, { headers: this.addHeader(), observe: 'response' }).pipe(first(), catchError(this.handleError<HttpResponse<DataType>>()));
   }
 
-  public patch = async (url: string, data?: DataType, parameters?: string[]): Promise<DataType> => {
+  public patch = (url: string, data?: DataType, parameters?: string[]): Observable<HttpResponse<DataType>> => {
     const apiURL = this.generateUrl(url, parameters);
-
-    try {
-      const res = await lastValueFrom(
-        this.http.patch<DataType>(apiURL, data, {
-          reportProgress: true,
-          responseType: 'json',
-          headers: this.addHeader()
-        }));
-      return res;
-    } catch (err) {
-      // TODO - SHOW ALERT MESSAGE ON ERROR
-      throw err;
-    }
+    return this.http.patch<DataType>(apiURL, data, { headers: this.addHeader(), observe: 'response' }).pipe(first(), catchError(this.handleError<HttpResponse<DataType>>()));
   }
 
-  public delete = async (url: string, parameters?: string[]): Promise<DataType> => {
+  public delete = (url: string, parameters?: string[]): Observable<HttpResponse<DataType>> => {
     const apiURL = this.generateUrl(url, parameters);
-
-    try {
-      const res = await lastValueFrom(
-        this.http.delete<DataType>(apiURL, {
-          reportProgress: true,
-          responseType: 'json',
-          headers: this.addHeader()
-        }));
-      return res;
-    } catch (err) {
-      // TODO - SHOW ALERT MESSAGE ON ERROR
-      throw err;
-    }
+    return this.http.delete<DataType>(apiURL, { headers: this.addHeader(), observe: 'response' }).pipe(catchError(this.handleError<HttpResponse<DataType>>()));
   }
 
   public batchPromise = (promises: DataType[]): Promise<DataType[]> => {
@@ -88,18 +51,25 @@ export class HttpServiceGeneric<DataType> {
     return promise;
   }
 
-  private handleError<DataType>(operation = 'operation', result?: DataType) {
+  private handleError = <DataType>() => {
     return (error: HttpErrorResponse): Observable<DataType> => {
-      console.error(error);
-      console.log(`${operation} failed: ${error.message}`);
-      return of(result as DataType);
+      let errorMessage = 'Unknown error!';
+
+      if (error.error instanceof ErrorEvent) {
+        errorMessage = `Error: ${error.error.message}`;
+      } else {
+        errorMessage = `Error Code: ${error.status}\\nMessage: ${error.message}`;
+      }
+
+      return throwError(() => error);
     };
   }
 
   private addHeader = (): HttpHeaders => {
-    let headers = new HttpHeaders();
-    headers = headers.append("Api-Key", uuid());
-    headers = headers.append("Client-Id", uuid());
+    let headers = new HttpHeaders({
+      "Authorization": `Basic ${btoa("Farshad: Pa$$w0rd")}`,
+      'Access-Control-Allow-Origin': '*',
+    });
     return headers;
   }
 

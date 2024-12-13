@@ -1,9 +1,18 @@
 export interface Resource {
   remove: string;
+  add: string;
+  update: string;
+  cancel: string;
+  yes: string;
+  no: string;
   recommended: string;
+  backToPrevious: string;
+  submit: string;
 
   routingResource: RoutingResource;
   productResource: ProductResource;
+  customFieldResource: CustomFieldResource;
+  enumResources: EnumResource;
   dropDown: {
     selectItem: string;
   }
@@ -12,7 +21,9 @@ export interface Resource {
 export interface RoutingResource {
   navigation: string;
   dashboards: string;
-  APPS: string;
+  settings: string;
+  customFields: string;
+  customFieldsAdd: string;
   products: string;
   productsAdd: string;
   productsList: string;
@@ -71,4 +82,35 @@ export interface ProductResource {
   identifierType: string;
   identifier: string;
   identifirePlaceHolder: string;
+}
+
+export interface CustomFieldResource {
+  groupName: string;
+  groupType: string;
+  name: string;
+  dataType: string;
+  initValue: string;
+  helpText: string;
+  placeHolder: string;
+  regex: string;
+  isRequired: string;
+  isMultiLine: string;
+  applyCurrentDate: string;
+  isActive: string;
+  maxValue: string;
+  minValue: string;
+  numberDataType: string;
+  stringDataType: string;
+  dateDataType: string;
+  booleanDataType: string;
+  minValueCustomErrorMessage: string;
+  deleteConfirmationMessage: string;
+  parent: string;
+  parentCondition: string;
+}
+
+export interface EnumResource {
+  CustomFieldGroupType: {
+    Product: string;
+  }
 }
