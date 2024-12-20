@@ -1,5 +1,8 @@
 ﻿using Catalog.Application.Models.Filters;
 using Catalog.Common;
+using Catalog.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -88,7 +91,10 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
             var existedCustomFields = existedGroup.CustomFields.ToArray();
             for (int i = 0; i < existedCustomFields.Length; i++)
             {
-                UnitOfWork.CustomFieldRepository.Delete(existedCustomFields[i]);
+                if (!customFieldGroup.CustomFields.Any(c => c.Id == existedCustomFields[i].Id))
+                {
+                    UnitOfWork.CustomFieldRepository.Delete(existedCustomFields[i]);
+                }
             }
 
             AddCustomFields(customFieldGroup, existedGroup);
@@ -140,35 +146,55 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
                })
                .ToArray();
 
+    #region Private Methods
     private void AddCustomFields(CustomFieldGroupDto customFieldGroup, CustomFieldGroup group)
     {
-        var options = customFieldGroup.CustomFields;
+        var options = customFieldGroup.CustomFields.ToArray();
         for (int i = 0; i < options.Length; i++)
         {
-            var entity = ToModel(options[i], group);
-            entity.InverseParent = options[i].Children
-                                             .Select(child => ToModel(child, group))
-                                             .ToArray();
+            long? parentId = null;
+            if (options[i].ParentUniqueId != null)
+            {
+                var parent = options.FirstOrDefault(x => x.UniqueId == options[i].ParentUniqueId);
+                parentId = parent?.Id;
+            }
+            var entity = ToModel(options[i], group, parentId);
 
-            group.CustomFields.Add(entity);
-            UnitOfWork.CustomFieldRepository.Create(entity);
+            var existingChild = group.CustomFields.Where(c => c.Id == options[i].Id && c.Id != default(int)).SingleOrDefault();
+            if (existingChild == null)
+            {
+                group.CustomFields.Add(entity);
+                UnitOfWork.CustomFieldRepository.Create(entity);
+                options[i].Id = entity.Id;
+            }
+            else
+            {
+                //existingChild.Name = options[i].Name;
+                entity.Id = existingChild.Id;
+                UnitOfWork.CustomFieldRepository.Update(entity);
+            }
         }
     }
 
-    private static CustomField ToModel(CustomFieldDto dto, CustomFieldGroup group)
+    private static CustomField ToModel(CustomFieldDto dto, CustomFieldGroup group, long? parentId = null)
     {
         return new CustomField()
         {
             CustomFieldGroupId = group.Id,
-            InitialValue = dto.InitialValue,
-            HelpText = dto.HelpText,
             Name = dto.Name,
+            DataType = dto.DataType,
+            InitialValue = dto.InitialValue,
+            PlaceHolder = dto.PlaceHolder,
+            HelpText = dto.HelpText,
             IsActive = dto.IsActive,
             IsRequired = dto.IsRequired,
             Validation = dto.Validation,
-            DataType = dto.DataType,
             DateStamp = DateTime.UtcNow,
             Status = (byte)EntityStatus.Active,
+
+            ParentCondition = dto.ParentCondition,
+            ParentId = parentId,
         };
     }
+    #endregion Private Methods
 }

@@ -42,6 +42,19 @@
                          [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
                          (click)="onAddNewCustomField()">
         </fr-form-control>
+
+        <fr-form-control control-button
+                         [presenter]="'Cancel'"
+                         [id]="'CustomFieldCancel'"
+                         [text]="''"
+                         [buttonColor]="'secondary'"
+                         [iconClass]="'ri-close-line'"
+                         [title]="applicationResource.cancel"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         [isVisible]="isUpdating"
+                         (click)="onCancelCustomField()">
+        </fr-form-control>
     </fr-form-group>
 
     <fr-form-control control-separator
@@ -69,7 +82,7 @@
                      [controlCssClass]="['col-12']"
                      [validators]=""
                      [value]="numberDataType.value"
-                     [items]="CustomFieldDataTypeItems"
+                     [items]="[]"
                      (change)="onDataTypeChange($event)">
     </fr-form-control>
 
@@ -151,7 +164,7 @@
                      [isVisible]="dataType === booleanDataType.value"
                      [validators]=""
                      [value]="0"
-                     [items]="CustomFieldInitValueBooleanItems">
+                     [items]="[]">
     </fr-form-control>
 
     <fr-form-control control-separator
@@ -252,7 +265,7 @@
                      [controlCssClass]="['col-12']"
                      [allowNull]="true"
                      [value]="parentId"
-                     [items]="CustomFieldParentItems"
+                     [items]="[]"
                      (change)="onParentChange($event)">
     </fr-form-control>
 
@@ -305,6 +318,6 @@
                      [isVisible]="parentDataType === booleanDataType.value"
                      [validators]=""
                      [value]="0"
-                     [items]="CustomFieldInitValueBooleanItems">
+                     [items]="[]">
     </fr-form-control>
 </fr-form>

@@ -38,54 +38,44 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
 
   @ViewChild('customFieldForm') form!: FrForm.FrFormComponent<ExtendedCustomFieldUpsertOption>;
 
-  //#region FrForm.FrInputValueItem
-  protected numberDataType: FrForm.FrInputValueItem<number> = {
-    key: this.customFieldResource.numberDataType,
-    value: 1,
-    order: 0,
-    selectable: true
-  };
-  protected stringDataType: FrForm.FrInputValueItem<number> = {
-    key: this.customFieldResource.stringDataType,
-    value: 2,
-    order: 1,
-    selectable: true
-  };
-  protected dateDataType: FrForm.FrInputValueItem<number> = {
-    key: this.customFieldResource.dateDataType,
-    value: 3,
-    order: 2,
-    selectable: true
-  };
-  protected booleanDataType: FrForm.FrInputValueItem<number> = {
-    key: this.customFieldResource.booleanDataType,
-    value: 4,
-    order: 3,
-    selectable: true
-  };
-  //protected keyValueDataType: FrForm.FrInputValueItem<number> = {
-  //  key: 'DROPDOWN',
-  //  value: 5,
-  //  order: 4,
-  //  selectable: true
-  //};
-  //protected multiSelectDataType: FrForm.FrInputValueItem<number> = {
-  //  key: 'MULTISELECT',
-  //  value: 6,
-  //  order: 5,
-  //  selectable: true
-  //};
-  //protected fileDataType: FrForm.FrInputValueItem<number> = {
-  //  key: 'FILE',
-  //  value: 7,
-  //  order: 6,
-  //  selectable: true
-  //};
-  //#endregion FrForm.FrInputValueItem
-
   private get ErrorMessage(): string {
     return this.customFieldResource.minValueCustomErrorMessage;
   }
+
+  //#region FrForm.FrInputValueItem
+  protected get numberDataType(): FrForm.FrInputValueItem<number> {
+    return {
+      key: this.customFieldResource.numberDataType,
+      value: 1,
+      order: 0,
+      selectable: true
+    }
+  };
+  protected get stringDataType(): FrForm.FrInputValueItem<number> {
+    return {
+      key: this.customFieldResource.stringDataType,
+      value: 2,
+      order: 1,
+      selectable: true
+    }
+  };
+  protected get dateDataType(): FrForm.FrInputValueItem<number> {
+    return {
+      key: this.customFieldResource.dateDataType,
+      value: 3,
+      order: 2,
+      selectable: true
+    }
+  };
+  protected get booleanDataType(): FrForm.FrInputValueItem<number> {
+    return {
+      key: this.customFieldResource.booleanDataType,
+      value: 4,
+      order: 3,
+      selectable: true
+    }
+  };
+  //#endregion FrForm.FrInputValueItem
 
   // #region Fields
   protected isUpdating: boolean = false;
@@ -111,32 +101,31 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
   // #endregion Validators
 
   //#region DropDownItems
-  protected CustomFieldDataTypeItems: FrForm.FrInputValueItem<number>[] = [
-    this.numberDataType,
-    this.stringDataType,
-    this.dateDataType,
-    this.booleanDataType,
-    //  this.keyValueDataType,
-    //  this.multiSelectDataType,
-    //  this.fileDataType,
-  ];
+  protected get CustomFieldDataTypeItems(): FrForm.FrInputValueItem<number>[] {
+    return [
+      this.numberDataType,
+      this.stringDataType,
+      this.dateDataType,
+      this.booleanDataType,
+    ];
+  }
 
-  protected CustomFieldInitValueBooleanItems: FrForm.FrInputValueItem<number>[] = [
-    {
-      key: this.applicationResource.yes,
-      value: 0,
-      order: 0,
-      selectable: true
-    },
-    {
-      key: this.applicationResource.no,
-      value: 1,
-      order: 1,
-      selectable: true
-    }
-  ];
-
-  protected CustomFieldParentItems: FrForm.FrInputValueItem<string>[] = [];
+  protected get CustomFieldInitValueBooleanItems(): FrForm.FrInputValueItem<number>[] {
+    return [
+      {
+        key: this.applicationResource.no,
+        value: 0,
+        order: 0,
+        selectable: true
+      },
+      {
+        key: this.applicationResource.yes,
+        value: 1,
+        order: 1,
+        selectable: true
+      }
+    ];
+  }
   //#endregion DropDownItems
 
   constructor(elementRef: ElementRef) {
@@ -176,17 +165,7 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
       })
   }
 
-  protected override onInit(): void {
-    const options = this.customField.options || [];
-    if (options.length > 0) {
-      options.map(() => {
-        const newName = this.generateRandomName(10);
-      })
-    }
-    else {
-      const newName = this.generateRandomName(10);
-    }
-  }
+  protected override onInit(): void { }
 
   protected override async afterViewInit(): Promise<void> {
     const maxValueController = this.form.getFormControlByPresenter("NumberMaxValue");
@@ -211,6 +190,10 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
       this.customField.options = options;
       await this.onReset();
     }
+  }
+
+  protected onCancelCustomField = async (): Promise<void> => {
+    await this.onReset();
   }
 
   protected onAddNewCustomField = (): void => {
@@ -244,39 +227,12 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
   }
 
   // #region Private Methods
-  private getParentCustomFieldItems = (): FrForm.FrInputValueItem<string | null>[] => {
-    const options: ExtendedCustomFieldUpsertOption[] = (this.customField.options ?? []);
-
-    return options
-      .filter((x: ExtendedCustomFieldUpsertOption) => !this.isUpdating || (this.isUpdating && x.uuid !== this.selectedItemId && x.customFieldParent !== this.selectedItemId))
-      .map((x: ExtendedCustomFieldUpsertOption, index: number) => {
-        return {
-          key: x.name,
-          value: x.uuid,
-          order: index,
-          selectable: x.isActive,
-        } as FrForm.FrInputValueItem<string>
-      });
-  }
-
-  private generateRandomName = (length: number): string => {
-    let result = '';
-    const customAlphabet = 'abcdefghijklmnopqrstuvwxyz';
-    const charactersLength = customAlphabet.length;
-
-    for (let i = 0; i < length; i++) {
-      result += customAlphabet.charAt(Math.floor(Math.random() * charactersLength));
-    }
-
-    return result;
-  }
-
   private onSubmit = async (): Promise<void> => {
     if (this.form) {
       const options: ExtendedCustomFieldUpsertOption[] = this.customField.options ?? [];
 
       var model = await this.form.onSubmit();
-      this.applicationDocumentService.addResult(this.form.id, model.isValid);
+      //this.applicationDocumentService.addResult(this.form.id, model.isValid);
 
       if (model.isValid && model.data) {
         var customField: CustomFieldUpsertOption = {
@@ -331,13 +287,56 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
           get: () => { return this.getParentCustomFieldItems(); }
         }
       });
+
+      var customFieldDataType = this.form.formControls['dataType'];
+      Object.defineProperties(customFieldDataType, {
+        items: {
+          get: () => { return this.CustomFieldDataTypeItems; }
+        }
+      });
+
+      var initValueBoolean = this.form.formControls['initValueBoolean'];
+      Object.defineProperties(initValueBoolean, {
+        items: {
+          get: () => { return this.CustomFieldInitValueBooleanItems; }
+        }
+      });
+
+      var parentConditionBoolean = this.form.formControls['parentConditionBoolean'];
+      Object.defineProperties(parentConditionBoolean, {
+        items: {
+          get: () => { return this.CustomFieldInitValueBooleanItems; }
+        }
+      });
     })
 
     await this.form.onReset();
   }
 
+  private getParent = (parentId: string | undefined | null): ExtendedCustomFieldUpsertOption | undefined => {
+    return (this.customField.options ?? []).find(x => x.uuid == parentId);
+  }
+
+  private getParentCustomFieldItems = (): FrForm.FrInputValueItem<string | null>[] => {
+    const options: ExtendedCustomFieldUpsertOption[] = (this.customField.options ?? []);
+
+    return options
+      .filter((x: ExtendedCustomFieldUpsertOption) => !this.isUpdating || (this.isUpdating && x.uuid !== this.selectedItemId && x.customFieldParent !== this.selectedItemId))
+      .map((x: ExtendedCustomFieldUpsertOption, index: number) => {
+        return {
+          key: x.name,
+          value: x.uuid,
+          order: index,
+          selectable: x.isActive,
+        } as FrForm.FrInputValueItem<string>
+      });
+  }
+
   private getDataTypeInitValue = (customField: CustomFieldUpsertOption, extendedCustomField: ExtendedCustomFieldUpsertOption): void => {
-    extendedCustomField.initValueDateTime = new Date();
+    extendedCustomField.initValueNumber = 0;
+    extendedCustomField.initValueString = '';
+    extendedCustomField.initValueDateTime = this.nowDate;
+    extendedCustomField.initValueBoolean = false;
 
     switch (customField.dataType) {
       case this.numberDataType.value:
@@ -355,7 +354,7 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
       case this.dateDataType.value:
         {
           this.applyCurrentDate = extendedCustomField.applyCurrentDate ?? false;
-          extendedCustomField.initValueDateTime = extendedCustomField.applyCurrentDate ? new Date() : <Date>customField.initialValue;
+          extendedCustomField.initValueDateTime = extendedCustomField.applyCurrentDate ? this.nowDate : <Date>customField.initialValue;
           break;
         }
 
@@ -365,12 +364,15 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
           break;
         }
     }
-
-    delete extendedCustomField.initialValue;
   }
 
   private getDataTypeParentCondition = (customField: CustomFieldUpsertOption, extendedCustomField: ExtendedCustomFieldUpsertOption): void => {
     this.parentDataType = 0;
+
+    extendedCustomField.parentConditionNumber = 0;
+    extendedCustomField.parentConditionString = '';
+    extendedCustomField.parentConditionDateTime = this.nowDate;
+    extendedCustomField.parentConditionBoolean = false;
 
     const parent = this.getParent(customField.customFieldParent);
     if (!parent) {
@@ -378,11 +380,17 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
     }
 
     this.parentDataType = parent.dataType;
+    debugger;
 
     switch (parent.dataType) {
       case this.numberDataType.value:
         {
-          extendedCustomField.parentConditionNumber = <number>customField.parentCondition;
+          let number = <number>customField.parentCondition;
+          if (isNaN(number)) {
+            number = 0;
+          }
+
+          extendedCustomField.parentConditionNumber = number;
           break;
         }
 
@@ -394,7 +402,14 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
 
       case this.dateDataType.value:
         {
-          extendedCustomField.parentConditionDateTime = <Date>customField.parentCondition;
+          let tryParse = Date.parse(<string>customField.parentCondition);
+          let date = this.nowDate;
+
+          if (!isNaN(tryParse)) {
+            date = new Date(tryParse);
+          }
+
+          extendedCustomField.parentConditionDateTime = date;
           break;
         }
 
@@ -404,13 +419,15 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
           break;
         }
     }
-
-    delete extendedCustomField.parentCondition;
   }
 
   private getDataTypeValidation = (extendedCustomField: ExtendedCustomFieldUpsertOption): void => {
-
     var validation: CustomFieldOptionValidation = JSON.parse(extendedCustomField.validation || '');
+
+    extendedCustomField.numberMinValue = 0;
+    extendedCustomField.numberMaxValue = 9999;
+    extendedCustomField.isMultiLine = false;
+    extendedCustomField.regex = '';
 
     switch (extendedCustomField.dataType) {
       case this.numberDataType.value:
@@ -436,8 +453,6 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
 
       case this.booleanDataType.value: { break; }
     }
-
-    delete extendedCustomField.validation;
   }
 
   private convertModelToCustomFieldOption = (model: FrForm.FrFormSubmitResult<ExtendedCustomFieldUpsertOption>, customField: CustomFieldUpsertOption): void => {
@@ -490,25 +505,25 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
     switch (parent.dataType) {
       case this.numberDataType.value:
         {
-          customField.parentCondition = model.data.parentConditionNumber;
+          customField.parentCondition = model.data.parentConditionNumber?.toString();
           break;
         }
 
       case this.stringDataType.value:
         {
-          customField.parentCondition = model.data.parentConditionString;
+          customField.parentCondition = model.data.parentConditionString?.toString();
           break;
         }
 
       case this.dateDataType.value:
         {
-          customField.parentCondition = model.data.parentConditionDateTime;
+          customField.parentCondition = model.data.parentConditionDateTime?.toString();
           break;
         }
 
       case this.booleanDataType.value:
         {
-          customField.parentCondition = model.data.parentConditionBoolean;
+          customField.parentCondition = model.data.parentConditionBoolean?.toString();
           break;
         }
     }
@@ -530,10 +545,6 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
     delete customField.numberMaxValue;
     delete customField.numberMinValue;
     delete customField.regex;
-  }
-
-  private getParent = (parentId: string | undefined | null): ExtendedCustomFieldUpsertOption | undefined => {
-    return (this.customField.options ?? []).find(x => x.uuid == parentId);
   }
   // #endregion Private Methods
 }

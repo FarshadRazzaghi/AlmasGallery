@@ -5,6 +5,7 @@ import { _CustomFieldUpsertBaseComponent } from '../_custom-field-upsert.base.co
 import { CustomFieldUpsertGroup } from '../../../../types/custom-fields/custom-field-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
+import { EnumListRequest } from '../../../../types/shared/http/custom-field-request.type';
 
 @Component({
   selector: 'custom-field-group',
@@ -72,11 +73,21 @@ export class CustomFieldGroupComponent extends _CustomFieldUpsertBaseComponent {
     await this.form.setModel(model);
 
     setTimeout(async () => {
-      const customFieldGroupTypeItems = await this.getCustomFieldGroupTypes();
+      var items = await this.getCustomFieldGroupTypes()
       var parentCustomField = this.form.formControls['groupType'];
       Object.defineProperties(parentCustomField, {
         items: {
-          get: () => { return customFieldGroupTypeItems; }
+          get: () => {
+            return items.map((x, i) => {
+              const splittedName = (items.find(i => x.value == i.value)?.name ?? '').split('.');
+              return {
+                key: (<any>this.applicationResource.enumResources)[splittedName[0]][splittedName[1]],
+                value: x.value,
+                order: i,
+                selectable: true,
+              } as FrForm.FrInputValueItem<number>;
+            });
+          }
         },
       });
     })
@@ -88,19 +99,11 @@ export class CustomFieldGroupComponent extends _CustomFieldUpsertBaseComponent {
   }
 
   // #region Private Methods
-  private getCustomFieldGroupTypes = async (): Promise<FrForm.FrInputValueItem<number>[]> => {
+  private getCustomFieldGroupTypes = async (): Promise<EnumListRequest<number>[]> => {
     var items = await this.customFieldService.httpService.getTypeList();
 
     if (items.status) {
-      return (items.data ?? []).map((x, i) => {
-        const splittedName = x.name.split('.');
-        return {
-          key: (<any>this.applicationResource.enumResources)[splittedName[0]][splittedName[1]],
-          value: x.value,
-          order: i,
-          selectable: true,
-        } as FrForm.FrInputValueItem<number>
-      })
+      return items.data ?? [];
     }
 
     return [];

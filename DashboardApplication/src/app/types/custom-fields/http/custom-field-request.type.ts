@@ -9,17 +9,16 @@ export type CustomFieldRequest = BaseHttpRequest & {
 export type CustomFieldOptionRequest = BaseHttpRequest & {
   name: string;
   dataType: number;
-  helpText?: string;
-  placeHolder?: string;
 
   isActive: boolean;
   isRequired: boolean;
 
+  helpText?: string;
+  placeHolder?: string;
+
   initialValue?: string;
   validation?: string;
 
-  customFieldParent?: string;
+  parentUniqueId?: string;
   parentCondition?: string;
-
-  children?: CustomFieldOptionRequest[];
 }

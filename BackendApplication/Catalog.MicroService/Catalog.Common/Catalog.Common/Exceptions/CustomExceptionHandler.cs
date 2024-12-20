@@ -10,7 +10,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        //logger.LogError("Error Message: \r\n{exceptionMessage}", exception.Message);
+        logger.LogError("Error Message: \r\n{exceptionMessage}", exception.Message);
 
         (string Detail, string Title, int StatusCode) = exception switch
         {

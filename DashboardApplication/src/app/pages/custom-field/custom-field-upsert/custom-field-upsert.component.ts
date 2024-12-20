@@ -180,20 +180,14 @@ export class CustomFieldUpsertComponent extends _CustomFieldUpsertBaseComponent 
 
         (data.customFields ?? [])
           .forEach((x: CustomFieldOptionRequest) => {
-            const parent: CustomFieldUpsertOption = <CustomFieldUpsertOption>x;
-            const children: CustomFieldOptionRequest[] = x.children ?? [];
-            delete x.children;
+            const option: CustomFieldUpsertOption = <CustomFieldUpsertOption>x;
+            const parent = data.customFields?.find(x => x.id == option.parentId);
+            if (parent) {
+              option.customFieldParent = (<CustomFieldUpsertOption>parent).uuid;
+            }
 
-            parent.uuid = uuid();
-            customfieldOptions.push(parent);
-
-            children.forEach((c: CustomFieldOptionRequest) => {
-              const child: CustomFieldUpsertOption = <CustomFieldUpsertOption>c;
-
-              child.uuid = uuid();
-              child.customFieldParent = parent.uuid;
-              customfieldOptions.push(child);
-            })
+            option.uuid = uuid();
+            customfieldOptions.push(option);
           })
 
         const customField: CustomFieldUpsert = {

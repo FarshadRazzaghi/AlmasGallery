@@ -11,6 +11,8 @@ export type CustomFieldUpsertOption = {
   helpText?: string;
   placeHolder?: string;
   initialValue?: string | Date | number | boolean;
+
+  parentId?: number | null;
   customFieldParent?: string | null;
   parentCondition?: string | Date | number | boolean;
 
@@ -47,38 +49,21 @@ export const convertToRequest = (model: CustomFieldUpsert): CustomFieldRequest =
   return {
     name: model.groupName,
     entityType: model.groupType || 0,
-    customFields: convertOptions(model.options || []),
+    customFields: (model.options || []).map(x => {
+      return {
+        id: x.id,
+        name: x.name,
+        uniqueId: x.uuid,
+        isActive: x.isActive,
+        dataType: x.dataType,
+        helpText: x.helpText,
+        placeHolder: x.placeHolder,
+        initialValue: x.initialValue?.toString(),
+        isRequired: x.isRequired,
+        parentUniqueId: x.customFieldParent,
+        parentCondition: x.parentCondition,
+        validation: x.validation,
+      } as CustomFieldOptionRequest
+    }),
   }
-}
-
-const convertOptions = (options: CustomFieldUpsertOption[]): CustomFieldOptionRequest[] => {
-  const parent: CustomFieldUpsertOption[] = options.filter(x => !x.customFieldParent);
-
-  return parent.map((x: CustomFieldUpsertOption) => {
-    const children: CustomFieldOptionRequest[] = options.filter(y => y.customFieldParent == x.uuid).map(x => convertOptionsToRequest(x, []));
-    return convertOptionsToRequest(x, children);
-  });
-}
-
-const convertOptionsToRequest = (parent: CustomFieldUpsertOption, children: CustomFieldOptionRequest[]): CustomFieldOptionRequest => {
-  const validation: CustomFieldOptionValidation = {
-    isMultiLine: parent.isMultiLine,
-    applyCurrentDate: parent.applyCurrentDate,
-    numberMaxValue: parent.numberMaxValue,
-    numberMinValue: parent.numberMinValue,
-    regex: parent.regex,
-  };
-
-  return {
-    id: parent.id,
-    isActive: parent.isActive,
-    name: parent.name,
-    dataType: parent.dataType,
-    helpText: parent.helpText,
-    placeHolder: parent.placeHolder,
-    initialValue: parent.initialValue?.toString(),
-    isRequired: parent.isRequired,
-    children: children,
-    validation: JSON.stringify(validation),
-  } as CustomFieldOptionRequest;
 }

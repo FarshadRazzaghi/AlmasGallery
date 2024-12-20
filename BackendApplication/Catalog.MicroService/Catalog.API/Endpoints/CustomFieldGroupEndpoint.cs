@@ -57,7 +57,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
                    async (CustomFieldGroupDto customFieldGroup, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!) =>
                    {
                        var insertedModel = await customFieldGroupService.CreateAsync(customFieldGroup, cancellation);
-                       return TypedResults.CreatedAtRoute("CustomFieldGroupGetById", new { id = insertedModel.Id });
+                       return Results.CreatedAtRoute("CustomFieldGroupGetById", new { id = insertedModel.Id }, AsObjectResult([insertedModel]));
                    })
            .WithName("CreateCustomField")
            .WithDescription("Creates new CustomFieldGroup")
@@ -103,6 +103,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
 
     private static object[] AsObjectResult(CustomFieldGroup[] result)
     {
+        var toRet = new List<object>();
         return result
                .Select(r => new
                {
@@ -110,7 +111,6 @@ public class CustomFieldGroupEndpoint : ICarterModule
                    r.EntityType,
                    r.Id,
                    customFields = r.CustomFields
-                                   .Where(cf => cf.ParentId == null)
                                    .Select(cf => new
                                    {
                                        cf.Name,
@@ -122,22 +122,8 @@ public class CustomFieldGroupEndpoint : ICarterModule
                                        cf.Validation,
                                        cf.DataType,
                                        cf.IsActive,
-                                       children = r.CustomFields
-                                                   .Where(ch => ch.ParentId == cf.Id)
-                                                   .Select(ch => new
-                                                   {
-                                                       ch.Name,
-                                                       ch.Id,
-                                                       ch.IsRequired,
-                                                       cf.PlaceHolder,
-                                                       ch.HelpText,
-                                                       ch.InitialValue,
-                                                       ch.Validation,
-                                                       ch.DataType,
-                                                       ch.IsActive,
-                                                       ch.ParentId,
-                                                       ch.ParentCondition
-                                                   })
+                                       cf.ParentId,
+                                       cf.ParentCondition,
                                    })
                })
                .ToArray();
