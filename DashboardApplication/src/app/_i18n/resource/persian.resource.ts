@@ -9,7 +9,8 @@ export class PersianResource implements Resource {
     dashboards: 'داشبوردها',
     APPS: 'برنامه',
     products: 'محصولات',
-    productsAdd: 'افزودن محصول',
+    productsList: 'لیست محصولات',
+    productsAdd: 'افزودن محصول جدید',
   };
   dropDown = {
     selectItem: 'یک آیتم انتخاب کنید',
@@ -23,7 +24,6 @@ export class PersianResource implements Resource {
     productInventory: 'انبارداری',
     name: 'نام',
     description: 'توضیحات',
-    image: 'عکس',
     stockKeepingUnit: 'SKU',
     barCode: 'بارکد محصول',
     basePrice: 'قیمت پایه',

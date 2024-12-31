@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace Catalog.Domain.Models;
+
+[PrimaryKey("ProductCategoryId", "CustomFieldGroupId")]
+[Table("ProductCategoryCustomFieldGroup")]
+public partial class ProductCategoryCustomFieldGroup : IBaseEntity
+{
+    [Key]
+    public long ProductCategoryId { get; set; }
+
+    [Key]
+    public long CustomFieldGroupId { get; set; }
+
+    [ForeignKey("CustomFieldGroupId")]
+    [InverseProperty("ProductCategoryCustomFieldGroups")]
+    public virtual CustomFieldGroup CustomFieldGroup { get; set; } = null!;
+
+    [ForeignKey("ProductCategoryId")]
+    [InverseProperty("ProductCategoryCustomFieldGroups")]
+    public virtual ProductCategory ProductCategory { get; set; } = null!;
+}

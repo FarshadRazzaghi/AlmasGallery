@@ -1,0 +1,30 @@
+@mixin page-header($direction) {
+  .page-header {
+    justify-content: if($direction == "ltr", end, end);
+
+    .btn-group {
+      justify-content: if($direction == "ltr", end, end);
+
+      button,
+      a {
+        width: auto !important;
+        min-width: 150px !important;
+        flex: 0 0 auto !important;
+
+        & + a,
+        & + button {
+          margin-right: if($direction == "ltr", null, 0.25rem !important);
+          margin-left: if($direction == "ltr", 0.25rem !important, null);
+        }
+      }
+    }
+  }
+}
+
+html[dir=rtl] {
+  @include page-header('rtl');
+}
+
+html[dir=ltr] {
+  @include page-header('ltr');
+}

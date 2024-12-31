@@ -1,93 +1,83 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpContext, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { lastValueFrom } from "rxjs";
+import { Observable, catchError, lastValueFrom, of } from "rxjs";
+import { v7 as uuid } from 'uuid';
 
 import { apiPrefix } from "../../helper/http/http.helper";
-import { BaseHttpRequest } from "../../helper/http/http.interface.ts";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpServiceGeneric<T> {
+export class HttpServiceGeneric<DataType> {
 
   constructor(private http: HttpClient) { }
 
-  public get = async (url: string, parameters?: string[]): Promise<T | HttpErrorResponse> => {
-    const apiURL = generateUrl(url, parameters);
+  public get = (url: string, parameters?: string[]): Observable<DataType> => {
+    const apiURL = this.generateUrl(url, parameters);
+    return this.http.get<DataType>(apiURL, { reportProgress: true, responseType: 'json', headers: this.addHeader(), withCredentials: true }).pipe(catchError(this.handleError<DataType>('get')));
+  }
+
+  public post = (url: string, data?: DataType, parameters?: string[]): Observable<DataType> => {
+    const apiURL = this.generateUrl(url, parameters);
+    return this.http.post<DataType>(apiURL, data, { reportProgress: true, responseType: 'json', headers: this.addHeader(), withCredentials: true }).pipe(catchError(this.handleError<DataType>('post')));
+  }
+
+  public put = async (url: string, data?: DataType, parameters?: string[]): Promise<DataType> => {
+    const apiURL = this.generateUrl(url, parameters);
 
     try {
       const res = await lastValueFrom(
-        this.http.get<T>(apiURL, {
+        this.http.put<DataType>(apiURL, data, {
           reportProgress: true,
+          responseType: 'json',
+          headers: this.addHeader()
         }));
       return res;
     } catch (err) {
-      return <HttpErrorResponse>err;
+      // TODO - SHOW ALERT MESSAGE ON ERROR
+      throw err;
     }
   }
 
-  public post = async (url: string, data?: BaseHttpRequest, parameters?: string[]): Promise<T | HttpErrorResponse> => {
-    const apiURL = generateUrl(url, parameters);
+  public patch = async (url: string, data?: DataType, parameters?: string[]): Promise<DataType> => {
+    const apiURL = this.generateUrl(url, parameters);
 
     try {
       const res = await lastValueFrom(
-        this.http.post<T>(apiURL, data, {
+        this.http.patch<DataType>(apiURL, data, {
           reportProgress: true,
-          headers: addHeader()
+          responseType: 'json',
+          headers: this.addHeader()
         }));
       return res;
     } catch (err) {
-      return <HttpErrorResponse>err;
+      // TODO - SHOW ALERT MESSAGE ON ERROR
+      throw err;
     }
   }
 
-  public put = async (url: string, data?: BaseHttpRequest, parameters?: string[]): Promise<T | HttpErrorResponse> => {
-    const apiURL = generateUrl(url, parameters);
+  public delete = async (url: string, parameters?: string[]): Promise<DataType> => {
+    const apiURL = this.generateUrl(url, parameters);
 
     try {
       const res = await lastValueFrom(
-        this.http.put<T>(apiURL, data, {
+        this.http.delete<DataType>(apiURL, {
           reportProgress: true,
+          responseType: 'json',
+          headers: this.addHeader()
         }));
       return res;
     } catch (err) {
-      return <HttpErrorResponse>err;
+      // TODO - SHOW ALERT MESSAGE ON ERROR
+      throw err;
     }
   }
 
-  public patch = async (url: string, data?: BaseHttpRequest, parameters?: string[]): Promise<T | HttpErrorResponse> => {
-    const apiURL = generateUrl(url, parameters);
-
-    try {
-      const res = await lastValueFrom(
-        this.http.patch<T>(apiURL, data, {
-          reportProgress: true,
-        }));
-      return res;
-    } catch (err) {
-      return <HttpErrorResponse>err;
-    }
-  }
-
-  public delete = async (url: string, parameters?: string[]): Promise<T | HttpErrorResponse> => {
-    const apiURL = generateUrl(url, parameters);
-
-    try {
-      const res = await lastValueFrom(
-        this.http.delete<T>(apiURL, {
-          reportProgress: true,
-        }));
-      return res;
-    } catch (err) {
-      return <HttpErrorResponse>err;
-    }
-  }
-
-  public batchPromise = (promises: T[]): Promise<T[]> => {
-    const promise = new Promise<T[]>((resolve, reject) => {
+  public batchPromise = (promises: DataType[]): Promise<DataType[]> => {
+    const promise = new Promise<DataType[]>((resolve, reject) => {
 
       Promise.all(promises)
-        .then((results: Awaited<T>[]) => {
+        .then((results: Awaited<DataType>[]) => {
           resolve(results);
         })
         .catch((err: HttpErrorResponse) => {
@@ -97,21 +87,29 @@ export class HttpServiceGeneric<T> {
 
     return promise;
   }
-}
 
-export const addHeader = (): HttpHeaders => {
-  let headers = new HttpHeaders();
-  headers = headers.append("Access-Control-Allow-Origin", "*");
-  headers = headers.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  return headers;
-}
-
-export const generateUrl = (url: string, parameters?: string[]): string => {
-  if (parameters) {
-    parameters.forEach((parameter) => {
-      url += `/${parameter}`;
-    });
+  private handleError<DataType>(operation = 'operation', result?: DataType) {
+    return (error: HttpErrorResponse): Observable<DataType> => {
+      console.error(error);
+      console.log(`${operation} failed: ${error.message}`);
+      return of(result as DataType);
+    };
   }
 
-  return apiPrefix + url.replace(new RegExp(`\\b//\\b`, 'g'), '/');
+  private addHeader = (): HttpHeaders => {
+    let headers = new HttpHeaders();
+    headers = headers.append("Api-Key", uuid());
+    headers = headers.append("Client-Id", uuid());
+    return headers;
+  }
+
+  private generateUrl = (url: string, parameters?: string[]): string => {
+    if (parameters) {
+      parameters.forEach((parameter) => {
+        url += `/${parameter}`;
+      });
+    }
+
+    return apiPrefix + url.replace(new RegExp(`\\b//\\b`, 'g'), '/');
+  }
 }

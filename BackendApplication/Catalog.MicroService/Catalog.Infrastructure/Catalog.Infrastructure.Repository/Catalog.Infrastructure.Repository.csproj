@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<NoWarn>IDE0130</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Partials\**" />
+	  <EmbeddedResource Remove="Partials\**" />
+	  <None Remove="Partials\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\_Shared\Catalog.Abstraction\Catalog.Abstraction.csproj" />
+		<ProjectReference Include="..\..\Catalog.Application\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
+		<ProjectReference Include="..\..\Catalog.Domain\Catalog.Domain.Model\Catalog.Domain.Model.csproj" />
+		<ProjectReference Include="..\..\Catalog.Infrastructure\Catalog.Infrastructure.Persistence\Catalog.Infrastructure.Persistence.csproj" />
+		<ProjectReference Include="..\..\_Generator\Generator.Infrastructure\Generator.Infrastructure.Repository\Generator.Infrastructure.Repository.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>

@@ -44,6 +44,13 @@ export class RoutingService {
           children: [
             {
               id: 1,
+              label: 'productsList',
+              visible: true,
+              enabled: true,
+              routeLink: '/products'
+            },
+            {
+              id: 2,
               label: 'productsAdd',
               visible: true,
               enabled: true,

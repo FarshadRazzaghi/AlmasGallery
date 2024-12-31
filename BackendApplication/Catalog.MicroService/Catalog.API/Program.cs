@@ -1,33 +1,55 @@
+using Catalog.Common.Exceptions;
+using FluentValidation;
+using Serilog;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-// Add services to the container.
+builder.Services.InitLogger();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-
-var connectionString = builder.Configuration.GetValue<string>("DatabaseSettings:ConnectionString");
-
-Catalog.Common.DependencyInjection.RegisterServices.Configuration(builder.Services, connectionString);
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    builder.Services.AddRouting(options => options.LowercaseUrls = true);
+    builder.Services.AddHttpContextAccessor();
+
+    builder.Services.AddControllers()
+                    .AddJsonOptions(x =>
+                    {
+                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    });
+
+    builder.Services.AddValidatorsFromAssemblyContaining<PaginationFilterValidator>();
+
+    builder.Services.AddCustomAuthentication();
+    builder.Services.AddCustomCors();
+
+    var connectionString = builder.Configuration.GetConnectionString("AlmasGallery");
+    builder.Services.AddDependencies(builder.Configuration);
+
+    var app = builder.Build();
+
+    app.UseResponseCaching();
+
+    app.UseExceptionHandler(options => { });
+
+    app.UseHttpsRedirection();
+    app.UseSerilogRequestLogging();
+    app.UseAuthorization();
+    app.UseCustomCors();
+
+    app.MapCarter();
+
+    await app.RunAsync();
+    return 0;
 }
-
-app.UseHttpsRedirection();
-
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception");
+    return 1;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}
