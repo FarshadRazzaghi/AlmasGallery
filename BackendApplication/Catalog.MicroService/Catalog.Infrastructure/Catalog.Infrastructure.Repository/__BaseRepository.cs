@@ -44,10 +44,11 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     public virtual async Task<ICollection<TEntity>> GetListAsNoTrackingAsync(Expression<Func<TEntity, bool>> expression, int page = 1, int pageSize = 100, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeExpressions)
     {
         ArgumentNullException.ThrowIfNull(expression);
-        var dbSet = DbSet.AsNoTracking().Where(expression)
-                                        .Skip((page - 1) * pageSize)
-                                        .Take(pageSize)
-                                        .OrderBy(x => x.Id);
+        var dbSet = DbSet.AsNoTracking()
+                         .Where(expression)
+                         .OrderBy(x => x.Id)
+                         .Skip((page - 1) * pageSize)
+                         .Take(pageSize);
 
         if (includeExpressions != null && includeExpressions.Length != 0)
         {
