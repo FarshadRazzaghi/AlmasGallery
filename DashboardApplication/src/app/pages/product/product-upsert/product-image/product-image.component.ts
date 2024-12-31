@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../_product-upsert.base.component';
-import { ProductUpsertImage } from '../../../../types/products/product-upsert.type';
+import { ProductUpsertImage } from '../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -12,7 +12,7 @@ import * as FrForm from '@fr-widget/sdk/form';
   imports: [
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
   ],
   templateUrl: './product-image.component.html',
   encapsulation: ViewEncapsulation.None

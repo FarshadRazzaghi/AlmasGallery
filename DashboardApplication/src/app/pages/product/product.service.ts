@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProductUpsert } from '../../types/products/product-upsert.type';
+import { ProductUpsert } from '../../types/product/product-upsert.type';
 
 @Injectable()
 export class ProductService {

@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../../_product-upsert.base.component';
-import { ProductUpsertGlobalDelivery } from '../../../../../types/products/product-upsert.type';
+import { ProductUpsertGlobalDelivery } from '../../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -14,7 +14,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule
+    FrForm.FrFormControlDirectiveModule
   ],
   templateUrl: './product-inventory-global-delivery.component.html',
   encapsulation: ViewEncapsulation.None,

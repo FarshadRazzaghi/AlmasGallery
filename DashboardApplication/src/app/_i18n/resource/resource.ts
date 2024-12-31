@@ -67,8 +67,8 @@ export interface ProductResource {
   shippingType: string;
   sellerFulfilled: string;
   sellerFulfilledDescription: string;
-  companyFullfilled: string;
-  companyFullfilledDescription: string;
+  companyFulfilled: string;
+  companyFulfilledDescription: string;
   worldwideDelivery: string;
   worldwideDeliveryDescription: string;
   selectedCountries: string;
@@ -81,7 +81,7 @@ export interface ProductResource {
   expiryDate: string;
   identifierType: string;
   identifier: string;
-  identifirePlaceHolder: string;
+  identifierPlaceHolder: string;
 }
 
 export interface CustomFieldResource {

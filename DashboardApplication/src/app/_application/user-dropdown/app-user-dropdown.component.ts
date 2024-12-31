@@ -1,8 +1,7 @@
 import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-import { FrThemeComponent, FrThemeService } from '@fr-theme/common';
-
+import { FrThemeService } from '@fr-theme/common';
 import { FrLocalizationService, FrLocalization, FrDirection } from '@fr-widget/i18n';
 import { FrDeviceViewPorts, FrDeviceDetectorService } from '@fr-widget/device-detector';
 import { FrDropdownDirective } from '@fr-widget/sdk/dropdown';
@@ -11,7 +10,7 @@ import { FrDropdownDirective } from '@fr-widget/sdk/dropdown';
   standalone: true,
   selector: 'app-user-dropdown',
   templateUrl: './app-user-dropdown.component.html',
-  imports: [NgClass, FrThemeComponent, FrDropdownDirective],
+  imports: [NgClass, FrDropdownDirective],
   encapsulation: ViewEncapsulation.None,
 })
 export class AppUserDropdownComponent {
@@ -30,8 +29,7 @@ export class AppUserDropdownComponent {
 
   protected themeService = inject(FrThemeService);
   protected localizationService = inject(FrLocalizationService);
-
-  constructor(private deviceService: FrDeviceDetectorService) { }
+  protected deviceService = inject(FrDeviceDetectorService);
 
   protected displayViewPorts = (viewPorts: FrDeviceViewPorts[]) => {
     return this.deviceService.accessibleViewPorts(viewPorts);

@@ -12,6 +12,6 @@ export interface BaseHttpResponse<TDataType> {
   data?: TDataType;
 }
 
-export interface PagintaionBaseHttpResponse<TDtaType> extends BaseHttpResponse<TDtaType> {
+export interface PaginationBaseHttpResponse<TDtaType> extends BaseHttpResponse<TDtaType> {
   totalCount?: number;
 }

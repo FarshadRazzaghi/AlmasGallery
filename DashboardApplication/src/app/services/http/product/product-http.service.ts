@@ -3,9 +3,9 @@ import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 
 import { HttpServiceGeneric } from "../http.service";
-import { BaseHttpResponse, PagintaionBaseHttpResponse } from "../../../helper/http/http.interface.ts";
+import { BaseHttpResponse, PaginationBaseHttpResponse } from "../../../helper/http/http.interface.ts";
 
-import { ProductUpsertRequest } from "../../../types/products/http/product-request.type";
+import { ProductUpsertRequest } from "../../../types/product/product-request.type";
 
 
 import * as apiUrl from "../../../helper/http/http.helper";
@@ -19,7 +19,7 @@ export class ProductHttpService {
     private getListResponse: HttpServiceGeneric<ProductUpsertRequest[]>,
     private getSingleResponse: HttpServiceGeneric<ProductUpsertRequest>) { }
 
-  public getList = async (): Promise<PagintaionBaseHttpResponse<ProductUpsertRequest[]>> => {
+  public getList = async (): Promise<PaginationBaseHttpResponse<ProductUpsertRequest[]>> => {
     const getListProducts = this.getListResponse.get(apiUrl.productGetList);
     return lastValueFrom(getListProducts)
       .then((response: HttpResponse<ProductUpsertRequest[]>) => {

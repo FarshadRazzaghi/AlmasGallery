@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulati
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../../_product-upsert.base.component';
-import { ProductUpsertAdvanced } from '../../../../../types/products/product-upsert.type';
+import { ProductUpsertAdvanced } from '../../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -13,7 +13,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule
+    FrForm.FrFormControlDirectiveModule
   ],
   templateUrl: './product-inventory-advanced.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -80,7 +80,7 @@ export class ProductInventoryAdvancedComponent extends _ProductUpsertBaseCompone
   protected override onInit(): void {
     const selectedItem = this.productIdentifierTypeItems.find(x => x.value === 1);
     if (selectedItem) {
-      this.productIdentifierPlaceHolder = this.productResource.identifirePlaceHolder.format([<string>selectedItem.key]);
+      this.productIdentifierPlaceHolder = this.productResource.identifierPlaceHolder.format([<string>selectedItem.key]);
     }
   }
 
@@ -99,7 +99,7 @@ export class ProductInventoryAdvancedComponent extends _ProductUpsertBaseCompone
   protected onProductIdentifierTypeChange = ($event: FrForm.FrFormControlChangeResult<number, Event>): void => {
     const selectedItem = this.productIdentifierTypeItems.find(x => x.value === $event.value);
     if (selectedItem) {
-      this.productIdentifierPlaceHolder = this.productResource.identifirePlaceHolder.format([<string>selectedItem.key]);
+      this.productIdentifierPlaceHolder = this.productResource.identifierPlaceHolder.format([<string>selectedItem.key]);
     }
   }
 }

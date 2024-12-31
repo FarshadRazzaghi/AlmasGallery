@@ -3,7 +3,7 @@ import { FrButtonIconDirective } from '@fr-widget/sdk/button';
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../_product-upsert.base.component';
-import { ProductUpsertVariant } from '../../../../types/products/product-upsert.type';
+import { ProductUpsertVariant } from '../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -15,7 +15,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
   ],
   templateUrl: './product-variant.component.html',
   encapsulation: ViewEncapsulation.None

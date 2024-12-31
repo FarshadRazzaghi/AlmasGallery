@@ -19,13 +19,13 @@ export class DocumentService {
     this._formResults = [];
   }
   public addResult = (formId: string, result: boolean): void => {
-    const exsitedIndex = this._formResults.findIndex(x => x.formId === formId);
-    if (exsitedIndex === -1) {
+    const existedIndex = this._formResults.findIndex(x => x.formId === formId);
+    if (existedIndex === -1) {
       this._formResults.push({ formId: formId, result: result });
       return;
     }
 
-    this._formResults[exsitedIndex].result = result;
+    this._formResults[existedIndex].result = result;
   }
   public getResults = (): { formId: string, result: boolean }[] => {
     return this._formResults;

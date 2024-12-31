@@ -1,4 +1,4 @@
-import { ProductUpsertRequest } from "./http/product-request.type";
+import { ProductUpsertRequest } from "./product-request.type";
 
 export type ProductUpsertVariant = {
   option: number;

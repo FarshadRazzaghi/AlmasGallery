@@ -1,11 +1,11 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { CustomFieldHttpService } from '../../../services/http/custom-fields/custom-field-http.service';
+import { CustomFieldHttpService } from '../../../services/http/custom-field/custom-field-http.service';
 import { _CustomFieldBaseComponent } from '../_custom-field.base.component';
 
 import { HeaderActionButton } from '../../../types/button.interface';
-import { CustomFieldUpsert } from '../../../types/custom-fields/custom-field-upsert.type';
+import { CustomFieldUpsert } from '../../../types/custom-field/custom-field-upsert.type';
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrDataGrid from '@fr-widget/sdk/data-grid';

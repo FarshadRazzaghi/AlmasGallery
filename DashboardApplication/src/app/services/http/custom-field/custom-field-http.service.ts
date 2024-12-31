@@ -3,10 +3,10 @@ import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { lastValueFrom } from "rxjs";
 
 import { HttpServiceGeneric } from "../http.service";
-import { BaseHttpResponse, PagintaionBaseHttpResponse } from "../../../helper/http/http.interface.ts";
+import { BaseHttpResponse, PaginationBaseHttpResponse } from "../../../helper/http/http.interface.ts";
 
-import { CustomFieldRequest } from "../../../types/custom-fields/http/custom-field-request.type";
-import { EnumListRequest } from "../../../types/shared/http/custom-field-request.type";
+import { CustomFieldRequest } from "../../../types/custom-field/custom-field-request.type";
+import { EnumListRequest } from "../../../types/shared/shared.type";
 
 import * as apiUrl from "../../../helper/http/http.helper";
 
@@ -21,7 +21,7 @@ export class CustomFieldHttpService {
     private getSingleResponse: HttpServiceGeneric<CustomFieldRequest>,
     private booleanResponse: HttpServiceGeneric<boolean>) { }
 
-  public getList = async (): Promise<PagintaionBaseHttpResponse<CustomFieldRequest[]>> => {
+  public getList = async (): Promise<PaginationBaseHttpResponse<CustomFieldRequest[]>> => {
     const getListCustomFields = this.getListResponse.get(apiUrl.customFieldGetList);
 
     return lastValueFrom(getListCustomFields)
@@ -58,15 +58,15 @@ export class CustomFieldHttpService {
       .catch((error: HttpErrorResponse) => { return { status: false, message: error.message } });
   }
 
-  public update = async (customFieldtId: number, customField: CustomFieldRequest): Promise<BaseHttpResponse<CustomFieldRequest>> => {
-    var createCustomField = this.getSingleResponse.put(apiUrl.customFieldUpdate, customField, [customFieldtId.toString()]);
+  public update = async (customFieldId: number, customField: CustomFieldRequest): Promise<BaseHttpResponse<CustomFieldRequest>> => {
+    var createCustomField = this.getSingleResponse.put(apiUrl.customFieldUpdate, customField, [customFieldId.toString()]);
     return lastValueFrom(createCustomField)
       .then((response: HttpResponse<CustomFieldRequest>) => { return { status: true, data: response.body! } })
       .catch((error: HttpErrorResponse) => { return { status: false, message: error.message } });
   }
 
-  public delete = async (customFieldtId: number): Promise<BaseHttpResponse<boolean>> => {
-    var createCustomField = this.booleanResponse.delete(apiUrl.customFieldDelete, [customFieldtId.toString()]);
+  public delete = async (customFieldId: number): Promise<BaseHttpResponse<boolean>> => {
+    var createCustomField = this.booleanResponse.delete(apiUrl.customFieldDelete, [customFieldId.toString()]);
     return lastValueFrom(createCustomField)
       .then(() => { return { status: true } })
       .catch((error: HttpErrorResponse) => { return { status: false, message: error.message } });

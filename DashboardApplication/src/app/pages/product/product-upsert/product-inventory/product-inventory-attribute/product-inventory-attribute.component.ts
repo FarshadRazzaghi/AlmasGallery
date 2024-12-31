@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulati
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../../_product-upsert.base.component';
-import { ProductUpsertAttribute } from '../../../../../types/products/product-upsert.type';
+import { ProductUpsertAttribute } from '../../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -13,7 +13,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule
+    FrForm.FrFormControlDirectiveModule
   ],
   templateUrl: './product-inventory-attribute.component.html',
   encapsulation: ViewEncapsulation.None,

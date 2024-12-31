@@ -13,8 +13,8 @@ import { CustomFieldDeleteModalComponent } from './_custom-field-delete-modal/cu
 
 import { BaseHttpResponse } from '../../../helper/http/http.interface.ts';
 import { HeaderActionButton } from '../../../types/button.interface';
-import { CustomFieldOptionRequest, CustomFieldRequest } from '../../../types/custom-fields/http/custom-field-request.type';
-import { CustomFieldUpsert, CustomFieldUpsertOption, convertToRequest } from '../../../types/custom-fields/custom-field-upsert.type';
+import { CustomFieldOptionRequest, CustomFieldRequest } from '../../../types/custom-field/custom-field-request.type';
+import { CustomFieldUpsert, CustomFieldUpsertOption, convertToRequest } from '../../../types/custom-field/custom-field-upsert.type';
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrForm from '@fr-widget/sdk/form';
@@ -29,7 +29,7 @@ import * as FrModal from '@fr-widget/sdk/modal';
 
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
 
     FrCard.FrCardComponent,
     FrCard.FrCardHeaderComponent,
@@ -150,7 +150,7 @@ export class CustomFieldUpsertComponent extends _CustomFieldUpsertBaseComponent 
     }
 
     this.deleteSubscription = this.customFieldService
-      .customFieldDeletation
+      .customFieldDelete
       .subscribe((value: boolean) => {
         if (value) {
           this.isSubmitting = false;
@@ -176,7 +176,7 @@ export class CustomFieldUpsertComponent extends _CustomFieldUpsertBaseComponent 
         }
 
         const data: CustomFieldRequest = httpResponse.data;
-        const customfieldOptions: CustomFieldUpsertOption[] = [];
+        const customFieldOptions: CustomFieldUpsertOption[] = [];
 
         (data.customFields ?? [])
           .forEach((x: CustomFieldOptionRequest) => {
@@ -187,14 +187,14 @@ export class CustomFieldUpsertComponent extends _CustomFieldUpsertBaseComponent 
             }
 
             option.uuid = uuid();
-            customfieldOptions.push(option);
+            customFieldOptions.push(option);
           })
 
         const customField: CustomFieldUpsert = {
           id: data.id,
           groupName: data.name,
           groupType: data.entityType,
-          options: customfieldOptions
+          options: customFieldOptions
         }
         this.customField = customField;
       }

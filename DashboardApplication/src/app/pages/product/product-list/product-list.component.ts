@@ -4,8 +4,8 @@ import { RouterLink } from '@angular/router';
 import { _ProductBaseComponent } from '../_product.base.component';
 import { HeaderActionButton } from '../../../types/button.interface';
 
-import { ProductHttpService } from '../../../services/http/products/product-http.service';
-import { ProductUpsert, convertToModel } from '../../../types/products/product-upsert.type';
+import { ProductHttpService } from '../../../services/http/product/product-http.service';
+import { ProductUpsert, convertToModel } from '../../../types/product/product-upsert.type';
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrDataGrid from '@fr-widget/sdk/data-grid';

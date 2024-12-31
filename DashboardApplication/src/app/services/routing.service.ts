@@ -81,12 +81,12 @@ export class RoutingService {
   constructor() { }
 
   public get navigationGroup(): FrThemeNavigationGroup[] {
-    const currrentResource: RoutingResource | undefined = this.localizationService.resource?.routingResource;
-    const clonedNavigtion: FrThemeNavigationGroup[] = JSON.parse(JSON.stringify(this.navigation));
+    const currentResource: RoutingResource | undefined = this.localizationService.resource?.routingResource;
+    const clonedNavigation: FrThemeNavigationGroup[] = JSON.parse(JSON.stringify(this.navigation));
 
-    clonedNavigtion.forEach((group: FrThemeNavigationGroup) => {
+    clonedNavigation.forEach((group: FrThemeNavigationGroup) => {
       const key = group.label;
-      if (!currrentResource) {
+      if (!currentResource) {
         group.label = '----';
 
         this.setAlert(key);
@@ -94,9 +94,9 @@ export class RoutingService {
         return;
       }
 
-      const objectedRsource = Object.entries(currrentResource);
+      const objectedResource = Object.entries(currentResource);
 
-      const groupLabel = objectedRsource.find(x => x[0] === key);
+      const groupLabel = objectedResource.find(x => x[0] === key);
       if (!groupLabel || !groupLabel[1]) {
         group.label = '----';
         this.setAlert(key);
@@ -105,28 +105,28 @@ export class RoutingService {
         group.label = groupLabel[1];
       }
 
-      this.localizeNavigationItemName(objectedRsource, group.items);
+      this.localizeNavigationItemName(objectedResource, group.items);
     });
 
-    return clonedNavigtion;
+    return clonedNavigation;
   }
 
-  private localizeNavigationItemName = (objectedRsource: [string, string][], items?: FrThemeNavigationItem[]): void => {
+  private localizeNavigationItemName = (objectedResource: [string, string][], items?: FrThemeNavigationItem[]): void => {
     if (!items) {
       return;
     }
 
     items.forEach((item: FrThemeNavigationItem) => {
       const key = item.label;
-      if (objectedRsource.length === 0) {
+      if (objectedResource.length === 0) {
         item.label = '----';
 
         this.setAlert(key);
-        this.localizeNavigationItemName(objectedRsource, item.children);
+        this.localizeNavigationItemName(objectedResource, item.children);
         return;
       }
 
-      const itemLabel = objectedRsource.find(x => x[0] === key);
+      const itemLabel = objectedResource.find(x => x[0] === key);
       if (!itemLabel || !itemLabel[1]) {
         item.label = '----';
         this.setAlert(key);
@@ -135,7 +135,7 @@ export class RoutingService {
         item.label = itemLabel[1];
       }
 
-      this.localizeNavigationItemName(objectedRsource, item.children);
+      this.localizeNavigationItemName(objectedResource, item.children);
     });
   }
 

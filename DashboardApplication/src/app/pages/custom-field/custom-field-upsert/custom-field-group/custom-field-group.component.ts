@@ -2,10 +2,10 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@an
 import { Subscription } from 'rxjs';
 
 import { _CustomFieldUpsertBaseComponent } from '../_custom-field-upsert.base.component';
-import { CustomFieldUpsertGroup } from '../../../../types/custom-fields/custom-field-upsert.type';
+import { CustomFieldUpsertGroup } from '../../../../types/custom-field/custom-field-upsert.type';
+import { EnumListRequest } from '../../../../types/shared/shared.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
-import { EnumListRequest } from '../../../../types/shared/http/custom-field-request.type';
 
 @Component({
   selector: 'custom-field-group',
@@ -13,7 +13,7 @@ import { EnumListRequest } from '../../../../types/shared/http/custom-field-requ
   imports: [
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
   ],
   templateUrl: './custom-field-group.component.html',
   encapsulation: ViewEncapsulation.None
@@ -54,7 +54,7 @@ export class CustomFieldGroupComponent extends _CustomFieldUpsertBaseComponent {
       })
 
     this.resetSubscription = this.customFieldService
-      .customFieldRecitation
+      .customFieldReset
       .subscribe(option => {
         if (this.form && option) {
           setTimeout(async () => {

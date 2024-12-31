@@ -58,15 +58,15 @@ export class ProductInventoryComponent extends _ProductBaseComponent {
     super(elementRef);
   }
 
-  protected getValidate = ($event: boolean, tabnumber: number): void => {
-    var index = this.tabResult.findIndex(x => x.tabNumber === tabnumber);
+  protected getValidate = ($event: boolean, tabNumber: number): void => {
+    var index = this.tabResult.findIndex(x => x.tabNumber === tabNumber);
     if (index > -1 && $event) {
       this.tabResult.splice(index, 1);
     }
 
     if (!$event) {
       if (index === -1) {
-        this.tabResult.push({ tabNumber: tabnumber, result: $event });
+        this.tabResult.push({ tabNumber: tabNumber, result: $event });
       }
       else {
         this.tabResult[index].result = $event;

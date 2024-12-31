@@ -1,10 +1,9 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FrButtonIconDirective } from '@fr-widget/sdk/button';
 import { Subscription } from 'rxjs';
 import { v7 as uuid } from 'uuid';
 
 import { _CustomFieldUpsertBaseComponent } from '../_custom-field-upsert.base.component';
-import { CustomFieldOptionValidation, CustomFieldUpsertOption } from '../../../../types/custom-fields/custom-field-upsert.type';
+import { CustomFieldOptionValidation, CustomFieldUpsertOption } from '../../../../types/custom-field/custom-field-upsert.type';
 import { equalOrGreaterValidator } from '../custom-field-validators.component';
 
 import * as FrForm from '@fr-widget/sdk/form';
@@ -25,11 +24,10 @@ export type ExtendedCustomFieldUpsertOption =
   selector: 'custom-field-option',
   standalone: true,
   imports: [
-    FrButtonIconDirective,
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
   ],
   templateUrl: './custom-field-option.component.html',
   encapsulation: ViewEncapsulation.None
@@ -132,7 +130,7 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
     super(elementRef);
 
     this.subscription = this.customFieldService
-      .customFieldUpdatation
+      .customFieldUpdate
       .subscribe(option => {
         if (this.form && option) {
           if (this.selectedItemId === option.uuid) {
@@ -155,7 +153,7 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
       })
 
     this.resetSubscription = this.customFieldService
-      .customFieldRecitation
+      .customFieldReset
       .subscribe(option => {
         if (this.form && option) {
           setTimeout(async () => {
@@ -255,11 +253,11 @@ export class CustomFieldOptionComponent extends _CustomFieldUpsertBaseComponent 
           options.push(customField);
         }
         else {
-          const exsitedCustomField = options.find(x => x.uuid === this.selectedItemId);
-          customField.id = exsitedCustomField?.id;
+          const existedCustomField = options.find(x => x.uuid === this.selectedItemId);
+          customField.id = existedCustomField?.id;
 
-          if (exsitedCustomField) {
-            const index = options.indexOf(exsitedCustomField);
+          if (existedCustomField) {
+            const index = options.indexOf(existedCustomField);
             options[index] = customField;
           }
         }

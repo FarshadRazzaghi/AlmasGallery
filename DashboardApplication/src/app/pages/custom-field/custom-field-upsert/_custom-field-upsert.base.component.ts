@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, inject } from '@angular/core';
 
 import { _CustomFieldBaseComponent } from '../_custom-field.base.component';
 
-import { CustomFieldUpsert } from '../../../types/custom-fields/custom-field-upsert.type';
+import { CustomFieldUpsert } from '../../../types/custom-field/custom-field-upsert.type';
 import { CustomFieldService } from '../custom-field.service';
 
 @Component({

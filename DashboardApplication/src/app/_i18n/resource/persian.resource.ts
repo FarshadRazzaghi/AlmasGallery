@@ -3,7 +3,7 @@ import { CustomFieldResource, EnumResource, ProductResource, Resource, RoutingRe
 export class PersianResource implements Resource {
   remove = 'حذف';
   add = 'افزودن';
-  update = 'بروزرسانی';
+  update = 'بروز رسانی';
   cancel = 'لغو';
   recommended = 'پیشنهادی';
   backToPrevious = 'بازگشت';
@@ -17,7 +17,7 @@ export class PersianResource implements Resource {
 
   routingResource: RoutingResource = {
     navigation: 'جهت یابی',
-    dashboards: 'داشبوردها',
+    dashboards: 'داشبورد',
     settings: 'تنظیمات',
     customFields: 'فیلدهای سفارشی',
     customFieldsAdd: 'افزودن فیلد سفارشی جدید',
@@ -63,8 +63,8 @@ export class PersianResource implements Resource {
     shippingType: 'انواع ارسال',
     sellerFulfilled: 'ارسال توسط فروشنده',
     sellerFulfilledDescription: 'شما مسئول تحویل محصول خواهید بود. هر گونه آسیب یا تاخیر در حمل و نقل ممکن است برای شما هزینه خسارت داشته باشد.',
-    companyFullfilled: 'ارسال توسط الماس گالری',
-    companyFullfilledDescription: 'محصول شما، مسئولیت ماست. ما با پرداخت هزینه ای ناچیز، فرآیند تحویل را برای شما انجام خواهیم داد.',
+    companyFulfilled: 'ارسال توسط الماس گالری',
+    companyFulfilledDescription: 'محصول شما، مسئولیت ماست. ما با پرداخت هزینه ای ناچیز، فرآیند تحویل را برای شما انجام خواهیم داد.',
     worldwideDelivery: 'ارسال جهانی',
     worldwideDeliveryDescription: "فقط با روش ارسال: توسط گالری الماس انجام می شود",
     selectedCountries: "کشورهای منتخب",
@@ -77,7 +77,7 @@ export class PersianResource implements Resource {
     expiryDate: 'تاریخ انقضای محصول',
     identifierType: 'نوع شناسه محصول',
     identifier: 'شناسه محصول',
-    identifirePlaceHolder: 'شماره {0}',
+    identifierPlaceHolder: 'شماره {0}',
   };
   customFieldResource: CustomFieldResource = {
     groupName: 'نام گروه',
@@ -98,8 +98,8 @@ export class PersianResource implements Resource {
     stringDataType: 'رشته کاراکتر متنی',
     dateDataType: 'تاریخ',
     booleanDataType: 'بله/خیر',
-    minValueCustomErrorMessage: "نمیتواند بزرگتر یا مساوی مقدار بیشترین مقدار باشد.",
-    deleteConfirmationMessage: "نسبت به حذف این فیلدسفارشی مطمئن هستید؟",
+    minValueCustomErrorMessage: "نمی تواند بزرگتر یا مساوی مقدار بیشترین مقدار باشد.",
+    deleteConfirmationMessage: "نسبت به حذف این فیلد سفارشی مطمئن هستید؟",
     parent: "والد",
     parentCondition: "شرط والد",
   };

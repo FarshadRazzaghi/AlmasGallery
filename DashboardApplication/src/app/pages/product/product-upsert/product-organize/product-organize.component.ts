@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../_product-upsert.base.component';
-import { ProductUpsertOrganize } from '../../../../types/products/product-upsert.type';
+import { ProductUpsertOrganize } from '../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -13,7 +13,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
   ],
   templateUrl: './product-organize.component.html',
   encapsulation: ViewEncapsulation.None

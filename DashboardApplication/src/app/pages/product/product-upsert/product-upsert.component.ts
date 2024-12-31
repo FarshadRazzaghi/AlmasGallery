@@ -4,8 +4,9 @@ import { FrWidgetError } from '@fr-widget/sdk';
 
 import { _ProductBaseComponent } from '../_product.base.component';
 import { HeaderActionButton } from '../../../types/button.interface';
+import { BaseHttpResponse } from '../../../helper/http/http.interface.ts';
 
-import { ProductHttpService } from '../../../services/http/products/product-http.service';
+import { ProductHttpService } from '../../../services/http/product/product-http.service';
 import { ProductService } from '../product.service';
 
 import { ProductInformationComponent } from './product-information/product-information.component';
@@ -15,12 +16,11 @@ import { ProductOrganizeComponent } from './product-organize/product-organize.co
 import { ProductVariantComponent } from './product-variant/product-variant.component';
 import { ProductInventoryComponent } from './product-inventory/product-inventory.component';
 
-import { ProductUpsertRequest } from '../../../types/products/http/product-request.type';
-import { convertToModel, convertToRequest } from '../../../types/products/product-upsert.type';
+import { ProductUpsertRequest } from '../../../types/product/product-request.type';
+import { convertToModel, convertToRequest } from '../../../types/product/product-upsert.type';
 
 import * as FrCard from '@fr-widget/sdk/card';
 import * as FrForm from '@fr-widget/sdk/form';
-import { BaseHttpResponse } from '../../../helper/http/http.interface.ts';
 
 @Component({
   selector: 'product-upsert',
@@ -28,7 +28,7 @@ import { BaseHttpResponse } from '../../../helper/http/http.interface.ts';
   imports: [
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
-    FrForm.FrFormControlDirecitveModule,
+    FrForm.FrFormControlDirectiveModule,
 
     FrCard.FrCardComponent,
     FrCard.FrCardHeaderComponent,

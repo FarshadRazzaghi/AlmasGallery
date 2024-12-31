@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, inject } from '@angular/core';
-import { FrModalComponent, FrModalHeaderComponent, FrModalFooterComponent, FrModalService, FrModalSize } from '@fr-widget/sdk/modal';
+import { FrModalComponent, FrModalService, FrModalSize } from '@fr-widget/sdk/modal';
 import { Subscription } from 'rxjs';
 
 import { _BaseComponent } from '../../../_base.component';
@@ -11,11 +11,7 @@ import { CustomFieldService } from '../../custom-field.service';
 @Component({
   selector: 'custom-field-delete-modal',
   standalone: true,
-  imports: [
-    FrModalComponent,
-    FrModalHeaderComponent,
-    FrModalFooterComponent,
-  ],
+  imports: [FrModalComponent],
   templateUrl: './custom-field-delete.modal.component.html',
 })
 export class CustomFieldDeleteModalComponent implements OnDestroy {

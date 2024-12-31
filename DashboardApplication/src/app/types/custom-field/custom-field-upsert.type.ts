@@ -1,4 +1,4 @@
-import { CustomFieldOptionRequest, CustomFieldRequest } from "./http/custom-field-request.type";
+import { CustomFieldOptionRequest, CustomFieldRequest } from "./custom-field-request.type";
 
 export type CustomFieldUpsertOption = {
   id?: number;

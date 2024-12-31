@@ -2,6 +2,7 @@
 import { DOCUMENT, NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import { Component, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { FrLocalizationService } from '@fr-widget/i18n';
 import { FrDisabledDirective } from '@fr-widget/sdk/disabled';
@@ -21,7 +22,6 @@ import { AppUserDropdownComponent } from '../../_application/user-dropdown/app-u
 import { AppNotificationDropdownComponent } from '../../_application/notification-dropdown/app-notification-dropdown.component';
 
 import * as FrButton from '@fr-widget/sdk/button';
-import { Subscribable, Subscription } from 'rxjs';
 //#endregion imports
 
 @Component({
@@ -74,12 +74,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
   protected themeService = inject(FrThemeService);
   protected themeLocalizationService = inject(FrLocalizationService);
 
-  private _headerbuttons: HeaderActionButton[] = [];
-  protected set headerButtons(headerbuttons: HeaderActionButton[]) {
-    this._headerbuttons = headerbuttons;
+  private _headerButtons: HeaderActionButton[] = [];
+  protected set headerButtons(headerButtons: HeaderActionButton[]) {
+    this._headerButtons = headerButtons;
   }
   protected get headerButtons(): HeaderActionButton[] {
-    return this._headerbuttons;
+    return this._headerButtons;
   }
 
   private searchSubscription!: Subscription;

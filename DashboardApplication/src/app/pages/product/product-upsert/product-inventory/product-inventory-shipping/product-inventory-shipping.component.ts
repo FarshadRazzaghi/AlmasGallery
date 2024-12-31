@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 import { _ProductUpsertBaseComponent } from '../../_product-upsert.base.component';
-import { ProductUpsertShipping } from '../../../../../types/products/product-upsert.type';
+import { ProductUpsertShipping } from '../../../../../types/product/product-upsert.type';
 
 import * as FrForm from '@fr-widget/sdk/form';
 
@@ -14,7 +14,7 @@ import * as FrForm from '@fr-widget/sdk/form';
     FrForm.FrFormComponent,
     FrForm.FrFormControlComponent,
     FrForm.FrFormGroupComponent,
-    FrForm.FrFormControlDirecitveModule
+    FrForm.FrFormControlDirectiveModule
   ],
   templateUrl: './product-inventory-shipping.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -30,7 +30,7 @@ export class ProductInventoryShippingComponent extends _ProductUpsertBaseCompone
       selectable: true
     },
     {
-      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.companyFullfilled}<small class="badge bg-warning">${this.applicationResource.recommended}</small></span><small>${this.productResource.companyFullfilledDescription}</small>`),
+      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.companyFulfilled}<small class="badge bg-warning">${this.applicationResource.recommended}</small></span><small>${this.productResource.companyFulfilledDescription}</small>`),
       value: 2,
       order: 1,
       selectable: true

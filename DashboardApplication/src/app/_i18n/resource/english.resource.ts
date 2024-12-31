@@ -61,10 +61,10 @@ export class EnglishResource implements Resource {
     restockedLastTime: 'Last time restocked',
     overallQuantity: 'Total stock over lifetime',
     shippingType: 'Shipping Type',
-    sellerFulfilled: 'Fullfilled by seller',
+    sellerFulfilled: 'Fulfilled by seller',
     sellerFulfilledDescription: `You'll be responsible for product delivery. Any damage or delay during shipping may cost you a Damage fee.`,
-    companyFullfilled: 'Fullfilled by Almas Gallery',
-    companyFullfilledDescription: 'Your product, Our responsibility. For a measly fee, we will handle the delivery process for you.',
+    companyFulfilled: 'Fulfilled by Almas Gallery',
+    companyFulfilledDescription: 'Your product, Our responsibility. For a measly fee, we will handle the delivery process for you.',
     worldwideDelivery: 'Worldwide Delivery',
     worldwideDeliveryDescription: "Only available with Shipping method: Fulfilled by Almas Gallery",
     selectedCountries: "Selected Countries",
@@ -73,11 +73,11 @@ export class EnglishResource implements Resource {
     isFragile: 'Fragile Product',
     isBiodegradable: 'Biodegradable Product',
     isFrozen: 'Frozen Product',
-    maxAllowedTemperature: 'Max Allowed Tempreture',
+    maxAllowedTemperature: 'Max Allowed Temperature',
     expiryDate: 'Expiry Date Of Product',
     identifierType: 'Product ID Type',
     identifier: 'Product ID',
-    identifirePlaceHolder: '{0} Number',
+    identifierPlaceHolder: '{0} Number',
   };
   customFieldResource: CustomFieldResource = {
     groupName: 'Group Name',
@@ -99,9 +99,9 @@ export class EnglishResource implements Resource {
     dateDataType: 'Date',
     booleanDataType: 'Yes/No',
     minValueCustomErrorMessage: "Can not be Equal or greater than Max Value.",
-    deleteConfirmationMessage: "Are you sure, abiout delete the CustomField?",
+    deleteConfirmationMessage: "Are you sure, about delete the CustomField?",
     parent: "Parent",
-    parentCondition: "Parent Conditiona",
+    parentCondition: "Parent Condition",
   };
   enumResources: EnumResource = {
     CustomFieldGroupType: {
