@@ -16,6 +16,11 @@ public partial class ProductCategoryCustomFieldGroup : IBaseEntity
     [Key]
     public long CustomFieldGroupId { get; set; }
 
+    public byte CustomFieldGroupLocation { get; set; }
+
+    [Column("isActive")]
+    public bool IsActive { get; set; }
+
     [ForeignKey("CustomFieldGroupId")]
     [InverseProperty("ProductCategoryCustomFieldGroups")]
     public virtual CustomFieldGroup CustomFieldGroup { get; set; } = null!;

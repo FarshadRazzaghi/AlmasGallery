@@ -2,10 +2,21 @@
 
 namespace Catalog.Application.Business.UseCase;
 
+/// <summary>
+/// Base use case class providing common functionality for use cases.
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
 internal partial class BaseUseCase<TEntity>(IBaseRepository<TEntity> repository, IUnitOfWork unitOfWork)
     : IBaseUseCase<TEntity> where TEntity : class, IBaseEntity
 {
+    /// <summary>
+    /// Gets the repository.
+    /// </summary>
     public IBaseRepository<TEntity> Repository { get; } = repository;
+
+    /// <summary>
+    /// Gets the unit of work.
+    /// </summary>
     public IUnitOfWork UnitOfWork { get; } = unitOfWork;
 
     public async Task<TEntity[]> GetListAsync(CancellationToken cancellationToken = default)

@@ -8,25 +8,38 @@ using System.Linq.Expressions;
 
 namespace Catalog.Application.Business.UseCase;
 
+/// <summary>
+/// Use case for managing custom field groups.
+/// </summary>
 internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
 {
     public async Task<(CustomFieldGroup[] list, long totalCount)> GetListIncludingCustomFieldsAsync(CustomFieldGroupFilter filter, CancellationToken cancellationToken = default)
     {
         Expression<Func<CustomFieldGroup, bool>> filterExpression = x => true;
 
+        if (filter.GroupName != null && string.IsNullOrEmpty(filter.GroupName))
+        {
+            filterExpression = filterExpression.And(x => x.Name.Contains(filter.GroupName));
+        }
+
+        if (filter.GroupType != null)
+        {
+            filterExpression = filterExpression.And(x => x.EntityType == filter.GroupType);
+        }
+
         var totalCount = await Repository.GetCountAsync(expression: filterExpression, cancellationToken: cancellationToken);
 
         var list = await Repository.GetListAsNoTrackingAsync(expression: filterExpression,
                                                              page: filter.Page ?? 1,
                                                              pageSize: filter.PageSize ?? 100,
-                                                             includeExpressions: [x => x.CustomFields],
+                                                             includeExpressions: (filter.IncludeCustomFields ?? true) ? [x => x.CustomFields] : [],
                                                              cancellationToken: cancellationToken);
 
         return (list.ToArray(), totalCount);
     }
 
-    public async Task<CustomFieldGroup?> GetSingleIncludingCustomFieldsAsync(long Id, CancellationToken cancellationToken = default)
-        => await Repository.GetSingleAsync(expression: x => x.Id == Id,
+    public async Task<CustomFieldGroup?> GetSingleIncludingCustomFieldsAsync(long customFieldGroupId, CancellationToken cancellationToken = default)
+        => await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
                                            includeExpressions: [x => x.CustomFields],
                                            cancellationToken: cancellationToken);
 
@@ -47,7 +60,7 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
             var group = new CustomFieldGroup()
             {
                 Name = customFieldGroup.Name,
-                EntityType = customFieldGroup.EntityType,
+                EntityType = (byte)customFieldGroup.EntityType,
             };
             Repository.Create(group);
 
@@ -86,7 +99,7 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
             }
 
             existedGroup.Name = customFieldGroup.Name;
-            existedGroup.EntityType = customFieldGroup.EntityType;
+            existedGroup.EntityType = (byte)customFieldGroup.EntityType;
 
             var existedCustomFields = existedGroup.CustomFields.ToArray();
             for (int i = 0; i < existedCustomFields.Length; i++)
@@ -110,12 +123,12 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         }
     }
 
-    public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(long customFieldGroupId, CancellationToken cancellationToken = default)
     {
         using var trans = await Repository.BeginTransactionAsync(cancellationToken);
         try
         {
-            var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == id,
+            var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
                                                                includeExpressions: [x => x.CustomFields],
                                                                cancellationToken: cancellationToken);
             if (existedGroup == null)
@@ -136,17 +149,12 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         }
     }
 
-    public EnumAsList<byte>[] GetListOfAvailableTypes()
-        => Enum.GetValues(typeof(CustomFieldGroupType))
-               .Cast<CustomFieldGroupType>()
-               .Select(x => new EnumAsList<byte>
-               {
-                   Name = $"{x.GetType().Name}.{x}",
-                   Value = (byte)x
-               })
-               .ToArray();
-
     #region Private Methods
+    /// <summary>
+    /// Adds custom fields to a custom field group.
+    /// </summary>
+    /// <param name="customFieldGroup">The custom field group DTO.</param>
+    /// <param name="group">The custom field group entity.</param>
     private void AddCustomFields(CustomFieldGroupDto customFieldGroup, CustomFieldGroup group)
     {
         var options = customFieldGroup.CustomFields.ToArray();
@@ -176,6 +184,13 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         }
     }
 
+    /// <summary>
+    /// Converts a custom field DTO to a custom field entity.
+    /// </summary>
+    /// <param name="dto">The custom field DTO.</param>
+    /// <param name="group">The custom field group entity.</param>
+    /// <param name="parentId">The parent ID.</param>
+    /// <returns>The custom field entity.</returns>
     private static CustomField ToModel(CustomFieldDto dto, CustomFieldGroup group, long? parentId = null)
     {
         return new CustomField()

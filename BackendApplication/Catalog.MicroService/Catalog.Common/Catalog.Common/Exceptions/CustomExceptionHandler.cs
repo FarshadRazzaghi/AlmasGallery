@@ -16,6 +16,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         {
             UnauthorizedAccessException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status401Unauthorized),
             ValidationException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status400BadRequest),
+            RelationException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status500InternalServerError),
             _ => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status500InternalServerError),
         };
 
@@ -38,6 +39,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
                 x.Severity,
                 x.ErrorCode,
             }));
+        }
+
+        if (exception is RelationException relationException)
+        {
+            problemDetails.Extensions.Add("relationMessage", relationException.RelationMessage);
         }
 
         problemDetails.Extensions.Add("traceId", context.TraceIdentifier);

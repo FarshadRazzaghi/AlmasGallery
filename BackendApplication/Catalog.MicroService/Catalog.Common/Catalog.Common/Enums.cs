@@ -12,3 +12,10 @@ public enum CustomFieldGroupType : byte
 {
     Product = 1,
 }
+
+public enum CustomFieldGroupLocationType : byte
+{
+    PageSection = 1,
+    PricingSection = 2,
+    DescriptionSection = 3,
+}
