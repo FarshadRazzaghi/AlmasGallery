@@ -17,12 +17,12 @@ public static class ServiceCollectionExtensions
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAngularOrigins",
-            builder =>
-            {
-                builder.WithOrigins("http://127.0.0.100:2525")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
-            });
+                              builder =>
+                              {
+                                  builder.WithOrigins("http://127.0.0.100:2525")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                              });
         });
         return services;
     }
