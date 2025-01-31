@@ -1,0 +1,30 @@
+<div class="row">
+    <fr-form #customFieldGroupForm="fr-form"
+             [id]="'CustomFieldGroupForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-textbox
+                         [presenter]="'GroupName'"
+                         [id]="'CustomFieldGroupName'"
+                         [showLabel]="true"
+                         [label]="customFieldResource.groupName"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-4', applicationLocalizationService.isRTL ? 'ps-2' : 'pe-2']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="customFieldGroupValidators">
+        </fr-form-control>
+
+        <fr-form-control control-dropdown
+                         [presenter]="'GroupType'"
+                         [id]="'CustomFieldGroupType'"
+                         [showLabel]="true"
+                         [label]="customFieldResource.groupType"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-4', applicationLocalizationService.isRTL ? 'ps-2' : 'pe-2']"
+                         [controlCssClass]="['col-12']"
+                         [allowNull]="true"
+                         [items]="customFieldGroupTypeItems"
+                         [validators]="customFieldGroupTypeValidators">
+        </fr-form-control>
+    </fr-form>
+</div>

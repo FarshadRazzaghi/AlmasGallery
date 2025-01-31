@@ -1,0 +1,21 @@
+<div class="row pb-5">
+    @if(productCategoryLoaded){
+    <div class="col-12">
+        <fr-card #productCategoryBasicCard="fr-card"
+                 [id]="'ProductCategoryBasicCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <product-category-basic [id]="'ProductCategoryBasicForm'"></product-category-basic>
+        </fr-card>
+    </div>
+
+    <product-category-custom-field [id]="'ProductCategoryCustomFieldForm'"></product-category-custom-field>
+    }
+</div>
+
+
+@if(operation === 'Update'){
+<product-category-delete-modal [id]="deleteModalId"></product-category-delete-modal>
+}
