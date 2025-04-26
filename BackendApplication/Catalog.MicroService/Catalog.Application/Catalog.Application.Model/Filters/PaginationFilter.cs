@@ -4,18 +4,22 @@ namespace Catalog.Application.Models.Filters;
 
 /// <summary>
 /// Validator for the <see cref="PaginationFilter"/> class.
+/// Ensures that pagination properties meet the required validation rules.
 /// </summary>
 public class PaginationFilterValidator : AbstractValidator<PaginationFilter>
 {
     public PaginationFilterValidator()
     {
+        // Ensures the page number is greater than or equal to 1.
         RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
+
+        // Ensures the page size is between 1 and 1000.
         RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1).LessThanOrEqualTo(1000);
     }
 }
 
 /// <summary>
-/// Represents a filter for pagination.
+/// Represents a filter for pagination, including page number and page size.
 /// </summary>
 public class PaginationFilter
 {

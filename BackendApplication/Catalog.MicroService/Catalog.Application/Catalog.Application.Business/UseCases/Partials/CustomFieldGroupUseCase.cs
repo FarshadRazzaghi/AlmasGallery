@@ -1,5 +1,7 @@
-﻿using Catalog.Application.Models.Filters;
+﻿using Catalog.Application.Models.Requests;
+using Catalog.Application.Models.Filters;
 using Catalog.Common;
+using Catalog.Common.Exceptions;
 using Catalog.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,22 +11,23 @@ using System.Linq.Expressions;
 namespace Catalog.Application.Business.UseCase;
 
 /// <summary>
-/// Use case for managing custom field groups.
+/// Implementation of the custom field group use case, providing methods to manage custom field groups.
 /// </summary>
 internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
 {
-    public async Task<(CustomFieldGroup[] list, long totalCount)> GetListIncludingCustomFieldsAsync(CustomFieldGroupFilter filter, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<(CustomFieldGroup[] list, long totalCount)> GetListAsync(CustomFieldGroupFilter filter, CancellationToken cancellationToken = default)
     {
         Expression<Func<CustomFieldGroup, bool>> filterExpression = x => true;
 
-        if (filter.GroupName != null && string.IsNullOrEmpty(filter.GroupName))
+        if (filter.GroupName != null && filter.GroupName.Length > 0)
         {
-            filterExpression = filterExpression.And(x => x.Name.Contains(filter.GroupName));
+            filterExpression = filterExpression.And(x => filter.GroupName.Contains(x.Name));
         }
 
-        if (filter.GroupType != null)
+        if (filter.GroupType != null && filter.GroupType.Length > 0)
         {
-            filterExpression = filterExpression.And(x => x.EntityType == filter.GroupType);
+            filterExpression = filterExpression.And(x => filter.GroupType.Contains((CustomFieldGroupEntityType)x.EntityType));
         }
 
         var totalCount = await Repository.GetCountAsync(expression: filterExpression, cancellationToken: cancellationToken);
@@ -38,12 +41,14 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         return (list.ToArray(), totalCount);
     }
 
+    /// <inheritdoc />
     public async Task<CustomFieldGroup?> GetSingleIncludingCustomFieldsAsync(long customFieldGroupId, CancellationToken cancellationToken = default)
         => await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
                                            includeExpressions: [x => x.CustomFields],
                                            cancellationToken: cancellationToken);
 
-    public async Task<CustomFieldGroup> CreateAsync(CustomFieldGroupDto customFieldGroup, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<CustomFieldGroup> CreateAsync(CustomFieldGroupRequest customFieldGroup, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(customFieldGroup);
         ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
@@ -76,7 +81,8 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         }
     }
 
-    public async Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupDto customFieldGroup, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupRequest customFieldGroup, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(customFieldGroup);
         ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
@@ -123,17 +129,26 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
         }
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteAsync(long customFieldGroupId, CancellationToken cancellationToken = default)
     {
         using var trans = await Repository.BeginTransactionAsync(cancellationToken);
         try
         {
             var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
-                                                               includeExpressions: [x => x.CustomFields],
+                                                               includeExpressions: [x => x.CustomFields, x => x.ProductCategoryCustomFieldGroups],
                                                                cancellationToken: cancellationToken);
             if (existedGroup == null)
             {
                 return false;
+            }
+
+            if (existedGroup.ProductCategoryCustomFieldGroups.Count > 0)
+            {
+                throw new RelationException($"Can't delete. because it is used as parent for {existedGroup.ProductCategoryCustomFieldGroups.Count} ProductCategories")
+                {
+                    RelationMessage = "Children ProductCategory"
+                };
             }
 
             UnitOfWork.CustomFieldRepository.DeleteRange([.. existedGroup.CustomFields]);
@@ -155,7 +170,7 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
     /// </summary>
     /// <param name="customFieldGroup">The custom field group DTO.</param>
     /// <param name="group">The custom field group entity.</param>
-    private void AddCustomFields(CustomFieldGroupDto customFieldGroup, CustomFieldGroup group)
+    private void AddCustomFields(CustomFieldGroupRequest customFieldGroup, CustomFieldGroup group)
     {
         var options = customFieldGroup.CustomFields.ToArray();
         for (int i = 0; i < options.Length; i++)
@@ -185,19 +200,19 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
     }
 
     /// <summary>
-    /// Converts a custom field DTO to a custom field entity.
+    /// Converts a custom field request DTO to a custom field entity.
     /// </summary>
-    /// <param name="dto">The custom field DTO.</param>
-    /// <param name="group">The custom field group entity.</param>
-    /// <param name="parentId">The parent ID.</param>
-    /// <returns>The custom field entity.</returns>
-    private static CustomField ToModel(CustomFieldDto dto, CustomFieldGroup group, long? parentId = null)
+    /// <param name="dto">The custom field request DTO containing the data to be converted.</param>
+    /// <param name="group">The custom field group entity to which the custom field belongs.</param>
+    /// <param name="parentId">The ID of the parent custom field, if applicable. Null if no parent exists.</param>
+    /// <returns>A new instance of the <see cref="CustomField"/> entity populated with the provided data.</returns>
+    private static CustomField ToModel(CustomFieldRequest dto, CustomFieldGroup group, long? parentId = null)
     {
         return new CustomField()
         {
             CustomFieldGroupId = group.Id,
             Name = dto.Name,
-            DataType = dto.DataType,
+            DataType = (byte)dto.DataType,
             InitialValue = dto.InitialValue,
             PlaceHolder = dto.PlaceHolder,
             HelpText = dto.HelpText,

@@ -14,7 +14,10 @@ internal static class PredicateExtensions
     /// <typeparam name="T">The type of the parameter.</typeparam>
     /// <param name="first">The first predicate.</param>
     /// <param name="second">The second predicate.</param>
-    /// <returns>The combined predicate.</returns>
+    /// <returns>
+    /// A new predicate that represents the logical AND of the two input predicates.
+    /// If either predicate is null, the other predicate is returned.
+    /// </returns>
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
     {
         if (first == null) return second;
@@ -38,7 +41,10 @@ internal static class PredicateExtensions
     /// <typeparam name="T">The type of the parameter.</typeparam>
     /// <param name="first">The first predicate.</param>
     /// <param name="second">The second predicate.</param>
-    /// <returns>The combined predicate.</returns>
+    /// <returns>
+    /// A new predicate that represents the logical OR of the two input predicates.
+    /// If either predicate is null, the other predicate is returned.
+    /// </returns>
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
     {
         if (first == null) return second;
@@ -56,11 +62,21 @@ internal static class PredicateExtensions
         return Expression.Lambda<Func<T, bool>>(body, parameter);
     }
 
+    /// <summary>
+    /// A visitor that replaces occurrences of one expression with another.
+    /// </summary>
     private class ReplaceExpressionVisitor(Expression oldValue, Expression newValue) : ExpressionVisitor
     {
         private readonly Expression _oldValue = oldValue;
         private readonly Expression _newValue = newValue;
 
+        /// <summary>
+        /// Visits the given expression and replaces occurrences of the old expression with the new expression.
+        /// </summary>
+        /// <param name="node">The expression to visit.</param>
+        /// <returns>
+        /// The modified expression if the old expression is found; otherwise, the original expression.
+        /// </returns>
         [return: NotNullIfNotNull(nameof(node))]
         public override Expression? Visit(Expression? node)
         {

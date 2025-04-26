@@ -1,4 +1,4 @@
-﻿using Catalog.Application.Model.Mappers;
+﻿using Catalog.Application.Models.Mappers;
 
 namespace Catalog.Application.Business.UseCase;
 

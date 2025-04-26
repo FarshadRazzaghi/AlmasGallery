@@ -1,34 +1,44 @@
-﻿using Catalog.Common;
-using System.Data;
+﻿using System.Data;
+using System.Reflection;
 
 namespace Catalog.Application.Business.UseCase;
 
-internal partial class SharedUseCase : ISharedUseCase
+/// <summary>
+/// Shared use case class providing common functionality across the application.
+/// </summary>
+internal partial class SharedUseCase() : ISharedUseCase
 {
-    public Dictionary<string, EnumAsList<byte>[]> GetEnumsAsList()
+    /// <summary>
+    /// An array of valid namespaces to filter project types.
+    /// </summary>
+    private readonly string[] ValidNamespaces = ["Catalog.Common", "Catalog.Application.Models"];
+
+    /// <inheritdoc />
+    public Dictionary<string, Dictionary<string, byte>> GetEnums()
     {
-        var toRet = new Dictionary<string, EnumAsList<byte>[]>();
+        var toRet = new Dictionary<string, Dictionary<string, byte>>();
+        var enumTypes = GetProjectTypes().Where(t => t.IsEnum).ToArray();
 
-        var customFieldGroupTypes = Enum.GetValues(typeof(CustomFieldGroupType))
-                                        .Cast<CustomFieldGroupType>()
-                                        .Select(x => new EnumAsList<byte>
-                                        {
-                                            Name = x.ToString(),
-                                            Value = (byte)x
-                                        })
-                                        .ToArray();
-        toRet.Add(nameof(CustomFieldGroupType), customFieldGroupTypes);
+        for (int i = 0; i < enumTypes.Length; i++)
+        {
+            var enumValues = Enum.GetValues(enumTypes[i])
+                                 .Cast<Enum>()
+                                 .ToDictionary(x => x.ToString(), x => Convert.ToByte(x));
 
-        var customFieldGroupLocationTypes = Enum.GetValues(typeof(CustomFieldGroupLocationType))
-                                                .Cast<CustomFieldGroupLocationType>()
-                                                .Select(x => new EnumAsList<byte>
-                                                {
-                                                    Name = x.ToString(),
-                                                    Value = (byte)x
-                                                })
-                                                .ToArray();
-        toRet.Add(nameof(CustomFieldGroupLocationType), customFieldGroupLocationTypes);
+            toRet.Add(enumTypes[i].Name, enumValues);
+        }
 
         return toRet;
     }
+
+    /// <summary>
+    /// Retrieves all types from the assemblies in the current application domain
+    /// that belong to the specified valid namespaces.
+    /// </summary>
+    /// <returns>An array of types from the valid namespaces.</returns>
+    private Type[] GetProjectTypes()
+        => AppDomain.CurrentDomain.GetAssemblies()
+                                  .Where(assembly => !string.IsNullOrEmpty(assembly.FullName) && ValidNamespaces.Any(ns => assembly.FullName.Contains(ns)))
+                                  .SelectMany(x => x.GetTypes())
+                                  .ToArray();
 }

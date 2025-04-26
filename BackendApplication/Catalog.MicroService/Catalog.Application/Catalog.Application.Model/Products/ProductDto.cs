@@ -51,4 +51,14 @@ public class ProductDto
     /// Gets or sets the ID of the collection to which the product belongs.
     /// </summary>
     public long? CollectionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets an array of strings associated with the product.
+    /// </summary>
+    public string[] StringArray { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets an array of long values associated with the product.
+    /// </summary>
+    public long[] LongArray { get; set; } = [];
 }

@@ -1,9 +1,14 @@
 ﻿namespace Catalog.Infrastructure.Repository;
 
+/// <summary>
+/// Implementation of the Unit of Work pattern, providing methods to manage database transactions and changes.
+/// </summary>
 internal partial class UnitOfWork : IUnitOfWork, IDisposable
 {
+    /// <inheritdoc />
     public AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
 
+    /// <inheritdoc />
     public virtual void DiscardChanges()
     {
         try
@@ -16,6 +21,7 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public virtual void SaveChanges()
     {
         try
@@ -28,6 +34,7 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public virtual async Task SaveChangesAsync()
     {
         try
@@ -43,8 +50,15 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
         }
     }
 
+    /// <summary>
+    /// Disposes the resources used by the unit of work.
+    /// </summary>
     public virtual void Dispose() => Dispose(true);
 
+    /// <summary>
+    /// Disposes the resources used by the unit of work.
+    /// </summary>
+    /// <param name="disposing">Indicates whether the method is called from Dispose.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!disposing)

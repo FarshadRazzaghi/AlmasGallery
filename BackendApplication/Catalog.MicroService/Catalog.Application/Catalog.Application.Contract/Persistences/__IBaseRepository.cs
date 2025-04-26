@@ -12,69 +12,69 @@ public partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     /// <summary>
     /// Begins a new database transaction.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The database transaction.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the database transaction.</returns>
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Gets the count of entities matching the specified expression.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The count of entities.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the count of entities.</returns>
     Task<long> GetCountAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Gets a single entity matching the specified expression.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The entity if found; otherwise, null.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the entity if found; otherwise, null.</returns>
     Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Gets a single entity matching the specified expression, including related entities.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <param name="includeExpressions">The expressions to include related entities.</param>
-    /// <returns>The entity if found; otherwise, null.</returns>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the entity if found; otherwise, null.</returns>
     Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default!, params Expression<Func<TEntity, object>>[] includeExpressions);
 
     /// <summary>
     /// Gets a list of entities without tracking changes.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A collection of entities.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of entities.</returns>
     Task<ICollection<TEntity>> GetListAsNoTrackingAsync(CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Gets a paginated list of entities without tracking changes.
     /// </summary>
-    /// <param name="page">The page number.</param>
-    /// <param name="pageSize">The page size.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A collection of entities.</returns>
+    /// <param name="page">The page number to retrieve. Defaults to 1.</param>
+    /// <param name="pageSize">The number of items per page. Defaults to 100.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of entities.</returns>
     Task<ICollection<TEntity>> GetListAsNoTrackingAsync(int page = 1, int pageSize = 100, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a list of entities matching the specified expression without tracking changes, including related entities.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <param name="includeExpressions">The expressions to include related entities.</param>
-    /// <returns>A collection of entities.</returns>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of entities.</returns>
     Task<ICollection<TEntity>> GetListAsNoTrackingAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeExpressions);
 
     /// <summary>
     /// Gets a paginated list of entities matching the specified expression without tracking changes, including related entities.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
-    /// <param name="page">The page number.</param>
-    /// <param name="pageSize">The page size.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="page">The page number to retrieve. Defaults to 1.</param>
+    /// <param name="pageSize">The number of items per page. Defaults to 100.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <param name="includeExpressions">The expressions to include related entities.</param>
-    /// <returns>A collection of entities.</returns>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of entities.</returns>
     Task<ICollection<TEntity>> GetListAsNoTrackingAsync(Expression<Func<TEntity, bool>> expression, int page = 1, int pageSize = 100, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeExpressions);
 
     /// <summary>
@@ -104,7 +104,7 @@ public partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     /// <summary>
     /// Saves changes asynchronously.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     Task SaveChangesAsync(CancellationToken cancellationToken = default!);
 }

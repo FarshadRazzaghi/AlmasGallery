@@ -9,24 +9,24 @@ public partial interface IBaseUseCase<TEntity> where TEntity : class, IBaseEntit
     /// <summary>
     /// Gets a list of entities.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>An array of entities.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an array of entities.</returns>
     Task<TEntity[]> GetListAsync(CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Gets a paginated list of entities.
     /// </summary>
-    /// <param name="page">The page number.</param>
-    /// <param name="pageSize">The page size.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>An array of entities.</returns>
+    /// <param name="page">The page number to retrieve. Defaults to 1.</param>
+    /// <param name="pageSize">The number of items per page. Defaults to 100.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an array of entities.</returns>
     Task<TEntity[]> GetListAsync(int page = 1, int pageSize = 100, CancellationToken cancellationToken = default!);
 
     /// <summary>
-    /// Gets an entity by ID.
+    /// Gets an entity by its unique identifier.
     /// </summary>
-    /// <param name="Id">The ID of the entity.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The entity if found; otherwise, null.</returns>
+    /// <param name="Id">The unique identifier of the entity.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the entity if found; otherwise, null.</returns>
     Task<TEntity?> GetByIdAsync(long Id, CancellationToken cancellationToken = default!);
 }

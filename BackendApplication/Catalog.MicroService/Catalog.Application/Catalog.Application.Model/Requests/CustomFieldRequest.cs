@@ -1,16 +1,23 @@
-﻿using FluentValidation;
+﻿using Catalog.Common;
+using FluentValidation;
 
-namespace Catalog.Application.Models;
+namespace Catalog.Application.Models.Requests;
 
 /// <summary>
-/// Validator for the <see cref="CustomFieldDto"/> class.
+/// Validator for the <see cref="CustomFieldRequest"/> class.
+/// Ensures that the custom field request properties meet the required validation rules.
 /// </summary>
-public class CustomFieldDtoValidator : AbstractValidator<CustomFieldDto>
+public class CustomFieldRequestValidator : AbstractValidator<CustomFieldRequest>
 {
-    public CustomFieldDtoValidator()
+    public CustomFieldRequestValidator()
     {
+        // Ensures the name is not null or empty.
         RuleFor(x => x.Name).NotNull().NotEmpty();
+
+        // Ensures the data type is not null or empty.
         RuleFor(x => x.DataType).NotNull().NotEmpty();
+
+        // Ensures the unique identifier is not null or empty.
         RuleFor(x => x.UniqueId).NotNull().NotEmpty();
     }
 }
@@ -18,7 +25,7 @@ public class CustomFieldDtoValidator : AbstractValidator<CustomFieldDto>
 /// <summary>
 /// Represents a custom field data transfer object.
 /// </summary>
-public class CustomFieldDto
+public class CustomFieldRequest
 {
     /// <summary>
     /// Gets or sets the ID of the custom field.
@@ -41,7 +48,7 @@ public class CustomFieldDto
     /// <summary>
     /// Gets or sets the data type of the custom field.
     /// </summary>
-    public byte DataType { get; set; }
+    public CustomFieldGroupEntityType DataType { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the custom field is active.

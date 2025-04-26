@@ -1,18 +1,17 @@
-﻿using Catalog.Application.Models;
-using Catalog.Domain.Models;
+﻿using Catalog.Domain.Models;
 
-namespace Catalog.Application.Model.Mappers;
+namespace Catalog.Application.Models.Mappers;
 
-/// <summary>  
-/// Provides extension methods for mapping between ProductDto and Product entities.  
+/// <summary>
+/// Provides extension methods for mapping between product-related DTOs and domain models.
 /// </summary>
 public static class ProductMapper
 {
-    /// <summary>  
-    /// Maps a ProductDto to a Product entity.  
-    /// </summary>  
-    /// <param name="product">The ProductDto to map.</param>  
-    /// <returns>The mapped Product entity.</returns>  
+    /// <summary>
+    /// Maps a <see cref="ProductDto"/> to a <see cref="Product"/> domain model.
+    /// </summary>
+    /// <param name="product">The product DTO to map from.</param>
+    /// <returns>A <see cref="Product"/> domain model with properties mapped from the DTO.</returns>
     public static Product ToModel(this ProductDto product)
     {
         var model = new Product()

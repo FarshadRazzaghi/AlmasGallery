@@ -8,7 +8,15 @@ public enum EntityStatus : byte
     Modifying = 4,
 }
 
-public enum CustomFieldGroupType : byte
+public enum CustomFieldDataType
+{
+    Number = 1,
+    String = 2,
+    Date = 3,
+    boolean = 4,
+}
+
+public enum CustomFieldGroupEntityType : byte
 {
     Product = 1,
 }
