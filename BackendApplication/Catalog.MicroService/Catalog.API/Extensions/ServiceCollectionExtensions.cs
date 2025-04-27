@@ -22,8 +22,13 @@ public static class ServiceCollectionExtensions
                             {
                                 //options.CreateSchemaReferenceId = (type) => type.Type.IsEnum ? null : OpenApiOptions.CreateDefaultSchemaReferenceId(type);
                                 options.ShouldInclude = (description) => description.GroupName == null || description.GroupName == options.DocumentName;
-                                options.AddDocumentTransformer<OpenApiSecuritySchemeTransformer>();
+
+                                options.AddSchemaTransformer<OpenApiSchemaTransformer>();
+
+                                options.AddDocumentTransformer<OpenApiDocumentSecurityTransformer>();
                             });
+
+
         return services;
     }
 

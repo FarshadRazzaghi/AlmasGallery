@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Catalog.API.Helpers;
 
-public class OpenApiSecuritySchemeTransformer : IOpenApiDocumentTransformer
+public class OpenApiDocumentSecurityTransformer : IOpenApiDocumentTransformer
 {
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {

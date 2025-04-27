@@ -1,4 +1,6 @@
-﻿namespace Catalog.Common;
+﻿using System.Text.Json.Serialization;
+
+namespace Catalog.Common;
 
 public enum EntityStatus : byte
 {
@@ -8,7 +10,7 @@ public enum EntityStatus : byte
     Modifying = 4,
 }
 
-public enum CustomFieldDataType
+public enum CustomFieldDataType : byte
 {
     Number = 1,
     String = 2,

@@ -4,6 +4,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 		<OpenApiDocumentsDirectory>.</OpenApiDocumentsDirectory>
 		<OpenApiGenerateDocumentsOptions>--file-name open-api --document-name v1</OpenApiGenerateDocumentsOptions>
 	</PropertyGroup>

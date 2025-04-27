@@ -845,13 +845,54 @@
   "components": {
     "schemas": {
       "CustomFieldDataType": {
-        "type": "integer"
+        "enum": [
+          {
+            "name": "Number",
+            "value": 1
+          },
+          {
+            "name": "String",
+            "value": 2
+          },
+          {
+            "name": "Date",
+            "value": 3
+          },
+          {
+            "name": "boolean",
+            "value": 4
+          }
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "CustomFieldGroupEntityType": {
-        "type": "integer"
+        "enum": [
+          {
+            "name": "Product",
+            "value": 1
+          }
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "CustomFieldGroupLocationType": {
-        "type": "integer"
+        "enum": [
+          {
+            "name": "PageSection",
+            "value": 1
+          },
+          {
+            "name": "PricingSection",
+            "value": 2
+          },
+          {
+            "name": "DescriptionSection",
+            "value": 3
+          }
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "CustomFieldGroupRequest": {
         "type": "object",
