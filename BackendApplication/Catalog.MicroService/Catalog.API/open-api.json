@@ -898,7 +898,8 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group.\n            This property is required and cannot be null or empty."
           },
           "entityType": {
             "$ref": "#/components/schemas/CustomFieldGroupEntityType"
@@ -909,7 +910,8 @@
               "$ref": "#/components/schemas/CustomFieldRequest"
             }
           }
-        }
+        },
+        "description": "Represents a custom field group data transfer object."
       },
       "CustomFieldGroupResponse": {
         "type": "object",
@@ -919,7 +921,8 @@
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group."
           },
           "entityType": {
             "$ref": "#/components/schemas/CustomFieldGroupEntityType"
@@ -930,115 +933,142 @@
               "$ref": "#/components/schemas/CustomFieldResponse"
             }
           }
-        }
+        },
+        "description": "Represents a response object for a custom field group."
       },
       "CustomFieldRequest": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
+            "description": "Gets or sets the ID of the custom field.\n            This property is required and cannot be null or empty.",
             "format": "int64"
           },
           "uniqueId": {
             "type": "string",
+            "description": "Gets or sets the unique identifier of the custom field.\n            This property is required and cannot be null or empty.",
             "format": "uuid"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the custom field.\n            This property is required and cannot be null or empty."
           },
           "dataType": {
             "$ref": "#/components/schemas/CustomFieldGroupEntityType"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is active."
           },
           "isRequired": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is required."
           },
           "helpText": {
             "type": "string",
+            "description": "Gets or sets the help text for the custom field.",
             "nullable": true
           },
           "placeHolder": {
             "type": "string",
+            "description": "Gets or sets the placeholder text for the custom field.",
             "nullable": true
           },
           "initialValue": {
             "type": "string",
+            "description": "Gets or sets the initial value of the custom field.",
             "nullable": true
           },
           "validation": {
             "type": "string",
+            "description": "Gets or sets the validation rules for the custom field.",
             "nullable": true
           },
           "parentUniqueId": {
             "type": "string",
+            "description": "Gets or sets the unique identifier of the parent custom field.",
             "format": "uuid",
             "nullable": true
           },
           "parentCondition": {
             "type": "string",
+            "description": "Gets or sets the parent condition for the custom field.",
             "nullable": true
           }
-        }
+        },
+        "description": "Represents a custom field data transfer object."
       },
       "CustomFieldResponse": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
+            "description": "Gets or sets the ID of the custom field.",
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the custom field."
           },
           "dataType": {
             "$ref": "#/components/schemas/CustomFieldDataType"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is active."
           },
           "isRequired": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is required."
           },
           "helpText": {
             "type": "string",
+            "description": "Gets or sets the help text for the custom field.",
             "nullable": true
           },
           "placeHolder": {
             "type": "string",
+            "description": "Gets or sets the placeholder text for the custom field.",
             "nullable": true
           },
           "initialValue": {
             "type": "string",
+            "description": "Gets or sets the initial value of the custom field.",
             "nullable": true
           },
           "validation": {
             "type": "string",
+            "description": "Gets or sets the validation rules for the custom field.",
             "nullable": true
           },
           "parentId": {
             "type": "integer",
+            "description": "Gets or sets the ID of the parent custom field.",
             "format": "int64",
             "nullable": true
           },
           "parentCondition": {
             "type": "string",
+            "description": "Gets or sets the parent condition for the custom field.",
             "nullable": true
           }
-        }
+        },
+        "description": "Represents a response object for a custom field."
       },
       "DropdownResponse": {
         "type": "object",
         "properties": {
           "key": {
             "type": "integer",
+            "description": "Gets or sets the key of the dropdown item.",
             "format": "int64"
           },
           "value": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the value of the dropdown item."
           }
-        }
+        },
+        "description": "Represents a response object for a dropdown item."
       },
       "ProblemDetails": {
         "type": "object",
@@ -1064,26 +1094,31 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "description": "A machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807."
       },
       "ProductCategoryCustomFieldGroupRequest": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
+            "description": "Gets or sets the ID of the product category custom field group.",
             "format": "int64"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field group is active."
           },
           "customFieldGroupId": {
             "type": "integer",
+            "description": "Gets or sets the ID of the custom field group.",
             "format": "int64"
           },
           "customFieldGroupLocation": {
             "$ref": "#/components/schemas/CustomFieldGroupLocationType"
           }
-        }
+        },
+        "description": "Represents a product category custom field group data transfer object."
       },
       "ProductCategoryCustomFieldGroupResponse": {
         "type": "object",
@@ -1092,14 +1127,16 @@
             "$ref": "#/components/schemas/CustomFieldGroupLocationType"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field group is active."
           },
           "id": {
             "type": "integer",
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group."
           },
           "entityType": {
             "$ref": "#/components/schemas/CustomFieldGroupEntityType"
@@ -1110,19 +1147,23 @@
               "$ref": "#/components/schemas/CustomFieldResponse"
             }
           }
-        }
+        },
+        "description": "Represents a response object for a product category custom field group."
       },
       "ProductCategoryRequest": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the product category.\n            This property is required and cannot be null or empty."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the description of the product category."
           },
           "parentId": {
             "type": "integer",
+            "description": "Gets or sets the ID of the parent product category.",
             "format": "int64",
             "nullable": true
           },
@@ -1132,24 +1173,29 @@
               "$ref": "#/components/schemas/ProductCategoryCustomFieldGroupRequest"
             }
           }
-        }
+        },
+        "description": "Represents a product category data transfer object."
       },
       "ProductCategoryResponse": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
+            "description": "Gets or sets the ID of the product category.",
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Gets or sets the name of the product category."
           },
           "description": {
             "type": "string",
+            "description": "Gets or sets the description of the product category.",
             "nullable": true
           },
           "parentId": {
             "type": "integer",
+            "description": "Gets or sets the ID of the parent product category.",
             "format": "int64",
             "nullable": true
           },
@@ -1159,7 +1205,8 @@
               "$ref": "#/components/schemas/ProductCategoryCustomFieldGroupResponse"
             }
           }
-        }
+        },
+        "description": "Represents a response object for a product category."
       }
     },
     "headers": {

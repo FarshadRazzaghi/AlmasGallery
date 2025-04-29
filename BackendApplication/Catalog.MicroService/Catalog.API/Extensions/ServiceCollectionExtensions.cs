@@ -1,5 +1,5 @@
 ﻿using Catalog.API.Helpers;
-using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.API.Extensions;
 
