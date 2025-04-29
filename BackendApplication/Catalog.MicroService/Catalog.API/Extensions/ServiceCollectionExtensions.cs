@@ -1,5 +1,7 @@
 ﻿using Catalog.API.Helpers;
-using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace Catalog.API.Extensions;
 
@@ -20,11 +22,9 @@ public static class ServiceCollectionExtensions
         services.AddOpenApi("v1",
                             options =>
                             {
-                                //options.CreateSchemaReferenceId = (type) => type.Type.IsEnum ? null : OpenApiOptions.CreateDefaultSchemaReferenceId(type);
                                 options.ShouldInclude = (description) => description.GroupName == null || description.GroupName == options.DocumentName;
 
                                 options.AddSchemaTransformer<OpenApiSchemaTransformer>();
-
                                 options.AddDocumentTransformer<OpenApiDocumentSecurityTransformer>();
                             });
 

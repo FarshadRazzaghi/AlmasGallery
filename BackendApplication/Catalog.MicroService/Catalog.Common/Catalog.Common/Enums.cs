@@ -1,7 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
 
 namespace Catalog.Common;
 
+/// <summary>
+/// Represents the status of an entity.
+/// </summary>
+[Description("Entity Status")]
 public enum EntityStatus : byte
 {
     Active = 1,
@@ -10,6 +14,10 @@ public enum EntityStatus : byte
     Modifying = 4,
 }
 
+/// <summary>
+/// Represents the data type of a custom field.
+/// </summary>
+[Description("Custom Field Data Type")]
 public enum CustomFieldDataType : byte
 {
     Number = 1,
@@ -18,11 +26,17 @@ public enum CustomFieldDataType : byte
     boolean = 4,
 }
 
+/// <summary>
+/// Represents the entity type of a custom field group.
+/// </summary>
 public enum CustomFieldGroupEntityType : byte
 {
     Product = 1,
 }
 
+/// <summary>
+/// Represents the location type of a custom field group.
+/// </summary>
 public enum CustomFieldGroupLocationType : byte
 {
     PageSection = 1,

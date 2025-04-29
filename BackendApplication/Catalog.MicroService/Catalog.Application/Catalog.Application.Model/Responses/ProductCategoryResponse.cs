@@ -1,4 +1,6 @@
-﻿namespace Catalog.Application.Models.Responses;
+﻿using System.ComponentModel;
+
+namespace Catalog.Application.Models.Responses;
 
 /// <summary>
 /// Represents a response object for a product category.

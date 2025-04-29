@@ -7,6 +7,9 @@ namespace Catalog.Application.Models.Responses;
 /// </summary>
 public class CustomFieldGroupResponse
 {
+    /// <summary>
+    /// Gets or sets the ID of the custom field group.
+    /// </summary>
     public long Id { get; set; }
 
     /// <summary>

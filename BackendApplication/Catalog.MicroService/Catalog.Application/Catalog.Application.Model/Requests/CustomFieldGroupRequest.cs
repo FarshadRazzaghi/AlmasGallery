@@ -31,7 +31,6 @@ public class CustomFieldGroupRequest
     /// Gets or sets the name of the custom field group.
     /// This property is required and cannot be null or empty.
     /// </summary>
-    /// <example>ProductName</example>
     public string Name { get; set; } = null!;
 
     /// <summary>
