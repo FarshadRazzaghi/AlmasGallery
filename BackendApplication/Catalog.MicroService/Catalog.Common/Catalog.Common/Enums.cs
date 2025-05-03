@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace Catalog.Common;
+﻿namespace Catalog.Common;
 
 /// <summary>
 /// Represents the status of an entity.
 /// </summary>
-[Description("Entity Status")]
 public enum EntityStatus : byte
 {
     Active = 1,
@@ -17,13 +14,12 @@ public enum EntityStatus : byte
 /// <summary>
 /// Represents the data type of a custom field.
 /// </summary>
-[Description("Custom Field Data Type")]
 public enum CustomFieldDataType : byte
 {
     Number = 1,
     String = 2,
     Date = 3,
-    boolean = 4,
+    Boolean = 4,
 }
 
 /// <summary>

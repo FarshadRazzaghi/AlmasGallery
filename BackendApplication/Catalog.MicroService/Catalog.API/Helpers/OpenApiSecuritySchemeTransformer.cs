@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.OpenApi;
+﻿using Catalog.Common.Extensions;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
 namespace Catalog.API.Helpers;
@@ -47,6 +48,25 @@ public class OpenApiDocumentSecurityTransformer : IOpenApiDocumentTransformer
             Headers = new Dictionary<string, OpenApiHeader> { { "Authorization", new OpenApiHeader { Required = true } } }
         };
 
+        LowercaseParameters(document);
+
         return Task.CompletedTask;
+    }
+
+    private static void LowercaseParameters(OpenApiDocument openApiDocument)
+    {
+        foreach (var path in openApiDocument.Paths)
+        {
+            foreach (var operation in path.Value.Operations)
+            {
+                if (operation.Value.Parameters != null)
+                {
+                    foreach (var parameter in operation.Value.Parameters)
+                    {
+                        parameter.Name = parameter.Name.LowercaseFirstChar();
+                    }
+                }
+            }
+        }
     }
 }

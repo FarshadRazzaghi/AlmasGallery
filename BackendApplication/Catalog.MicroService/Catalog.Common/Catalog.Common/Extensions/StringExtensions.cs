@@ -20,4 +20,13 @@ public static partial class StringExtensions
 
         return camelCase;
     }
+
+    public static string LowercaseFirstChar(this string input)
+    {
+        if (!string.IsNullOrEmpty(input))
+        {
+            return char.ToLower(input[0]) + input[1..];
+        }
+        return input;
+    }
 }

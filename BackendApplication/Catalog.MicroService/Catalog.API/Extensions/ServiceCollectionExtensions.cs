@@ -1,7 +1,4 @@
 ﻿using Catalog.API.Helpers;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using System.Reflection;
-using System.Xml.Linq;
 
 namespace Catalog.API.Extensions;
 
