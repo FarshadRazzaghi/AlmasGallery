@@ -124,7 +124,16 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
         ArgumentNullException.ThrowIfNull(entity);
         entity.DateStamp = DateTime.UtcNow;
 
-        DbSet.Entry(entity).State = EntityState.Modified;
+        var existingEntity = DbSet.Find(entity.Id);
+        if (existingEntity != null)
+        {
+            DbSet.Entry(existingEntity).CurrentValues.SetValues(entity);
+        }
+        else
+        {
+            DbSet.Entry(entity).State = EntityState.Modified;
+        }
+
         SaveChanges();
     }
 

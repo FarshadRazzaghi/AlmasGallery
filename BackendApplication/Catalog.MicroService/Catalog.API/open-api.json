@@ -10,11 +10,6 @@
     },
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://127.0.0.100:5050/"
-    }
-  ],
   "paths": {
     "/api/v1/custom-field-groups": {
       "get": {
@@ -948,7 +943,7 @@
             "description": "Gets or sets the name of the custom field.\n            This property is required and cannot be null or empty."
           },
           "dataType": {
-            "$ref": "#/components/schemas/CustomFieldGroupEntityType"
+            "$ref": "#/components/schemas/CustomFieldDataType"
           },
           "isActive": {
             "type": "boolean",

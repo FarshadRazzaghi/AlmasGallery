@@ -174,7 +174,7 @@ public static class Methods
     public static async Task<IResult> AddCustomFieldGroupAsync(CustomFieldGroupRequest customFieldGroup, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!)
     {
         var insertedModel = await customFieldGroupService.CreateAsync(customFieldGroup, cancellation);
-        return TypedResults.CreatedAtRoute("CustomFieldGroupGetById", new { customFieldGroupId = insertedModel.Id });
+        return TypedResults.CreatedAtRoute("GetCustomFieldGroupById", new { customFieldGroupId = insertedModel.Id });
     }
 
     /// <summary>
@@ -216,7 +216,7 @@ public static class Methods
     /// <param name="result">The array of <see cref="CustomFieldGroup"/> entities to convert.</param>
     /// <returns>An array of <see cref="CustomFieldGroupResponse"/> objects representing the converted entities.</returns>
     private static CustomFieldGroupResponse[] AsObjectResult(CustomFieldGroup[] result)
-    => [.. result
+        => [.. result
               .Select(r => new CustomFieldGroupResponse
               {
                   Id = r.Id,
@@ -235,7 +235,7 @@ public static class Methods
                                           DataType = (Common.CustomFieldDataType)cf.DataType,
                                           IsActive = cf.IsActive,
                                           ParentId = cf.ParentId,
-                                          ParentCondition = cf.ParentCondition,
+                                          ParentCondition = cf.ParentCondition
                                       })],
               })];
 

@@ -48,7 +48,7 @@ public class CustomFieldRequest
     /// <summary>
     /// Gets or sets the data type of the custom field.
     /// </summary>
-    public CustomFieldGroupEntityType DataType { get; set; }
+    public CustomFieldDataType DataType { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the custom field is active.

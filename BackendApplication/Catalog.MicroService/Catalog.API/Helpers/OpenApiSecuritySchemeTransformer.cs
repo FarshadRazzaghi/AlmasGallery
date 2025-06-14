@@ -17,7 +17,7 @@ public class OpenApiDocumentSecurityTransformer : IOpenApiDocumentTransformer
             Url = new Uri("https://github.com/FarshadRazzaghi")
         };
 
-        document.Servers.Add(new OpenApiServer() { Url = "https://127.0.0.100:5050/" });
+        //document.Servers.Add(new OpenApiServer() { Url = "https://127.0.0.100:5050/" });
 
         var securitySchema = new OpenApiSecurityScheme
         {

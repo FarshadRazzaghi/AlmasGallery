@@ -29,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\NEW\AlmasGallery.New\almasgallery.new.client\almasgallery.new.esproj" />
 		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
 		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Model\Catalog.Application.Model.csproj" />
 		<ProjectReference Include="..\Catalog.Common\Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj" />
