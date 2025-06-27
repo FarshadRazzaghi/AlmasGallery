@@ -10,7 +10,7 @@ internal partial class ProductUseCase : IProductUseCase
         await Task.Run(() =>
         {
             model.CreatedAt = DateTime.UtcNow;
-            Repository.Create(model);
+            Repository.Add(model);
             ArgumentNullException.ThrowIfNull(model);
         }, cancellationToken);
 
@@ -29,7 +29,7 @@ internal partial class ProductUseCase : IProductUseCase
         await Task.Run(() =>
         {
             model.ModifiedAt = DateTime.UtcNow;
-            Repository.Update(model);
+            Repository.Modify(model);
         }, cancellationToken);
 
         return model;

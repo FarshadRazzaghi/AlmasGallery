@@ -1,12 +1,55 @@
-﻿namespace Catalog.Infrastructure.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Catalog.Infrastructure.Repository;
 
 /// <summary>
 /// Implementation of the Unit of Work pattern, providing methods to manage database transactions and changes.
 /// </summary>
 internal partial class UnitOfWork : IUnitOfWork, IDisposable
 {
+    private IDbContextTransaction? _transaction;
+
     /// <inheritdoc />
     public AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public virtual async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(Context);
+
+        if (_transaction != null)
+        {
+            return _transaction;
+        }
+
+        _transaction = await Context.Database.BeginTransactionAsync(cancellationToken);
+        return _transaction;
+    }
+
+    /// <inheritdoc />
+    public virtual async Task CommitAsync(CancellationToken cancellationToken = default)
+    {
+        if (_transaction == null)
+        {
+            throw new InvalidOperationException("No transaction started.");
+        }
+
+        await _transaction.CommitAsync(cancellationToken);
+        await DisposeTransactionAsync();
+    }
+
+    /// <inheritdoc />
+    public virtual async Task RollbackAsync(CancellationToken cancellationToken = default)
+    {
+        if (_transaction == null)
+        {
+            throw new InvalidOperationException("No transaction started.");
+        }
+
+        await _transaction.RollbackAsync(cancellationToken);
+        await DisposeTransactionAsync();
+    }
 
     /// <inheritdoc />
     public virtual void DiscardChanges()
@@ -35,13 +78,13 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
     }
 
     /// <inheritdoc />
-    public virtual async Task SaveChangesAsync()
+    public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             if (Context != null)
             {
-                await Context.SaveChangesAsync();
+                await Context.SaveChangesAsync(cancellationToken);
             }
         }
         catch (Exception)
@@ -67,5 +110,17 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
         }
 
         Context?.Dispose();
+    }
+
+    /// <summary>
+    /// Disposes the current database transaction asynchronously if it exists.
+    /// </summary>
+    private async Task DisposeTransactionAsync()
+    {
+        if (_transaction != null)
+        {
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
     }
 }

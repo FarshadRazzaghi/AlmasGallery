@@ -34,6 +34,32 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
         => Context.Database.BeginTransactionAsync(cancellationToken);
 
     /// <inheritdoc />
+    public virtual IQueryable<TEntity> GetQueryableAsNoTracking(Expression<Func<TEntity, bool>>? expression = null)
+    {
+        var query = DbSet.AsQueryable();
+
+        if (expression != null)
+        {
+            query = query.Where(expression);
+        }
+
+        return query.AsNoTracking();
+    }
+
+    /// <inheritdoc />
+    public virtual IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression = null)
+    {
+        var query = DbSet.AsQueryable();
+
+        if (expression != null)
+        {
+            query = query.Where(expression);
+        }
+
+        return query;
+    }
+
+    /// <inheritdoc />
     public virtual async Task<ICollection<TEntity>> GetListAsNoTrackingAsync(CancellationToken cancellationToken = default)
         => await DbSet.AsNoTracking().ToListAsync(cancellationToken);
 
@@ -119,6 +145,15 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     }
 
     /// <inheritdoc />
+    public virtual void Add(TEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        entity.DateStamp = DateTime.UtcNow;
+        entity.Status = (byte)Common.EntityStatus.Active;
+        DbSet.Add(entity);
+    }
+
+    /// <inheritdoc />
     public virtual void Update(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -138,12 +173,28 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     }
 
     /// <inheritdoc />
+    public virtual void Modify(TEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        entity.DateStamp = DateTime.UtcNow;
+        DbSet.Attach(entity);
+        DbSet.Entry(entity).State = EntityState.Modified;
+    }
+
+    /// <inheritdoc />
     public virtual void Delete(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
         DbSet.Remove(entity);
         SaveChanges();
+    }
+
+    /// <inheritdoc />
+    public virtual void Remove(TEntity entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        DbSet.Remove(entity);
     }
 
     /// <inheritdoc />

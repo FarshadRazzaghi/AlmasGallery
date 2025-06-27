@@ -14,6 +14,10 @@ namespace Catalog.API.Endpoints;
 /// <description>Retrieve a list of all custom field groups based on the provided filter, including their associated details.</description>
 /// </item>
 /// <item>
+/// <term>GET api/v1/custom-field-groups/dropdown</term>
+/// <description>Retrieve custom field groups formatted as key-value pairs for use in dropdown options.</description>
+/// </item>
+/// <item>
 /// <term>GET api/v1/custom-field-groups/product-groups/{productCategoryId}</term>
 /// <description>Retrieve a list of custom field groups associated with a specific product category, based on the provided filter, including their associated details.</description>
 /// </item>
@@ -44,14 +48,14 @@ public class CustomFieldGroupEndpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         var map = app.MapGroup("api/v1/custom-field-groups")
-                     .WithTags("Custom Field Groups")
+                     .WithTags("Custom Field Group")
                      .WithGroupName("v1")
                      .WithDescription("Endpoints for managing custom field groups, including retrieval, creation, updating, and deletion.")
                      .WithSummary("Custom Field Group Management")
                      .RequireAuthorization(AuthenticationType.Authentication)
                      .RequiredValidation();
 
-        map.MapGet("/", Methods.GetCustomFieldGroupListAsync)
+        map.MapGet("/", CustomFieldGroupMethods.GetCustomFieldGroupListAsync)
            .WithName("GetAllCustomFieldGroups")
            .WithSummary("Retrieve All Custom Field Groups")
            .WithDescription("Fetches a list of all custom field groups based on the provided filter, including their associated details.")
@@ -60,7 +64,15 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .ProducesProblem(StatusCodes.Status401Unauthorized)
            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        map.MapGet("/product-groups/{productCategoryId}/{activeOnly}", Methods.GetCustomFieldGroupListForProductCategoriesAsync)
+        map.MapGet("/dropdown", CustomFieldGroupMethods.GetCustomFieldGroupListForDropdownAsync)
+           .WithName("GetCustomFieldGroupsForDropdown")
+           .WithSummary("Retrieve Custom Field Groups for Dropdown")
+           .WithDescription("Fetches a list of custom field groups formatted as key-value pairs for use in dropdown options.")
+           .Produces<DropdownResponse[]>(StatusCodes.Status200OK)
+           .ProducesProblem(StatusCodes.Status401Unauthorized)
+           .ProducesProblem(StatusCodes.Status500InternalServerError);
+
+        map.MapGet("/product-groups/{productCategoryId}/{activeOnly}", CustomFieldGroupMethods.GetCustomFieldGroupListForProductCategoriesAsync)
            .WithName("GetCustomFieldGroupsForProductCategory")
            .WithSummary("Retrieve Custom Field Groups for a Product Category")
            .WithDescription("Fetches a list of custom field groups associated with a specific product category, based on the provided filter, including their associated details.")
@@ -69,7 +81,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .ProducesProblem(StatusCodes.Status401Unauthorized)
            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        map.MapGet("/{customFieldGroupId}", Methods.GetSingleCustomFieldGroupByIDAsync)
+        map.MapGet("/{customFieldGroupId}", CustomFieldGroupMethods.GetSingleCustomFieldGroupByIdAsync)
            .WithName("GetCustomFieldGroupById")
            .WithSummary("Retrieve a Custom Field Group by ID")
            .WithDescription("Fetches a single custom field group by the specified ID, including its associated custom fields.")
@@ -78,7 +90,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .ProducesProblem(StatusCodes.Status404NotFound)
            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        map.MapPost("/", Methods.AddCustomFieldGroupAsync)
+        map.MapPost("/", CustomFieldGroupMethods.AddCustomFieldGroupAsync)
            .WithName("CreateCustomFieldGroup")
            .WithSummary("Create a New Custom Field Group")
            .WithDescription("Adds a new custom field group to the system with the provided details.")
@@ -87,7 +99,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .ProducesProblem(StatusCodes.Status401Unauthorized)
            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        map.MapPut("/{customFieldGroupId}", Methods.UpdateCustomFieldGroupAsync)
+        map.MapPut("/{customFieldGroupId}", CustomFieldGroupMethods.UpdateCustomFieldGroupAsync)
            .WithName("UpdateCustomFieldGroupById")
            .WithSummary("Update an Existing Custom Field Group by ID")
            .WithDescription("Updates the details of an existing custom field group identified by the specified ID.")
@@ -97,7 +109,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
            .ProducesProblem(StatusCodes.Status404NotFound)
            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
-        map.MapDelete("/{customFieldGroupId}", Methods.DeleteCustomFieldGroupAsync)
+        map.MapDelete("/{customFieldGroupId}", CustomFieldGroupMethods.DeleteCustomFieldGroupAsync)
            .WithName("DeleteCustomFieldGroupById")
            .WithSummary("Delete a Custom Field Group by ID")
            .WithDescription("Deletes an existing custom field group identified by the specified ID.")
@@ -112,7 +124,7 @@ public class CustomFieldGroupEndpoint : ICarterModule
 /// <summary>
 /// Contains methods for handling operations related to custom field groups.
 /// </summary>
-public static class Methods
+public static class CustomFieldGroupMethods
 {
     /// <summary>
     /// Retrieves a list of custom field groups based on the provided filter.
@@ -126,7 +138,23 @@ public static class Methods
     {
         var (list, totalCount) = await customFieldGroupService.GetListAsync(filter, cancellation);
         httpContext.Response.Headers.Append("X-Total-Count", totalCount.ToString());
-        return TypedResults.Ok(AsObjectResult(list));
+        return TypedResults.Ok(list.AsObjectResult());
+    }
+
+    /// <summary>
+    /// Retrieves a list of custom field groups formatted for use in dropdown menus.
+    /// </summary>
+    /// <param name="customFieldGroupService">The service to handle custom field group operations.</param>
+    /// <param name="cancellation">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A result containing a list of custom field groups as dropdown options.
+    /// Each option includes a key (ID) and value (name).
+    /// </returns>
+    public static async Task<IResult> GetCustomFieldGroupListForDropdownAsync(ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!)
+    {
+        var filter = new CustomFieldGroupFilter();
+        var (list, _) = await customFieldGroupService.GetListAsync(filter, cancellation);
+        return TypedResults.Ok(list.AsDropdownObjectResult());
     }
 
     /// <summary>
@@ -142,7 +170,7 @@ public static class Methods
     {
         var (list, totalCount) = await customFieldGroupService.GetListAsync(productCategoryId, activeOnly, cancellation);
         httpContext.Response.Headers.Append("X-Total-Count", totalCount.ToString());
-        return TypedResults.Ok(AsObjectResult(list));
+        return TypedResults.Ok(list.AsObjectResult());
     }
 
     /// <summary>
@@ -152,7 +180,7 @@ public static class Methods
     /// <param name="customFieldGroupService">The service to handle custom field group operations.</param>
     /// <param name="cancellation">A token to monitor for cancellation requests.</param>
     /// <returns>A result containing the custom field group if found; otherwise, a not found result.</returns>
-    public static async Task<IResult> GetSingleCustomFieldGroupByIDAsync(long customFieldGroupId, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!)
+    public static async Task<IResult> GetSingleCustomFieldGroupByIdAsync(long customFieldGroupId, ICustomFieldGroupUseCase customFieldGroupService, CancellationToken cancellation = default!)
     {
         var customFieldGroup = await customFieldGroupService.GetSingleIncludingCustomFieldsAsync(customFieldGroupId, cancellation);
         if (customFieldGroup == null)
@@ -160,7 +188,7 @@ public static class Methods
             return Results.NotFound();
         }
 
-        var castedModel = AsObjectResult([customFieldGroup]).FirstOrDefault();
+        var castedModel = EntityExtensions.AsObjectResult([customFieldGroup]).FirstOrDefault();
         return castedModel == null ? Results.NotFound() : TypedResults.Ok(castedModel);
     }
 
@@ -193,7 +221,7 @@ public static class Methods
             return Results.NotFound();
         }
 
-        var castedModel = AsObjectResult([updatedModel]).FirstOrDefault();
+        var castedModel = EntityExtensions.AsObjectResult([updatedModel]).FirstOrDefault();
         return castedModel == null ? Results.NotFound() : TypedResults.Ok(castedModel);
     }
 
@@ -209,64 +237,4 @@ public static class Methods
         var deletedModel = await customFieldGroupService.DeleteAsync(customFieldGroupId, cancellation);
         return !deletedModel ? Results.NotFound() : Results.NoContent();
     }
-
-    /// <summary>
-    /// Converts an array of <see cref="CustomFieldGroup"/> entities into an array of <see cref="CustomFieldGroupResponse"/> objects.
-    /// </summary>
-    /// <param name="result">The array of <see cref="CustomFieldGroup"/> entities to convert.</param>
-    /// <returns>An array of <see cref="CustomFieldGroupResponse"/> objects representing the converted entities.</returns>
-    private static CustomFieldGroupResponse[] AsObjectResult(CustomFieldGroup[] result)
-        => [.. result
-              .Select(r => new CustomFieldGroupResponse
-              {
-                  Id = r.Id,
-                  Name = r.Name,
-                  EntityType = (Common.CustomFieldGroupEntityType)r.EntityType,
-                  CustomFields = [.. r.CustomFields
-                                      .Select(cf => new CustomFieldResponse
-                                      {
-                                          Name = cf.Name,
-                                          Id = cf.Id,
-                                          IsRequired = cf.IsRequired,
-                                          HelpText = cf.HelpText,
-                                          PlaceHolder = cf.PlaceHolder,
-                                          InitialValue = cf.InitialValue,
-                                          Validation = cf.Validation,
-                                          DataType = (Common.CustomFieldDataType)cf.DataType,
-                                          IsActive = cf.IsActive,
-                                          ParentId = cf.ParentId,
-                                          ParentCondition = cf.ParentCondition
-                                      })],
-              })];
-
-    /// <summary>
-    /// Converts an array of <see cref="ProductCategoryCustomFieldGroup"/> entities into an array of <see cref="ProductCategoryCustomFieldGroupResponse"/> objects.
-    /// </summary>
-    /// <param name="result">The array of <see cref="ProductCategoryCustomFieldGroup"/> entities to convert.</param>
-    /// <returns>An array of <see cref="ProductCategoryCustomFieldGroupResponse"/> objects representing the converted entities.</returns>
-    private static ProductCategoryCustomFieldGroupResponse[] AsObjectResult(ProductCategoryCustomFieldGroup[] result)
-        => [.. result
-              .Select(r => new ProductCategoryCustomFieldGroupResponse
-              {
-                  Id = r.CustomFieldGroupId,
-                  Name = r.CustomFieldGroup.Name,
-                  Location = (Common.CustomFieldGroupLocationType)r.CustomFieldGroupLocation,
-                  EntityType = Common.CustomFieldGroupEntityType.Product,
-                  IsActive = r.IsActive,
-                  CustomFields = [.. r.CustomFieldGroup.CustomFields
-                                      .Select(cf => new CustomFieldResponse
-                                      {
-                                          Name = cf.Name,
-                                          Id = cf.Id,
-                                          IsRequired = cf.IsRequired,
-                                          HelpText = cf.HelpText,
-                                          PlaceHolder = cf.PlaceHolder,
-                                          InitialValue = cf.InitialValue,
-                                          Validation = cf.Validation,
-                                          DataType = (Common.CustomFieldDataType)cf.DataType,
-                                          IsActive = cf.IsActive,
-                                          ParentId = cf.ParentId,
-                                          ParentCondition = cf.ParentCondition,
-                                      })],
-              })];
 }

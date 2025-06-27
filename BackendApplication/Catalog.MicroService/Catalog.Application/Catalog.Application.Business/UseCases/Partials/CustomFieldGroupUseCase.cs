@@ -48,33 +48,86 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
                                            cancellationToken: cancellationToken);
 
     /// <inheritdoc />
-    public async Task<CustomFieldGroup> CreateAsync(CustomFieldGroupRequest customFieldGroup, CancellationToken cancellationToken = default)
+    public async Task<CustomFieldGroup> CreateAsync(CustomFieldGroupRequest customFieldGroupRequest, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(customFieldGroup);
-        ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
+        ArgumentNullException.ThrowIfNull(customFieldGroupRequest);
+        ArgumentException.ThrowIfNullOrEmpty(customFieldGroupRequest.Name);
 
-        using var trans = await Repository.BeginTransactionAsync(cancellationToken);
+        using var trans = await UnitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var existedGroup = await Repository.GetSingleAsync(x => x.Name == customFieldGroup.Name, cancellationToken);
-            if (existedGroup != null)
+            var duplicate = await Repository.GetSingleAsync(expression: x => x.Name == customFieldGroupRequest.Name && x.EntityType == (byte)customFieldGroupRequest.EntityType,
+                                                           cancellationToken: cancellationToken);
+
+            if (duplicate != null)
             {
-                throw new DuplicateNameException();
+                throw new DuplicateNameException("Another CustomFieldGroup with the same name and entity type already exists.");
             }
 
-            var group = new CustomFieldGroup()
+            var group = new CustomFieldGroup
             {
-                Name = customFieldGroup.Name,
-                EntityType = (byte)customFieldGroup.EntityType,
+                Name = customFieldGroupRequest.Name,
+                EntityType = (byte)customFieldGroupRequest.EntityType,
+                Status = (byte)EntityStatus.Active,
+                DateStamp = DateTime.UtcNow,
+                CustomFields = []
             };
-            Repository.Create(group);
 
-            AddCustomFields(customFieldGroup, group);
+            var uniqueIdToIdMap = new Dictionary<Guid, long>();
+            var fieldModels = new List<CustomField>();
 
+            foreach (var dtoField in customFieldGroupRequest.CustomFields)
+            {
+                var field = new CustomField
+                {
+                    CustomFieldGroupId = group.Id,
+                    Name = dtoField.Name,
+                    DataType = (byte)dtoField.DataType,
+                    InitialValue = dtoField.InitialValue,
+                    PlaceHolder = dtoField.PlaceHolder,
+                    HelpText = dtoField.HelpText,
+                    IsActive = dtoField.IsActive,
+                    IsRequired = dtoField.IsRequired,
+                    Validation = dtoField.Validation,
+                    DateStamp = DateTime.UtcNow,
+                    Status = (byte)EntityStatus.Active,
+                };
+
+                group.CustomFields.Add(field);
+
+                fieldModels.Add(field);
+                uniqueIdToIdMap[dtoField.UniqueId] = 0;
+            }
+
+            Repository.Add(group);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+
+            for (int i = 0; i < customFieldGroupRequest.CustomFields.Length; i++)
+            {
+                var dto = customFieldGroupRequest.CustomFields[i];
+                var model = fieldModels[i];
+
+                uniqueIdToIdMap[dto.UniqueId] = model.Id;
+            }
+
+            for (int i = 0; i < customFieldGroupRequest.CustomFields.Length; i++)
+            {
+                var dto = customFieldGroupRequest.CustomFields[i];
+                var model = fieldModels[i];
+
+                if (dto.ParentUniqueId.HasValue && uniqueIdToIdMap.TryGetValue(dto.ParentUniqueId.Value, out var pid))
+                {
+                    model.ParentCondition = dto.ParentCondition;
+                    model.ParentId = pid;
+                }
+            }
+
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
             await trans.CommitAsync(cancellationToken);
+
             return group;
         }
-        catch (Exception)
+        catch
         {
             await trans.RollbackAsync(cancellationToken);
             throw;
@@ -82,47 +135,138 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
     }
 
     /// <inheritdoc />
-    public async Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupRequest customFieldGroup, CancellationToken cancellationToken = default)
+    public async Task<CustomFieldGroup?> UpdateAsync(long customFieldId, CustomFieldGroupRequest customFieldGroupRequest, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(customFieldGroup);
-        ArgumentException.ThrowIfNullOrEmpty(customFieldGroup.Name);
+        ArgumentNullException.ThrowIfNull(customFieldGroupRequest);
+        ArgumentException.ThrowIfNullOrEmpty(customFieldGroupRequest.Name);
 
-        using var trans = await Repository.BeginTransactionAsync(cancellationToken);
+        using var trans = await UnitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldId,
-                                                               includeExpressions: [x => x.CustomFields],
-                                                               cancellationToken: cancellationToken);
-            if (existedGroup == null)
+            var existingGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldId,
+                                                                includeExpressions: [x => x.CustomFields],
+                                                                cancellationToken: cancellationToken);
+
+            if (existingGroup == null)
             {
                 return null;
             }
 
-            var existedGroupByName = await Repository.GetSingleAsync(x => x.Name == customFieldGroup.Name && x.Id != customFieldId, cancellationToken);
-            if (existedGroupByName != null)
+            var duplicate = await Repository.GetSingleAsync(expression: x => x.Id != customFieldId && x.Name == customFieldGroupRequest.Name && x.EntityType == (byte)customFieldGroupRequest.EntityType,
+                                                            cancellationToken: cancellationToken);
+
+            if (duplicate != null)
             {
-                throw new DuplicateNameException();
+                throw new DuplicateNameException("Another CustomFieldGroup with the same name and entity type already exists.");
             }
 
-            existedGroup.Name = customFieldGroup.Name;
-            existedGroup.EntityType = (byte)customFieldGroup.EntityType;
+            existingGroup.Name = customFieldGroupRequest.Name;
+            existingGroup.EntityType = (byte)customFieldGroupRequest.EntityType;
+            existingGroup.DateStamp = DateTime.UtcNow;
 
-            var existedCustomFields = existedGroup.CustomFields.ToArray();
-            for (int i = 0; i < existedCustomFields.Length; i++)
+            var updatedFields = customFieldGroupRequest.CustomFields.ToList();
+            var existingFields = existingGroup.CustomFields.ToList();
+
+            var uniqueIdToIdMap = new Dictionary<Guid, long>();
+            var fieldModels = new List<CustomField>();
+
+            var fieldsToRemove = existingFields.Where(ef => !updatedFields.Any(uf => uf.Id == ef.Id)).ToList();
+            var fieldsToRemoveIds = existingFields.Select(x => x.Id).ToList();
+            var childrenToRemoveParent = existingGroup.CustomFields.Where(cf => fieldsToRemoveIds.Contains(cf.ParentId ?? 0)).ToList();
+
+            if (childrenToRemoveParent.Count > 0)
             {
-                if (!customFieldGroup.CustomFields.Any(c => c.Id == existedCustomFields[i].Id))
+                foreach (var child in childrenToRemoveParent)
                 {
-                    UnitOfWork.CustomFieldRepository.Delete(existedCustomFields[i]);
+                    child.ParentId = null;
+                    UnitOfWork.CustomFieldRepository.Modify(child);
+                }
+
+                await UnitOfWork.SaveChangesAsync(cancellationToken);
+            }
+
+            foreach (var field in fieldsToRemove)
+            {
+                UnitOfWork.CustomFieldRepository.Remove(field);
+                existingGroup.CustomFields.Remove(field);
+            }
+
+            foreach (var updatedField in updatedFields)
+            {
+                var existingField = existingFields.FirstOrDefault(f => f.Id == updatedField.Id && updatedField.Id != default);
+
+                if (existingField == null)
+                {
+                    var newField = new CustomField
+                    {
+                        CustomFieldGroupId = existingGroup.Id,
+                        Name = updatedField.Name,
+                        DataType = (byte)updatedField.DataType,
+                        InitialValue = updatedField.InitialValue,
+                        PlaceHolder = updatedField.PlaceHolder,
+                        HelpText = updatedField.HelpText,
+                        IsActive = updatedField.IsActive,
+                        IsRequired = updatedField.IsRequired,
+                        Validation = updatedField.Validation,
+                        DateStamp = DateTime.UtcNow,
+                        Status = (byte)EntityStatus.Active,
+                    };
+
+                    UnitOfWork.CustomFieldRepository.Add(newField);
+                    existingGroup.CustomFields.Add(newField);
+
+                    fieldModels.Add(newField);
+                }
+                else
+                {
+                    existingField.Name = updatedField.Name;
+                    existingField.DataType = (byte)updatedField.DataType;
+                    existingField.InitialValue = updatedField.InitialValue;
+                    existingField.PlaceHolder = updatedField.PlaceHolder;
+                    existingField.HelpText = updatedField.HelpText;
+                    existingField.IsActive = updatedField.IsActive;
+                    existingField.IsRequired = updatedField.IsRequired;
+                    existingField.Validation = updatedField.Validation;
+                    existingField.ParentCondition = string.Empty;
+                    existingField.DateStamp = DateTime.UtcNow;
+
+                    UnitOfWork.CustomFieldRepository.Modify(existingField);
+
+                    fieldModels.Add(existingField);
+                }
+
+                uniqueIdToIdMap[updatedField.UniqueId] = 0;
+            }
+
+            Repository.Modify(existingGroup);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
+
+            for (int i = 0; i < customFieldGroupRequest.CustomFields.Length; i++)
+            {
+                var dto = customFieldGroupRequest.CustomFields[i];
+                var model = fieldModels[i];
+
+                uniqueIdToIdMap[dto.UniqueId] = model.Id;
+            }
+
+            for (int i = 0; i < customFieldGroupRequest.CustomFields.Length; i++)
+            {
+                var dto = customFieldGroupRequest.CustomFields[i];
+                var model = fieldModels[i];
+
+                if (dto.ParentUniqueId.HasValue && uniqueIdToIdMap.TryGetValue(dto.ParentUniqueId.Value, out var pid))
+                {
+                    model.ParentCondition = dto.ParentCondition;
+                    model.ParentId = pid;
                 }
             }
 
-            AddCustomFields(customFieldGroup, existedGroup);
-
-            Repository.Update(existedGroup);
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
             await trans.CommitAsync(cancellationToken);
-            return existedGroup;
+
+            return existingGroup;
         }
-        catch (Exception)
+        catch
         {
             await trans.RollbackAsync(cancellationToken);
             throw;
@@ -132,99 +276,34 @@ internal partial class CustomFieldGroupUseCase : ICustomFieldGroupUseCase
     /// <inheritdoc />
     public async Task<bool> DeleteAsync(long customFieldGroupId, CancellationToken cancellationToken = default)
     {
-        using var trans = await Repository.BeginTransactionAsync(cancellationToken);
+        using var trans = await UnitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var existedGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
-                                                               includeExpressions: [x => x.CustomFields, x => x.ProductCategoryCustomFieldGroups],
-                                                               cancellationToken: cancellationToken);
-            if (existedGroup == null)
+            var existingGroup = await Repository.GetSingleAsync(expression: x => x.Id == customFieldGroupId,
+                                                                includeExpressions: [x => x.CustomFields],
+                                                                cancellationToken: cancellationToken);
+
+            if (existingGroup == null)
             {
                 return false;
             }
 
-            if (existedGroup.ProductCategoryCustomFieldGroups.Count > 0)
+            foreach (var field in existingGroup.CustomFields.ToList())
             {
-                throw new RelationException($"Can't delete. because it is used as parent for {existedGroup.ProductCategoryCustomFieldGroups.Count} ProductCategories")
-                {
-                    RelationMessage = "Children ProductCategory"
-                };
+                UnitOfWork.CustomFieldRepository.Remove(field);
             }
 
-            UnitOfWork.CustomFieldRepository.DeleteRange([.. existedGroup.CustomFields]);
-            Repository.Delete(existedGroup);
+            Repository.Remove(existingGroup);
+
+            await UnitOfWork.SaveChangesAsync(cancellationToken);
             await trans.CommitAsync(cancellationToken);
 
             return true;
         }
-        catch (Exception)
+        catch
         {
             await trans.RollbackAsync(cancellationToken);
             throw;
         }
     }
-
-    #region Private Methods
-    /// <summary>
-    /// Adds custom fields to a custom field group.
-    /// </summary>
-    /// <param name="customFieldGroup">The custom field group DTO.</param>
-    /// <param name="group">The custom field group entity.</param>
-    private void AddCustomFields(CustomFieldGroupRequest customFieldGroup, CustomFieldGroup group)
-    {
-        var options = customFieldGroup.CustomFields.ToArray();
-        for (int i = 0; i < options.Length; i++)
-        {
-            long? parentId = null;
-            if (options[i].ParentUniqueId != null)
-            {
-                var parent = options.FirstOrDefault(x => x.UniqueId == options[i].ParentUniqueId);
-                parentId = parent?.Id;
-            }
-            var entity = ToModel(options[i], group, parentId);
-
-            var existingChild = group.CustomFields.Where(c => c.Id == options[i].Id && c.Id != default(int)).SingleOrDefault();
-            if (existingChild == null)
-            {
-                group.CustomFields.Add(entity);
-                UnitOfWork.CustomFieldRepository.Create(entity);
-                options[i].Id = entity.Id;
-            }
-            else
-            {
-                //existingChild.Name = options[i].Name;
-                entity.Id = existingChild.Id;
-                UnitOfWork.CustomFieldRepository.Update(entity);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Converts a custom field request DTO to a custom field entity.
-    /// </summary>
-    /// <param name="dto">The custom field request DTO containing the data to be converted.</param>
-    /// <param name="group">The custom field group entity to which the custom field belongs.</param>
-    /// <param name="parentId">The ID of the parent custom field, if applicable. Null if no parent exists.</param>
-    /// <returns>A new instance of the <see cref="CustomField"/> entity populated with the provided data.</returns>
-    private static CustomField ToModel(CustomFieldRequest dto, CustomFieldGroup group, long? parentId = null)
-    {
-        return new CustomField()
-        {
-            CustomFieldGroupId = group.Id,
-            Name = dto.Name,
-            DataType = (byte)dto.DataType,
-            InitialValue = dto.InitialValue,
-            PlaceHolder = dto.PlaceHolder,
-            HelpText = dto.HelpText,
-            IsActive = dto.IsActive,
-            IsRequired = dto.IsRequired,
-            Validation = dto.Validation,
-            DateStamp = DateTime.UtcNow,
-            Status = (byte)EntityStatus.Active,
-
-            ParentCondition = dto.ParentCondition,
-            ParentId = parentId,
-        };
-    }
-    #endregion Private Methods
 }

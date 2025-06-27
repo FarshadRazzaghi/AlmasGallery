@@ -22,11 +22,6 @@ public class ProductCategoryCustomFieldGroupRequestValidator : AbstractValidator
 public class ProductCategoryCustomFieldGroupRequest
 {
     /// <summary>
-    /// Gets or sets the ID of the product category custom field group.
-    /// </summary>
-    public long Id { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether the custom field group is active.
     /// </summary>
     public bool IsActive { get; set; }

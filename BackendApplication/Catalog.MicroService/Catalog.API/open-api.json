@@ -14,7 +14,7 @@
     "/api/v1/custom-field-groups": {
       "get": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Retrieve All Custom Field Groups",
         "description": "Fetches a list of all custom field groups based on the provided filter, including their associated details.",
@@ -112,7 +112,7 @@
       },
       "post": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Create a New Custom Field Group",
         "description": "Adds a new custom field group to the system with the provided details.",
@@ -171,10 +171,55 @@
         }
       }
     },
+    "/api/v1/custom-field-groups/dropdown": {
+      "get": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Retrieve Custom Field Groups for Dropdown",
+        "description": "Fetches a list of custom field groups formatted as key-value pairs for use in dropdown options.",
+        "operationId": "GetCustomFieldGroupsForDropdown",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/custom-field-groups/product-groups/{productCategoryId}/{activeOnly}": {
       "get": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Retrieve Custom Field Groups for a Product Category",
         "description": "Fetches a list of custom field groups associated with a specific product category, based on the provided filter, including their associated details.",
@@ -248,7 +293,7 @@
     "/api/v1/custom-field-groups/{customFieldGroupId}": {
       "get": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Retrieve a Custom Field Group by ID",
         "description": "Fetches a single custom field group by the specified ID, including its associated custom fields.",
@@ -309,7 +354,7 @@
       },
       "put": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Update an Existing Custom Field Group by ID",
         "description": "Updates the details of an existing custom field group identified by the specified ID.",
@@ -390,7 +435,7 @@
       },
       "delete": {
         "tags": [
-          "Custom Field Groups"
+          "Custom Field Group"
         ],
         "summary": "Delete a Custom Field Group by ID",
         "description": "Deletes an existing custom field group identified by the specified ID.",
@@ -1094,11 +1139,6 @@
       "ProductCategoryCustomFieldGroupRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "Gets or sets the ID of the product category custom field group.",
-            "format": "int64"
-          },
           "isActive": {
             "type": "boolean",
             "description": "Gets or sets a value indicating whether the custom field group is active."
@@ -1225,7 +1265,7 @@
   ],
   "tags": [
     {
-      "name": "Custom Field Groups"
+      "name": "Custom Field Group"
     },
     {
       "name": "Product Category"

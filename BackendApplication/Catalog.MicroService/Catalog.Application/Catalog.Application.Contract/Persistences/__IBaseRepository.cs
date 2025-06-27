@@ -17,6 +17,24 @@ public partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default!);
 
     /// <summary>
+    /// Retrieves an <see cref="IQueryable{TEntity}"/> for the entity set with optional filtering,
+    /// configured for no-tracking queries. Use this method when you want to read data without 
+    /// tracking changes, which can improve performance for read-only operations.
+    /// </summary>
+    /// <param name="expression">An optional filter expression to restrict the entities returned.</param>
+    /// <returns>An <see cref="IQueryable{TEntity}"/> representing the filtered query with no tracking enabled.</returns>
+    IQueryable<TEntity> GetQueryableAsNoTracking(Expression<Func<TEntity, bool>>? expression = null);
+
+    /// <summary>
+    /// Retrieves an <see cref="IQueryable{TEntity}"/> for the entity set with optional filtering,
+    /// with default tracking behavior enabled. Use this method when you intend to update or 
+    /// manipulate the returned entities within the current DbContext scope.
+    /// </summary>
+    /// <param name="expression">An optional filter expression to restrict the entities returned.</param>
+    /// <returns>An <see cref="IQueryable{TEntity}"/> representing the filtered query with tracking enabled.</returns>
+    IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression = null);
+
+    /// <summary>
     /// Gets the count of entities matching the specified expression.
     /// </summary>
     /// <param name="expression">The expression to filter entities.</param>
@@ -81,19 +99,19 @@ public partial interface IBaseRepository<TEntity> where TEntity : IBaseEntity
     /// Creates a new entity.
     /// </summary>
     /// <param name="entity">The entity to create.</param>
-    void Create(TEntity entity);
+    void Add(TEntity entity);
 
     /// <summary>
     /// Updates an existing entity.
     /// </summary>
     /// <param name="entity">The entity to update.</param>
-    void Update(TEntity entity);
+    void Modify(TEntity entity);
 
     /// <summary>
     /// Deletes an existing entity.
     /// </summary>
     /// <param name="entity">The entity to delete.</param>
-    void Delete(TEntity entity);
+    void Remove(TEntity entity);
 
     /// <summary>
     /// Deletes a range of entities.
