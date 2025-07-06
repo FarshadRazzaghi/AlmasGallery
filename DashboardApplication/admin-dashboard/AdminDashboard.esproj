@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.89-alpha">
-  <PropertyGroup>
-  </PropertyGroup>
-  <ItemGroup>
-    <Folder Include=".vscode\" />
-    <Folder Include="dist\project\" />
-  </ItemGroup>
-</Project>

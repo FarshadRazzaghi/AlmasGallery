@@ -1,39 +1,35 @@
-import { Component, ViewEncapsulation, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
-import { FrThemeService } from '@fr-theme/common';
-import { FrLocalizationService } from '@fr-widget/i18n';
-
-import { LocalizationService } from './services/localization.service';
+import { Component, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Router, RouterOutlet, Routes } from '@angular/router';
+import { RoutingService, TitleService } from '@core/services';
+import { environment } from '@environments/environment'
 
 @Component({
-	standalone: true,
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	imports: [RouterOutlet],
-	encapsulation: ViewEncapsulation.None
+  standalone: true,
+  selector: 'app-root',
+  template: '<router-outlet></router-outlet>',
+  imports: [RouterOutlet]
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, AfterViewChecked {
 
-	protected themeService = inject(FrThemeService);
-	protected themeLocalizationService = inject(FrLocalizationService);
-	protected localizationService = inject(LocalizationService);
+  constructor(
+    private router: Router,
+    private titleService: TitleService,
+    private routingService: RoutingService
+  ) { }
 
-	protected title: string;
+  ngAfterViewChecked(): void {
+    const currentConfig = this.router.config;
+    const dynamicRoutes: Routes = this.routingService.generateRoutes(this.routingService.navigationGroup);
 
-	constructor() {
-		this.title = 'Almas Gallery';
+    const dashboardRoute = currentConfig.find(route => route.path === environment.dashboard);
+    if (dashboardRoute) {
+      dashboardRoute.children = dynamicRoutes;
+    }
 
-		this.themeService.init({
-			allowFullScreen: true,
-			allowSchemeToggler: true,
-			showMobileLogo: true,
-			showNotification: true,
-			showSearch: true,
-			showSidebarLogo: true,
-			showUserPanel: true,
-			allowMultiSelectNavigation: false,
-			localizationConfiguration: this.localizationService.themeConfiguration
-		});
-	}
+    this.router.resetConfig(currentConfig);
+  }
+
+  ngAfterViewInit(): void {
+    this.titleService.init();
+  }
 }

@@ -1,9 +1,9 @@
-@import "_application/logo/app-logo.component";
-@import "_application/search-result/app-search-result.component";
-@import "_application/notification-dropdown/app-notification-dropdown.component";
-@import "_application/user-dropdown/app-user-dropdown.component";
-@import "layouts/default/default.component";
+@use "../../app/core/pages/forbidden/forbidden.component.scss";
+@use "../../app/core/pages/not-found/not-found.component.scss";
+@use "../../app/core/pages/server-error/server-error.component.scss";
 
-@import "pages/custom-field/custom-field-upsert/custom-field-upsert.component";
-@import "pages/product-category/product-category-upsert/product-category-upsert.component";
-@import "pages/product/product-upsert/product-upsert.component";
+@use "../../app/layout/default-layout/default-layout.component.scss";
+@use "../../app/features/dashboard/dashboard.component.scss";
+
+@use "../../app/features/custom-field-groups/custom-field-group.scss";
+@use "../../app/features/product-categories/product-category.scss";
