@@ -1,0 +1,30 @@
+<div class="row">
+    <fr-form #groupForm="fr-form"
+             [id]="'GroupForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-textbox
+                         [presenter]="'GroupName'"
+                         [id]="'GroupName'"
+                         [showLabel]="true"
+                         [label]="customFieldResource.groupName"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-4', applicationLocalizationService.isRTL ? 'ps-2' : 'pe-2']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="groupValidators">
+        </fr-form-control>
+
+        <fr-form-control control-dropdown
+                         [presenter]="'GroupEntityType'"
+                         [id]="'GroupEntityType'"
+                         [showLabel]="true"
+                         [label]="customFieldResource.groupEntityType"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-4', applicationLocalizationService.isRTL ? 'ps-2' : 'pe-2']"
+                         [controlCssClass]="['col-12']"
+                         [allowNull]="true"
+                         [items]="groupTypeItems"
+                         [validators]="groupTypeValidators">
+        </fr-form-control>
+    </fr-form>
+</div>

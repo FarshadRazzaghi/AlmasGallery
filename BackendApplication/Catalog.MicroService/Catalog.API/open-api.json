@@ -1,0 +1,1317 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Almas Gallery API reference",
+    "description": "API endpoints for Almas Gallery",
+    "contact": {
+      "name": "Farshad Razzaghi",
+      "url": "https://github.com/FarshadRazzaghi",
+      "email": "f.razaghi22@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/custom-field-groups": {
+      "get": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Retrieve All Custom Field Groups",
+        "description": "Fetches a list of all custom field groups based on the provided filter, including their associated details.",
+        "operationId": "GetAllCustomFieldGroups",
+        "parameters": [
+          {
+            "name": "includeCustomFields",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "groupType",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CustomFieldGroupEntityType"
+              }
+            }
+          },
+          {
+            "name": "groupName",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFieldGroupResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Create a New Custom Field Group",
+        "description": "Adds a new custom field group to the system with the provided details.",
+        "operationId": "CreateCustomFieldGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldGroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/custom-field-groups/dropdown": {
+      "get": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Retrieve Custom Field Groups for Dropdown",
+        "description": "Fetches a list of custom field groups formatted as key-value pairs for use in dropdown options.",
+        "operationId": "GetCustomFieldGroupsForDropdown",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/custom-field-groups/product-groups/{productCategoryId}/{activeOnly}": {
+      "get": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Retrieve Custom Field Groups for a Product Category",
+        "description": "Fetches a list of custom field groups associated with a specific product category, based on the provided filter, including their associated details.",
+        "operationId": "GetCustomFieldGroupsForProductCategory",
+        "parameters": [
+          {
+            "name": "productCategoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "activeOnly",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomFieldGroupResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/custom-field-groups/{customFieldGroupId}": {
+      "get": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Retrieve a Custom Field Group by ID",
+        "description": "Fetches a single custom field group by the specified ID, including its associated custom fields.",
+        "operationId": "GetCustomFieldGroupById",
+        "parameters": [
+          {
+            "name": "customFieldGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldGroupResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Update an Existing Custom Field Group by ID",
+        "description": "Updates the details of an existing custom field group identified by the specified ID.",
+        "operationId": "UpdateCustomFieldGroupById",
+        "parameters": [
+          {
+            "name": "customFieldGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomFieldGroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomFieldGroupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Custom Field Group"
+        ],
+        "summary": "Delete a Custom Field Group by ID",
+        "description": "Deletes an existing custom field group identified by the specified ID.",
+        "operationId": "DeleteCustomFieldGroupById",
+        "parameters": [
+          {
+            "name": "customFieldGroupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/product-categories": {
+      "get": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Retrieve All Product Categories",
+        "description": "Fetches a list of all product categories based on the provided filter, including their associated details.",
+        "operationId": "GetAllProductCategories",
+        "parameters": [
+          {
+            "name": "includeCustomFieldGroups",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductCategoryResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Create a New Product Category",
+        "description": "Adds a new product category to the system with the provided details.",
+        "operationId": "CreateProductCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/product-categories/dropdown": {
+      "get": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Retrieve Product Categories for Dropdown",
+        "description": "Fetches a list of product categories formatted as key-value pairs for use in dropdown options.",
+        "operationId": "GetProductCategoriesForDropdown",
+        "parameters": [
+          {
+            "name": "parentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "removeChildren",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/product-categories/{productCategoryId}": {
+      "get": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Retrieve a Product Category by ID",
+        "description": "Fetches a single product category by the specified ID, including its associated custom field groups.",
+        "operationId": "GetProductCategoryById",
+        "parameters": [
+          {
+            "name": "productCategoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCategoryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Update an Existing Product Category by ID",
+        "description": "Updates the details of an existing product category identified by the specified ID.",
+        "operationId": "UpdateProductCategoryById",
+        "parameters": [
+          {
+            "name": "productCategoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product Category"
+        ],
+        "summary": "Delete a Product Category by ID",
+        "description": "Deletes an existing product category identified by the specified ID.",
+        "operationId": "DeleteProductCategoryById",
+        "parameters": [
+          {
+            "name": "productCategoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomFieldDataType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "description": "Represents the data type of a custom field.",
+        "format": "byte",
+        "x-enumDescriptions": {
+          "1": "Number",
+          "2": "String",
+          "3": "Date",
+          "4": "Boolean"
+        }
+      },
+      "CustomFieldGroupEntityType": {
+        "enum": [
+          1
+        ],
+        "type": "integer",
+        "description": "Represents the entity type of a custom field group.",
+        "format": "byte",
+        "x-enumDescriptions": {
+          "1": "Product"
+        }
+      },
+      "CustomFieldGroupLocationType": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "description": "Represents the location type of a custom field group.",
+        "format": "byte",
+        "x-enumDescriptions": {
+          "1": "PageSection",
+          "2": "PricingSection",
+          "3": "DescriptionSection"
+        }
+      },
+      "CustomFieldGroupRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group.\n            This property is required and cannot be null or empty."
+          },
+          "entityType": {
+            "$ref": "#/components/schemas/CustomFieldGroupEntityType"
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldRequest"
+            }
+          }
+        },
+        "description": "Represents a custom field group data transfer object."
+      },
+      "CustomFieldGroupResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the custom field group.",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group."
+          },
+          "entityType": {
+            "$ref": "#/components/schemas/CustomFieldGroupEntityType"
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldResponse"
+            }
+          }
+        },
+        "description": "Represents a response object for a custom field group."
+      },
+      "CustomFieldRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the custom field.\n            This property is required and cannot be null or empty.",
+            "format": "int64"
+          },
+          "uniqueId": {
+            "type": "string",
+            "description": "Gets or sets the unique identifier of the custom field.\n            This property is required and cannot be null or empty.",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the custom field.\n            This property is required and cannot be null or empty."
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/CustomFieldDataType"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is active."
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is required."
+          },
+          "helpText": {
+            "type": "string",
+            "description": "Gets or sets the help text for the custom field.",
+            "nullable": true
+          },
+          "placeHolder": {
+            "type": "string",
+            "description": "Gets or sets the placeholder text for the custom field.",
+            "nullable": true
+          },
+          "initialValue": {
+            "type": "string",
+            "description": "Gets or sets the initial value of the custom field.",
+            "nullable": true
+          },
+          "validation": {
+            "type": "string",
+            "description": "Gets or sets the validation rules for the custom field.",
+            "nullable": true
+          },
+          "parentUniqueId": {
+            "type": "string",
+            "description": "Gets or sets the unique identifier of the parent custom field.",
+            "format": "uuid",
+            "nullable": true
+          },
+          "parentCondition": {
+            "type": "string",
+            "description": "Gets or sets the parent condition for the custom field.",
+            "nullable": true
+          }
+        },
+        "description": "Represents a custom field data transfer object."
+      },
+      "CustomFieldResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the custom field.",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the custom field."
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/CustomFieldDataType"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is active."
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field is required."
+          },
+          "helpText": {
+            "type": "string",
+            "description": "Gets or sets the help text for the custom field.",
+            "nullable": true
+          },
+          "placeHolder": {
+            "type": "string",
+            "description": "Gets or sets the placeholder text for the custom field.",
+            "nullable": true
+          },
+          "initialValue": {
+            "type": "string",
+            "description": "Gets or sets the initial value of the custom field.",
+            "nullable": true
+          },
+          "validation": {
+            "type": "string",
+            "description": "Gets or sets the validation rules for the custom field.",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the parent custom field.",
+            "format": "int64",
+            "nullable": true
+          },
+          "parentCondition": {
+            "type": "string",
+            "description": "Gets or sets the parent condition for the custom field.",
+            "nullable": true
+          }
+        },
+        "description": "Represents a response object for a custom field."
+      },
+      "DropdownResponse": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "integer",
+            "description": "Gets or sets the key of the dropdown item.",
+            "format": "int64"
+          },
+          "value": {
+            "type": "string",
+            "description": "Gets or sets the value of the dropdown item."
+          }
+        },
+        "description": "Represents a response object for a dropdown item."
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "A URI reference [RFC3986] that identifies the problem type. This specification\r\n  encourages that, when dereferenced, it provide human-readable documentation for\r\n the problem type (e.g., using HTML [W3C.REC-html5-20141028]). When this member\r\n  is not present, its value is assumed to be \"about:blank\".",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence\r\n of the problem, except for purposes of localization(e.g., using proactive content negotiation;\r\n  see[RFC7231], Section 3.4).",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code([RFC7231], Section 6) generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem.",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "nullable": true
+          }
+        },
+        "description": "A machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807."
+      },
+      "ProductCategoryCustomFieldGroupRequest": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field group is active."
+          },
+          "order": {
+            "type": "integer",
+            "description": "Gets or sets the order in which the custom field group should be displayed or processed.",
+            "format": "int32"
+          },
+          "customFieldGroupId": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the custom field group.",
+            "format": "int64"
+          },
+          "customFieldGroupLocation": {
+            "$ref": "#/components/schemas/CustomFieldGroupLocationType"
+          }
+        },
+        "description": "Represents a product category custom field group data transfer object."
+      },
+      "ProductCategoryCustomFieldGroupResponse": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "$ref": "#/components/schemas/CustomFieldGroupLocationType"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Gets or sets a value indicating whether the custom field group is active."
+          },
+          "order": {
+            "type": "integer",
+            "description": "Gets or sets the order in which the custom field group should be displayed or processed.",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the custom field group.",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the custom field group."
+          },
+          "entityType": {
+            "$ref": "#/components/schemas/CustomFieldGroupEntityType"
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldResponse"
+            }
+          }
+        },
+        "description": "Represents a response object for a product category custom field group."
+      },
+      "ProductCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the product category.\n            This property is required and cannot be null or empty."
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the description of the product category."
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the parent product category.",
+            "format": "int64",
+            "nullable": true
+          },
+          "customFieldGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCategoryCustomFieldGroupRequest"
+            }
+          }
+        },
+        "description": "Represents a product category data transfer object."
+      },
+      "ProductCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the product category.",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Gets or sets the name of the product category."
+          },
+          "description": {
+            "type": "string",
+            "description": "Gets or sets the description of the product category.",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "Gets or sets the ID of the parent product category.",
+            "format": "int64",
+            "nullable": true
+          },
+          "customFieldGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductCategoryCustomFieldGroupResponse"
+            }
+          }
+        },
+        "description": "Represents a response object for a product category."
+      }
+    },
+    "headers": {
+      "Authorization": {
+        "required": true
+      }
+    },
+    "securitySchemes": {
+      "Authentication": {
+        "type": "http",
+        "description": "JWT Authorization header using the basic scheme.",
+        "scheme": "basic",
+        "bearerFormat": "Username:Password"
+      }
+    }
+  },
+  "security": [
+    {
+      "Authentication": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Custom Field Group"
+    },
+    {
+      "name": "Product Category"
+    }
+  ]
+}

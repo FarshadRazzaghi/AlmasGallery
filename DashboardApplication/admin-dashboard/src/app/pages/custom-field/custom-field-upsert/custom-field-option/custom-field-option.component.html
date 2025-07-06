@@ -1,0 +1,377 @@
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-8">
+        <fr-card #optionCard="fr-card"
+                 [id]="'OptionCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <div class="row">
+                <fr-form #optionForm="fr-form"
+                          [id]="'optionForm'"
+                          [isAbsoluteError]="true"
+                          [formControls]="{}"
+                          [cssClass]="['row','option-group']">
+
+                    <fr-form-control control-switch
+                                      [presenter]="'IsActive'"
+                                      [id]="'IsActive'"
+                                      [showLabel]="false"
+																			[showText]="true"
+                                      [label]="customFieldResource.isActive"
+                                      [cssClass]="['col-6', 'col-lg-4', 'mb-2', 'is-active']"
+                                      [value]="true"
+                                      [controlCssClass]="['col-12']">
+                    </fr-form-control>
+
+                    <fr-form-group [groupName]="'ActionHolder'"
+                                    [id]="'ActionHolder'"
+                                    [cssClasses]="['option-btn-group', 'col-6', 'col-lg-8', 'justify-content-end', ' align-content-start']">
+
+                        <fr-form-control control-button
+                                          [presenter]="'Remove'"
+                                          [id]="'Remove'"
+                                          [text]="''"
+                                          [buttonColor]="'danger'"
+                                          [iconClass]="'ri-delete-bin-6-line'"
+                                          [title]="applicationResource.cancel"
+                                          [buttonType]="'button'"
+                                          [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                          [isVisible]="isUpdating"
+                                          (click)="onRemove()">
+                        </fr-form-control>
+
+                        <fr-form-control control-button
+                                          [presenter]="'Add'"
+                                          [id]="'Add'"
+                                          [text]="''"
+                                          [buttonColor]="'success'"
+                                          [iconClass]="'ri-check-line'"
+                                          [title]="isUpdating ? applicationResource.update : applicationResource.add"
+                                          [buttonType]="'button'"
+                                          [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                          (click)="onAddNew()">
+                        </fr-form-control>
+
+                        <fr-form-control control-button
+                                          [presenter]="'Cancel'"
+                                          [id]="'Cancel'"
+                                          [text]="''"
+                                          [buttonColor]="'secondary'"
+                                          [iconClass]="'ri-close-line'"
+                                          [title]="applicationResource.cancel"
+                                          [buttonType]="'button'"
+                                          [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                          [isVisible]="isUpdating"
+                                          (click)="onCancelEdit()">
+                        </fr-form-control>
+                    </fr-form-group>
+
+                    <fr-form-control control-separator
+																		  [cssClass]="['mb-0']"
+                                      [presenter]="'SeparatorBaseInfo'"
+                                      [id]="'SeparatorBaseInfo'">
+                    </fr-form-control>
+
+                    <fr-form-control control-textbox
+                                      [presenter]="'Name'"
+                                      [id]="'Name'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.name"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [validators]="nameValidators"
+                                      [autoComplete]="'off'">
+                    </fr-form-control>
+
+                    <fr-form-control control-dropdown
+                                      [presenter]="'DataType'"
+                                      [id]="'DataType'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.dataType"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [validators]="{}"
+																			[value]="1"
+                                      [items]="dataTypeItems"
+                                      (change)="onDataTypeChange($event)">
+                    </fr-form-control>
+
+                    <fr-form-control control-textbox
+                                      [presenter]="'HelpText'"
+                                      [id]="'HelpText'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.helpText"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [validators]="{}"
+                                      [autoComplete]="'off'">
+                    </fr-form-control>
+
+                    <fr-form-control control-textbox
+                                      [presenter]="'PlaceHolder'"
+                                      [id]="'PlaceHolder'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.placeHolder"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [validators]="{}"
+																			[isVisible]="selectedDataType !== 4"
+                                      [autoComplete]="'off'">
+                    </fr-form-control>
+
+										<fr-form-control control-separator
+																		 [cssClass]="['mb-0']"
+																		 [presenter]="'SeparatorNoPlaceHolder'"
+																		 [id]="'SeparatorNoPlaceHolder'"
+																		 [isVisible]="selectedDataType === 4">
+										</fr-form-control>
+
+                    <fr-form-control control-checkbox
+                                      [presenter]="'IsRequired'"
+                                      [id]="'IsRequired'"
+                                      [showLabel]="false"
+                                      [label]="customFieldResource.isRequired"
+                                      [value]="false"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']">
+                    </fr-form-control>
+
+                    <fr-form-control control-number
+                                      [presenter]="'InitialValueNumber'"
+                                      [id]="'InitialValueNumber'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.initialValue"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [showSpinner]="false"
+                                      [allowNegative]="true"
+                                      [allowNull]="true"
+                                      [isVisible]="selectedDataType === 1"
+                                      [validators]="initialValueNumberValidators">
+                    </fr-form-control>
+
+                    <fr-form-control control-textbox
+                                      [presenter]="'InitialValueString'"
+                                      [id]="'InitialValueString'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.initialValue"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [isVisible]="selectedDataType === 2"
+                                      [validators]="{}"
+                                      [autoComplete]="'off'">
+                    </fr-form-control>
+
+                    <fr-form-group [groupName]="'DateTime'"
+                                   [id]="'DateTime'"
+                                   [isVisible]="selectedDataType === 3"
+                                   [cssClasses]="['date-time-group', 'col-12', 'col-lg-6']">
+
+                        <fr-form-control control-date
+                                        [presenter]="'InitialValueDateTime'"
+                                        [id]="'InitialValueDateTime'"
+                                        [showLabel]="true"
+                                        [label]="customFieldResource.initialValue"
+                                        [cssClass]="['col']"
+                                        [controlCssClass]="['col-12']"
+                                        [calendarType]="'persian'"
+                                        [value]="nowDate"
+                                        [isEnable]="!applyCurrentDate"
+                                        [validators]="{}">
+                        </fr-form-control>
+
+                        <fr-form-control control-checkbox
+                                        [presenter]="'ApplyCurrentDate'"
+                                        [id]="'ApplyCurrentDate'"
+                                        [label]="customFieldResource.applyCurrentDate"
+																				[showLabel]="false"
+                                        [cssClass]="['col-auto']"
+                                        [controlCssClass]="['col-12']"
+                                        [value]="applyCurrentDate"
+                                        (change)="onCurrentDateChange()">
+                        </fr-form-control>
+                    </fr-form-group>
+
+                    <fr-form-control control-dropdown
+                                      [presenter]="'InitialValueBoolean'"
+                                      [id]="'Boolean'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.initialValue"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [isVisible]="selectedDataType === 4"
+                                      [validators]="{}"
+                                      [items]="initialValueBooleanItems">
+                    </fr-form-control>
+
+                    <fr-form-control control-number
+                                      [presenter]="'NumberMinValue'"
+                                      [id]="'NumberMinValue'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.minValue"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [showSpinner]="false"
+                                      [allowNegative]="true"
+                                      [allowNull]="true"
+                                      [isVisible]="selectedDataType === 1"
+                                      [validators]="numberMinValueValidators">
+                    </fr-form-control>
+
+                    <fr-form-control control-number
+                                      [presenter]="'NumberMaxValue'"
+                                      [id]="'NumberMaxValue'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.maxValue"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [showSpinner]="false"
+                                      [allowNegative]="true"
+                                      [allowNull]="true"
+                                      [value]="9999"
+                                      [isVisible]="selectedDataType === 1"
+                                      [validators]="{}">
+                    </fr-form-control>
+
+                    <fr-form-control control-checkbox
+                                      [presenter]="'IsMultiLine'"
+                                      [id]="'IsMultiLine'"
+                                      [showLabel]="false"
+                                      [label]="customFieldResource.isMultiLine"
+                                      [cssClass]="['col-12', 'col-lg-6', 'empty-label']"
+                                      [isVisible]="selectedDataType === 2"
+                                      [controlCssClass]="['col-12']">
+                    </fr-form-control>
+
+                    <fr-form-control control-textbox
+                                      [presenter]="'Regex'"
+                                      [id]="'Regex'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.regex"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12', 'dir-ltr', 'text-start']"
+                                      [isVisible]="selectedDataType === 2"
+                                      [autoComplete]="'off'">
+                    </fr-form-control>
+
+                    <fr-form-control control-separator
+																			[cssClass]="['mb-0']"
+                                      [presenter]="'SeparatorParentInfo'"
+                                      [id]="'SeparatorParentInfo'">
+                    </fr-form-control>
+
+                    <fr-form-control control-dropdown
+                                      [presenter]="'ParentUniqueId'"
+                                      [id]="'ParentUniqueId'"
+                                      [showLabel]="true"
+                                      [label]="customFieldResource.parent"
+                                      [cssClass]="['col-12', 'col-lg-6']"
+                                      [controlCssClass]="['col-12']"
+                                      [allowNull]="true"
+                                      [items]="parentItems"
+                                      (change)="onParentDataTypeChange($event)">
+                    </fr-form-control>
+
+										<fr-form-group [groupName]="'ParentCondition'"
+                                   [id]="'ParentCondition'"
+																	 [isVisible]="selectedParentDataType !== undefined"
+                                   [cssClasses]="['condition-group', 'col-12', 'col-lg-6']">
+
+                        <fr-form-control control-number
+                                      	[presenter]="'ParentConditionNumber'"
+                                      	[id]="'ParentConditionNumber'"
+                                      	[showLabel]="true"
+                                      	[label]="customFieldResource.parentCondition"
+                                      	[cssClass]="['col-12', 'col-lg-6']"
+                                      	[controlCssClass]="['col-12']"
+                                      	[showSpinner]="false"
+                                      	[allowNegative]="true"
+                                      	[allowNull]="true"
+                                      	[isVisible]="selectedParentDataType === 1"
+																				[isEnable]="hasParentCondition">
+												</fr-form-control>
+
+												<fr-form-control control-textbox
+																				[presenter]="'ParentConditionString'"
+																				[id]="'ParentConditionString'"
+																				[showLabel]="true"
+																				[label]="customFieldResource.parentCondition"
+																				[cssClass]="['col-12', 'col-lg-6']"
+																				[controlCssClass]="['col-12']"
+																				[isVisible]="selectedParentDataType === 2"
+																				[isEnable]="hasParentCondition"
+																				[validators]="{}"
+																				[autoComplete]="'off'">
+												</fr-form-control>
+
+												<fr-form-control control-date
+																				[presenter]="'ParentConditionDateTime'"
+																				[id]="'ParentConditionDateTime'"
+																				[showLabel]="true"
+																				[label]="customFieldResource.parentCondition"
+																				[cssClass]="['col-12', 'col-lg-6']"
+																				[controlCssClass]="['col-12']"
+																				[calendarType]="'persian'"
+																				[value]="nowDate"
+																				[isVisible]="selectedParentDataType === 3"
+																				[isEnable]="hasParentCondition"
+																				[validators]="{}">
+												</fr-form-control>
+
+												<fr-form-control control-dropdown
+																				[presenter]="'ParentConditionBoolean'"
+																				[id]="'ParentConditionBoolean'"
+																				[showLabel]="true"
+																				[label]="customFieldResource.parentCondition"
+																				[cssClass]="['col-12', 'col-lg-6']"
+																				[controlCssClass]="['col-12']"
+																				[isVisible]="selectedParentDataType === 4"
+																				[isEnable]="hasParentCondition"
+																				[validators]="{}"
+																				[items]="initialValueBooleanItems">
+												</fr-form-control>
+
+												<fr-form-control control-checkbox
+                                          [presenter]="'HasParentCondition'"
+                                          [id]="'HasParentCondition'"
+                                          [label]="customFieldResource.noParentCondition"
+																					[showLabel]="false"
+                                          [cssClass]="['col-auto']"
+                                          [controlCssClass]="['col-12']"
+                                          [value]="!hasParentCondition"
+                                          (change)="onParentConditionChange()">
+                        </fr-form-control>
+										</fr-form-group>
+                </fr-form>
+            </div>
+        </fr-card>
+    </div>
+
+    @if(!changingLanguage){
+    <div class="col-12 col-md-6 col-lg-4">
+        <fr-card #optionSelectedCard="fr-card"
+                  [id]="'OptionSelectedCard'"
+                  [cssClass]="['full-height', 'custom-field-options']"
+                  [isCollapsible]="false"
+                  [isDeletable]="false"
+                  [isUpdatable]="false">
+
+            @for (option of options; track option.name; let index = $index) {
+            <button frButton
+                    type="button"
+                    [color]="'primary'"
+                    [cssClass]="['mb-0', 'col-12']"
+										[disabled]="option.uniqueId === selectedUniqueId"
+                    (click)="onEdit(option)">
+                {{ option.name }} ({{ option.dataType | nameFromList:dataTypeItems}})
+            </button>
+            }
+
+            @if(options.length === 0) {
+              <p class="m-0 text-center">{{ customFieldResource.noOptions }}</p>
+            }
+        </fr-card>
+    </div>
+    }
+</div>

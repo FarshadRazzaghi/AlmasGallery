@@ -1,0 +1,24 @@
+<div class="row pb-5">
+    <div class="col-12">
+        <fr-card #customFieldGroupListCard="fr-card"
+                 [id]="'CustomFieldGroupListCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <fr-data-grid #customFieldGroupListDataGrid="fr-dataGrid"
+                          [id]="'CustomFieldGroupListDataGrid'"
+                          [columns]="columns"
+                          [showRowNumber]="true">
+
+                <ng-template #actionButtons let-record>
+                    <div class="d-flex justify-content-center">
+                        <a class="col-12 text-center" [routerLink]="record.data.id + '/edit'">
+                            EDIT
+                        </a>
+                    </div>
+                </ng-template>
+            </fr-data-grid>
+        </fr-card>
+    </div>
+</div>

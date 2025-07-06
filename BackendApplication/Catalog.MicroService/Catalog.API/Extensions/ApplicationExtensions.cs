@@ -1,10 +1,24 @@
-﻿namespace Catalog.API.Extensions;
+﻿using Scalar.AspNetCore;
+
+namespace Catalog.API.Extensions;
 
 public static class ApplicationExtensions
 {
-    public static WebApplication UseCustomCors(this WebApplication application)
+    public static WebApplication UseCustomOpenApi(this WebApplication app)
     {
-        application.UseCors("AllowAngularOrigins");
-        return application;
+        var openApiUrl = "/openapi/v1.json";
+        app.MapOpenApi().CacheOutput().AllowAnonymous();
+
+        app.MapScalarApiReference(options =>
+        {
+            options.WithOpenApiRoutePattern(openApiUrl);
+            options.Theme = ScalarTheme.DeepSpace;
+            options.Authentication = new ScalarAuthenticationOptions
+            {
+                PreferredSecurityScheme = "Authentication"
+            };
+        }).AllowAnonymous();
+
+        return app;
     }
 }

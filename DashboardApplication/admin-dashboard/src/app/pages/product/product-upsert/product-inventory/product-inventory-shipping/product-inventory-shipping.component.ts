@@ -1,0 +1,80 @@
+import { Component, ElementRef, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+
+import { _ProductUpsertBaseComponent } from '../../_product-upsert.base.component';
+import { ProductUpsertShipping } from '../../../../../types/product/product-upsert.type';
+
+import * as FrForm from '@fr-widget/sdk/form';
+
+@Component({
+  selector: 'product-inventory-shipping',
+  standalone: true,
+  imports: [
+    FrForm.FrFormComponent,
+    FrForm.FrFormControlComponent,
+    FrForm.FrFormGroupComponent,
+    FrForm.FrFormControlDirectiveModule
+  ],
+  templateUrl: './product-inventory-shipping.component.html',
+  encapsulation: ViewEncapsulation.None,
+})
+export class ProductInventoryShippingComponent extends _ProductUpsertBaseComponent {
+
+  protected get ProductShippingTypeItems(): FrForm.FrInputValueItem<number>[] {
+    return [{
+
+      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.sellerFulfilled}</span><small>${this.productResource.sellerFulfilledDescription}</small>`),
+      value: 1,
+      order: 0,
+      selectable: true
+    },
+    {
+      key: this.sanitizer.bypassSecurityTrustHtml(`<span class="mb-1 h6 d-block">${this.productResource.companyFulfilled}<small class="badge bg-warning">${this.applicationResource.recommended}</small></span><small>${this.productResource.companyFulfilledDescription}</small>`),
+      value: 2,
+      order: 1,
+      selectable: true
+    }]
+  };
+
+  @ViewChild('productInventoryShippingForm') form!: FrForm.FrFormComponent<ProductUpsertShipping>;
+
+  @Output() protected validate: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private subscription: Subscription;
+
+  // #region Validators
+  protected productShippingTypeValidators: FrForm.FrFormControlValidator = {};
+  // #endregion Validators
+
+  constructor(private sanitizer: DomSanitizer, elementRef: ElementRef) {
+    super(elementRef);
+
+    this.subscription = this.applicationDocumentService
+      .formValidation
+      .subscribe(async () => {
+        if (this.form) {
+          const model = await this.form.onSubmit();
+          this.applicationDocumentService.addResult(this.form.id, model.isValid);
+          this.validate.emit(model.isValid);
+
+          if (model.isValid && model.data) {
+            this.product.shippingType = model.data.shippingType;
+          }
+        }
+      });
+  }
+
+  protected override async afterViewInit(): Promise<void> {
+    const model: ProductUpsertShipping = {
+      shippingType: this.product.shippingType || 1
+    };
+    await this.form.setModel(model);
+  }
+
+  protected override onDestroy(): void {
+    this.subscription.unsubscribe();
+
+		super.onDestroy();
+  }
+}

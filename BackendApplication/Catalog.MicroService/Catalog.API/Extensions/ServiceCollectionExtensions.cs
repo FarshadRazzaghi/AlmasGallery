@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.Extensions;
+﻿using Catalog.API.Helpers;
+
+namespace Catalog.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -12,18 +14,18 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCustomCors(this IServiceCollection services)
+    public static IServiceCollection AddCustomOpenApi(this IServiceCollection services)
     {
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAngularOrigins",
-            builder =>
-            {
-                builder.WithOrigins("http://127.0.0.100:2525")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
-            });
-        });
+        services.AddOpenApi("v1",
+                            options =>
+                            {
+                                options.ShouldInclude = (description) => description.GroupName == null || description.GroupName == options.DocumentName;
+
+                                options.AddSchemaTransformer<OpenApiSchemaTransformer>();
+                                options.AddDocumentTransformer<OpenApiDocumentSecurityTransformer>();
+                            });
+
+
         return services;
     }
 

@@ -1,0 +1,189 @@
+@use "@fr-widget/sdk/styles/__mixins" as mixins;
+
+@mixin product-category-upsert($direction) {
+  app-pc-upsert {
+    .card-body-holder {
+      padding: 0 !important;
+    }
+  }
+
+  app-pc-upsert-base-info {
+    .form-holder {
+      margin-top: 1rem;
+      border-top: 1px solid #ccc;
+
+      .base-info-form {
+        padding: 1rem;
+      }
+    }
+  }
+
+  app-pc-upsert-cfg {
+    .form-holder {
+      margin-top: 1rem;
+      border-top: 1px solid #ccc;
+
+      .custom-field-group-form {
+        padding: 1rem;
+      }
+
+      .custom-field-group-list {
+        padding: 0rem;
+        border-top: 1px solid #ccc;
+
+        .btn + .btn {
+          margin-top: 0.5rem !important;
+        }
+
+        .custom-field-group-list-item {
+          border-top: 1px solid #ccc;
+          margin: 0;
+
+          & .drag-handler {
+            touch-action: none;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+            user-select: none;
+            cursor: grab;
+            display: flex;
+
+            @include mixins.mediaQuery(lg) {
+              display: none;
+            }
+          }
+
+          & .order-handler {
+            display: none;
+            border: none;
+
+            @if $direction == "ltr" {
+              border-right: 1px solid #ccc;
+            }
+            @else {
+              border-left: 1px solid #ccc;
+            }
+
+            @include mixins.mediaQuery(lg) {
+              display: flex;
+              flex-direction: column;
+            }
+          }
+
+          & > div {
+            padding: 1rem;
+          }
+
+          &:first-child {
+            border-top: 0px;
+          }
+        }
+      }
+    }
+  }
+
+  app-pc-upsert-cfg-form {
+    .full-height {
+      height: calc(100% - 24px) !important;
+    }
+
+    .card {
+      height: 100% !important;
+      margin-bottom: 0 !important;
+    }
+
+    .is-active {
+      padding-top: 0 !important;
+
+      @include mixins.mediaQuery(xl) {
+        &.no-label {
+          padding-top: 0 !important;
+        }
+      }
+    }
+
+    @include mixins.mediaQuery(xl) {
+      .no-label {
+        padding-top: 0.5rem !important;
+      }
+    }
+
+    .custom-field-options {
+      button {
+        & + button {
+          margin-top: 0.5rem !important;
+        }
+      }
+    }
+
+    .custom-field-group-btn-group,
+    .date-time-group,
+    .condition-group {
+      & > div {
+        & + div {
+          @if $direction == "ltr" {
+            padding-left: 0.5rem !important;
+          }
+          @else {
+            padding-right: 0.5rem !important;
+          }
+        }
+
+        button {
+          i {
+            padding: 0 !important;
+          }
+        }
+      }
+
+      @include mixins.mediaQuery(lg) {
+        & > div {
+          & + div {
+            @if $direction == "ltr" {
+              //padding-left: 0rem !important;
+            }
+            @else {
+              //padding-right: 0rem !important;
+            }
+          }
+        }
+      }
+    }
+
+    .custom-field-group-btn-group {
+      order: 5;
+
+      @include mixins.mediaQuery(lg) {
+        order: 0 !important;
+      }
+    }
+
+    .date-time-group,
+    .condition-group {
+      .no-label {
+        @include mixins.mediaQuery(xl) {
+          .no-label {
+            padding-top: 28.5px !important;
+          }
+        }
+      }
+    }
+
+    .option-list {
+      .option-list-item {
+        border-bottom: 1px solid #ccc;
+
+        .btn + .btn {
+          margin-top: 0.5rem !important;
+        }
+      }
+    }
+  }
+}
+
+html[dir="rtl"] {
+  @include product-category-upsert("rtl");
+}
+
+html[dir="ltr"] {
+  @include product-category-upsert("ltr");
+}

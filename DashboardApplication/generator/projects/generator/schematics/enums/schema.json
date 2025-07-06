@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "generator",
+  "title": "Generates Code related to almas Gallery application.",
+  "type": "object",
+  "properties": {
+    "path": {
+      "description": "where should be create the file.",
+      "type": "string",
+      "format": "path",
+      "x-prompt": "where should be create the file?",
+      "default": "src/app/generator"
+    }
+  },
+  "required": []
+}

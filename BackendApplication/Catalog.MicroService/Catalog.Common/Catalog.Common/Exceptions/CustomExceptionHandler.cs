@@ -10,12 +10,13 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        //logger.LogError("Error Message: \r\n{exceptionMessage}", exception.Message);
+        logger.LogError("Error Message: \r\n{exceptionMessage}", exception.Message);
 
         (string Detail, string Title, int StatusCode) = exception switch
         {
             UnauthorizedAccessException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status401Unauthorized),
             ValidationException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status400BadRequest),
+            RelationException => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status500InternalServerError),
             _ => (exception.Message, exception.GetType().Name, context.Response.StatusCode = StatusCodes.Status500InternalServerError),
         };
 
@@ -38,6 +39,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
                 x.Severity,
                 x.ErrorCode,
             }));
+        }
+
+        if (exception is RelationException relationException)
+        {
+            problemDetails.Extensions.Add("relationMessage", relationException.RelationMessage);
         }
 
         problemDetails.Extensions.Add("traceId", context.TraceIdentifier);
