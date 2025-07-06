@@ -1,0 +1,210 @@
+/**
+ * @fileoverview
+ * ⚠️ WARNING: This file is auto-generated. ⚠️
+ *
+ * Any manual changes to this file will be overwritten when the code is regenerated.
+ * If you need to modify the API functionality, please:
+ * 1. Modify the API generator templates
+ * 2. Re-run the code generation process
+ *
+ * Last generated: 2025-07-02T20:54:56.168Z
+ * Generator version: 1.0.0
+ *
+ * @description
+ * Helper utilities for HTTP operations in the API service.
+ * Provides functionality for:
+ * - Error handling and formatting
+ * - HTTP header management
+ * - URL generation and parameter handling
+ * - Authentication header generation
+ *
+ * @see {@link ApiServiceGeneric} for usage in the API service
+ * @see {@link CustomErrorEvent} for error handling types
+ * @generated
+ */
+
+import { HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { CustomErrorEvent, CustomHeaders } from "./interface.generated";
+
+/**
+ * Static utility class for HTTP operations
+ * Provides methods for common HTTP-related tasks
+ *
+ * @class HttpHelper
+ * @static
+ *
+ * @example
+ * ```typescript
+ * // Handle HTTP errors
+ * observable.pipe(
+ *   catchError(HttpHelper.handleError())
+ * );
+ *
+ * // Add authentication headers
+ * const headers = HttpHelper.addHeader();
+ *
+ * // Generate API URLs
+ * const url = HttpHelper.generateUrl('users', ['123']);
+ * ```
+ */
+export class HttpHelper {
+
+	/**
+	 * Default custom headers for API requests
+	 * @private
+	 * @type {CustomHeaders}
+	 */
+	private static customHeaders: CustomHeaders = {};
+
+	/**
+		 * Sets custom headers to be included in all requests
+		 * @param {CustomHeaders} headers - Custom headers to add
+		 *
+		 * @example
+		 * ```typescript
+		 * HttpHelper.setCustomHeaders({
+		 *   'X-Custom-Header': 'value',
+		 *   'X-API-Version': '1.0'
+		 * });
+		 * ```
+		 */
+	public static setCustomHeaders(headers: CustomHeaders): void {
+		this.customHeaders = headers;
+	}
+
+	/**
+	 * Generates a query string from an object of filters
+	 * Converts object properties to key-value pairs for URL parameters
+	 *
+	 * @template T - The type of the filter object
+	 * @param {T} [filter] - The filter object to convert to a query string
+	 * @returns {string} Query string representation of the filter object
+	 *
+	 * @example
+	 * ```typescript
+	 * const filter = { name: 'John', age: 30 };
+	 * const queryString = HttpHelper.getQueryStringBuilder(filter);
+	 * console.log(queryString); // Output: "name=John&age=30"
+	 * ```
+	 */
+	public static getQueryString<T>(filter?: T): string {
+		let queryString = '';
+		if (filter) {
+			const objects = Object.keys(filter) as (keyof T)[];
+			objects.forEach((x: keyof T) => {
+				if (filter[x] === undefined || filter[x] === null) {
+					return;
+				}
+
+				queryString += `${x as T}=${filter[x]}&`
+			})
+			queryString = queryString.slice(0, -1);
+		}
+
+		return queryString;
+	}
+
+	/**
+	 * Formats HTTP error responses into readable messages
+	 * Handles both client-side and server-side errors
+	 *
+	 * @private
+	 * @param {HttpErrorResponse} error - The HTTP error response
+	 * @returns {string} Formatted error message
+	 *
+	 * @example
+	 * ```typescript
+	 * const message = HttpHelper.formatErrorMessage(error);
+	 * console.error(message);
+	 * ```
+	 */
+	private static formatErrorMessage(error: HttpErrorResponse): string {
+		if (error.error instanceof ErrorEvent) {
+			return `Error: ${error.error.message}`;
+		}
+
+		const castedError = error as CustomErrorEvent;
+    return `Error Code: ${castedError.status}\nMessage: ${castedError.message}`;
+	}
+
+	/**
+	 * Creates a type-safe error handler for HTTP requests
+	 * Formats and logs errors, then re-throws them as observables
+	 *
+	 * @internal
+	 * @template T - The expected response data type
+	 * @returns {(error: HttpErrorResponse) => Observable<T>} Error handler function
+	 *
+	 * @example
+	 * ```typescript
+	 * // In a service method
+	 * return this.http.get<UserData>(url).pipe(
+	 *   catchError(HttpHelper.handleError<UserData>())
+	 * );
+	 * ```
+	 */
+	static #handleError<T>(): (error: HttpErrorResponse) => Observable<T> {
+		return (error: HttpErrorResponse): Observable<T> => {
+			const errorMessage = this.formatErrorMessage(error);
+			console.error(errorMessage);
+			return throwError(() => error);
+		};
+	}
+
+	/**
+	 * Generates HTTP headers with authentication and CORS settings
+	 * Includes Basic auth and cross-origin configuration
+	 *
+	 * @internal
+	 * @returns {HttpHeaders} Configured headers object
+	 *
+	 * @example
+	 * ```typescript
+	 * const headers = HttpHelper.addHeader();
+	 * this.http.get(url, { headers });
+	 * ```
+	 */
+	static #getHeader(): HttpHeaders {
+		const headers: Record<string, string | number | (string | number)[]> = {
+			...this.customHeaders
+		};
+
+		return new HttpHeaders(headers);
+	}
+
+	/**
+	 * Builds a complete API URL with path parameters
+	 * Handles path parameter concatenation and cleanup
+	 *
+	 * @internal
+	 * @param {string} url - Base URL path (e.g., 'users')
+	 * @param {string[]} [parameters] - URL path parameters (e.g., ['123', 'profile'])
+	 * @returns {string} Complete API URL
+	 *
+	 * @example
+	 * ```typescript
+	 * // Basic URL
+	 * HttpHelper.generateUrl('users');  // 'api/users'
+	 *
+	 * // URL with parameters
+	 * HttpHelper.generateUrl('users', ['123', 'profile']);  // 'api/users/123/profile'
+	 * ```
+	 */
+	static #generateUrl(url: string, parameters?: string[]): string {
+		if (parameters?.length) {
+			url += `/${parameters.join('/')}`;
+		}
+
+		return `${url.replace(/\/+/g, '/')}`;
+	}
+
+	/** @internal Friend class accessor for ApiServiceGeneric */
+	static get apiServiceAccess() {
+		return {
+			handleError: this.#handleError.bind(this),
+			getHeader: this.#getHeader.bind(this),
+			generateUrl: this.#generateUrl.bind(this)
+		};
+	}
+}

@@ -36,7 +36,9 @@ public partial class CustomField : IBaseEntity
     [StringLength(256)]
     public string? Validation { get; set; }
 
-    public byte ValueType { get; set; }
+    public byte DataType { get; set; }
+
+    public bool IsActive { get; set; }
 
     public bool IsSingleton { get; set; }
 

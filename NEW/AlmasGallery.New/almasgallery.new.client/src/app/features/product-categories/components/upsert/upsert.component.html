@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-12">
+        <fr-card #productCategoryBaseInfoCard="fr-card"
+                 [id]="'ProductCategoryBaseInfoCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <app-pc-upsert-base-info *ngIf="loadForm" [id]="productCategoryBaseInfoFormId">
+            </app-pc-upsert-base-info>
+        </fr-card>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <fr-card #productCategoryCustomFieldGroupCard="fr-card"
+                 [id]="'ProductCategoryCustomFieldGroupCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <app-pc-upsert-cfg *ngIf="loadForm" [id]="productCategoryCustomFieldGroupFormId">
+            </app-pc-upsert-cfg>
+        </fr-card>
+    </div>
+</div>
+
+<app-pc-delete-modal *ngIf="loadForm && operation === 'Update'"
+                     [id]="productCategoryDeleteModalId">
+</app-pc-delete-modal>

@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "generator",
+  "title": "Generates Code related to almas Gallery application.",
+  "type": "object",
+  "properties": {
+    "path": {
+      "description": "where should be create the file.",
+      "type": "string",
+      "format": "path",
+      "x-prompt": "where should be create the file?",
+      "default": "src/app/generator"
+    },
+    "interfaces": {
+      "description": "Generate classes interfaces",
+      "type": "boolean",
+      "x-prompt": "Do you want to generate interfaces?",
+      "default": false
+    },
+    "url": {
+      "description": "The fetch url to connect and get required data",
+      "type": "string"
+    }
+  },
+  "required": ["url"]
+}

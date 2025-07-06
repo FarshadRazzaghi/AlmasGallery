@@ -1,0 +1,73 @@
+<div class="row">
+    <fr-form #productOrganizationForm="fr-form"
+             [id]="'ProductOrganizationForm'"
+             [isAbsoluteError]="true"
+             [formControls]="{}"
+             [cssClass]="['row']">
+
+        <fr-form-control control-dropdown
+                         [presenter]="'Vendor_Id'"
+                         [id]="'ProductVendor'"
+                         [showLabel]="true"
+                         [label]="productResource.vendor"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productVendorValidators"
+                         [items]="ProductVendorItems"
+                         [isVisible]="true">
+        </fr-form-control>
+
+        <fr-form-group [id]="'ProductCategoryGroup'"
+                       [groupName]="'groupHolder'"
+                       [cssClasses]="['col-12', 'col-md-6', 'col-lg-12', 'group-holder']">
+
+            <fr-form-control control-dropdown
+                             [presenter]="'productCategory'"
+                             [id]="'productProductCategory'"
+                             [showLabel]="true"
+                             [label]="productResource.category"
+                             [cssClass]="['col']"
+                             [controlCssClass]="['col-12']"
+                             [items]="productCategoryItems"
+														 [isEnable]="!productCategoryLoading"
+                             [validators]="productCategoryValidators"
+														 [helpText]="productCategoryHelpText"
+														 (change)="onChangeProductCategory($event)">
+            </fr-form-control>
+
+            <fr-form-control control-button
+                             [presenter]="'CategoryRefresh'"
+                             [id]="'productProductCategoryRefresh'"
+                             [text]="''"
+                             [title]="applicationResource.refresh"
+														 [iconClass]="'ri-refresh-line'"
+														 [buttonColor]="'primary'"
+                             [cssClass]="['col-auto', 'align-self-center', 'mb-0']"
+														 (click)="onRefreshProductCategory()">
+            </fr-form-control>
+        </fr-form-group>
+
+        <fr-form-control control-dropdown
+                         [presenter]="'Collection_Id'"
+                         [id]="'ProductCollection'"
+                         [showLabel]="true"
+                         [label]="productResource.collection"
+                         [emptyTitle]="applicationResource.dropDown.selectItem"
+                         [cssClass]="['col-12', 'col-md-6', 'col-lg-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productCollectionValidators"
+                         [items]="[]"
+                         [allowNull]="true">
+        </fr-form-control>
+
+        <fr-form-control control-chips
+                         [presenter]="'Tags'"
+                         [id]="'ProductTags'"
+                         [showLabel]="true"
+                         [label]="productResource.tags"
+                         [cssClass]="['col-12']"
+                         [controlCssClass]="['col-12']"
+                         [validators]="productTagsValidators">
+        </fr-form-control>
+    </fr-form>
+</div>

@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-12">
+        <p class="m-0 p-3">{{productCategoryResource.customFieldGroup}}</p>
+    </div>
+</div>
+
+<div class="row m-0 form-holder">
+    <div class="col-12 custom-field-group-form">
+        <app-pc-upsert-cfg-form [id]="'CustomFieldGroupForm'"
+                                [submitted]="formSubmitted"
+                                (submitForm)="onAddOrUpdate($event)">
+        </app-pc-upsert-cfg-form>
+    </div>
+
+    <div class="col-12 custom-field-group-list" *ngIf="customFieldGroups.length > 0">
+        <div *ngFor="let customFieldGroup of customFieldGroups; trackBy: trackByIdentifier; index as i"
+             class="row custom-field-group-list-item"
+             frDragDrop
+             [list]="customFieldGroups"
+             [elemPosition]="i"
+             (returnUpdatedList)="onUpdatedList($event)">
+
+            <div class="p-2 justify-content-between col-auto order-handler">
+                <button frButtonIcon
+                        [color]="'light'"
+                        [type]="'button'"
+                        [title]="'MOVE UP'"
+                        [iconClass]="'ri-arrow-up-s-line'"
+                        [cssClass]="['p-2']"
+                        [disabled]="i === 0"
+                        (click)="onMoveUp(i)">
+                </button>
+
+                <button frButtonIcon
+                        [color]="'light'"
+                        [type]="'button'"
+                        [title]="'MOVE DOWN'"
+                        [iconClass]="'ri-arrow-down-s-line'"
+                        [cssClass]="['p-2']"
+                        [disabled]="i === customFieldGroups.length - 1"
+                        (click)="onMoveDown(i)">
+                </button>
+            </div>
+
+            <div class="col">
+                <app-pc-upsert-cfg-form [id]="'CustomFieldGroupHolderForm-' + trackByIdentifier(i, customFieldGroup)"
+                                        [customFieldGroup]="customFieldGroup"
+                                        [submitted]="formSubmitted"
+                                        (submitForm)="onAddOrUpdate($event)"
+                                        (removeCustomFieldGroup)="onRemove($event)">
+                </app-pc-upsert-cfg-form>
+            </div>
+        </div>
+    </div>
+</div>

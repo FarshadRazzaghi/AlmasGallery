@@ -1,0 +1,141 @@
+<div id="wrapper">
+    <fr-theme>
+        <!-- Optional Theme Slots -->
+        <ng-template #themeLogoHolder>themeLogoHolder-works!</ng-template>
+        <ng-template #themeSidebarLogoHolder>themeSidebarLogoHolder-works!</ng-template>
+        <ng-template #themeSearchResultHolder>themeSearchResultHolder-works!</ng-template>
+        <ng-template #themeUserPanelHolder>themeUserPanelHolder-works!</ng-template>
+        <ng-template #themeNotificationDropDownHolder>themeNotificationDropDownHolder-works!</ng-template>
+
+        <!-- Content -->
+        <ng-template #themeContentHolder>
+            <div #headerPage class="page-header d-flex py-3">
+                <div class="page-header-action btn-group col-12 col-md-8 justify-content-center justify-content-md-end">
+                    <ng-container *ngFor="let button of headerButtons; trackBy: trackByIdentifier">
+                        <ng-container *ngIf="button.isVisible ?? true">
+                            <ng-container [ngSwitch]="button.directive">
+
+                                <!-- Normal Button -->
+                                <ng-container *ngSwitchCase="'button'">
+                                    <ng-container *ngTemplateOutlet="normalButton; context: { $implicit: button }">
+                                    </ng-container>
+                                </ng-container>
+
+                                <!-- Waiting Button -->
+                                <ng-container *ngSwitchCase="'waiting'">
+                                    <ng-container *ngIf="isWaitingButton(button)">
+                                        <button frButtonWaiting
+                                                [frDisabled]="!(button.isEnable ?? true)"
+                                                [color]="button.color"
+                                                [type]="button.type"
+                                                [cssClass]="button.cssClasses ?? []"
+                                                [title]="button.title ?? button.text"
+                                                [isWaiting]="button.isWaiting"
+                                                (click)="button.onClick($event)">
+                                            {{ button.text }}
+                                        </button>
+                                    </ng-container>
+                                </ng-container>
+
+                                <!-- Link Button -->
+                                <ng-container *ngSwitchCase="'link'">
+                                    <ng-container *ngTemplateOutlet="linkButton; context: { $implicit: button }">
+                                    </ng-container>
+                                </ng-container>
+
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div #pageContent class="page-content">
+                <router-outlet (activate)="pageContent.scrollTop = 0"></router-outlet>
+            </div>
+        </ng-template>
+    </fr-theme>
+</div>
+
+<!-- Normal Button Template -->
+<ng-template #normalButton let-button>
+    <button *ngIf="button.iconClass; else plainBtn"
+            frButtonIcon
+            [frDisabled]="!(button.isEnable ?? true)"
+            [color]="button.color"
+            [type]="button.type"
+            [cssClass]="button.cssClasses ?? []"
+            [iconClass]="button.iconClass"
+            [title]="button.title ?? button.text"
+            (click)="button.onClick($event)">
+        {{ button.text }}
+    </button>
+
+    <ng-template #plainBtn>
+        <button frButton
+                [frDisabled]="!(button.isEnable ?? true)"
+                [color]="button.color"
+                [type]="button.type"
+                [cssClass]="button.cssClasses ?? []"
+                [title]="button.title ?? button.text"
+                (click)="button.onClick($event)">
+            {{ button.text }}
+        </button>
+    </ng-template>
+</ng-template>
+
+<!-- Link Button Template -->
+<ng-template #linkButton let-button>
+    <ng-container *ngIf="!button.isExternalLink; else externalLink">
+        <a *ngIf="button.iconClass; else internalPlain"
+           frButtonIcon
+           [frDisabled]="!(button.isEnable ?? true)"
+           [color]="button.color"
+           [type]="button"
+           [cssClass]="button.cssClasses ?? []"
+           [iconClass]="button.iconClass"
+           [routerLink]="[button.routeLink]"
+           [target]="button.target"
+           [title]="button.title ?? button.text">
+            {{ button.text }}
+        </a>
+        <ng-template #internalPlain>
+            <a frButton
+               [frDisabled]="!(button.isEnable ?? true)"
+               [color]="button.color"
+               [type]="button"
+               [cssClass]="button.cssClasses ?? []"
+               [routerLink]="[button.routeLink]"
+               [target]="button.target"
+               [title]="button.title ?? button.text">
+                {{ button.text }}
+            </a>
+        </ng-template>
+    </ng-container>
+
+    <ng-template #externalLink>
+        <a *ngIf="button.iconClass; else externalPlain"
+           frButtonIcon
+           [frDisabled]="!(button.isEnable ?? true)"
+           [color]="button.color"
+           [type]="button"
+           [cssClass]="button.cssClasses ?? []"
+           [iconClass]="button.iconClass"
+           [href]="button.routeLink"
+           [target]="button.target"
+           [title]="button.title ?? button.text">
+            {{ button.text }}
+        </a>
+        <ng-template #externalPlain>
+            <a frButton
+               [frDisabled]="!(button.isEnable ?? true)"
+               [color]="button.color"
+               [type]="button"
+               [cssClass]="button.cssClasses ?? []"
+               [href]="button.routeLink"
+               [target]="button.target"
+               [title]="button.title ?? button.text">
+                {{ button.text }}
+            </a>
+        </ng-template>
+    </ng-template>
+</ng-template>

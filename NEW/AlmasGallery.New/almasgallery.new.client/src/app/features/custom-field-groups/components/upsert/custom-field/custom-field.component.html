@@ -1,0 +1,361 @@
+<div class="row">
+    <div class="col-12">
+        <p class="m-0 p-3">{{customFieldGroupResource.customFields}}</p>
+    </div>
+</div>
+
+<div class="row m-0 form-holder">
+    <div class="col-12 col-md-6 col-lg-7 col-xl-8 custom-field-form">
+        <fr-form #customFieldForm="fr-form"
+                 [id]="'customFieldForm'"
+                 [isAbsoluteError]="true"
+                 [formControls]="{}"
+                 [cssClass]="['row','custom-field-group']">
+
+            <fr-form-control controlSwitch
+                             [presenter]="'IsActive'"
+                             [id]="'IsActive'"
+                             [showLabel]="false"
+                             [showText]="true"
+                             [label]="customFieldResource.isActive"
+                             [cssClass]="['col-auto', 'mb-2', 'is-active']"
+                             [value]="true"
+                             [controlCssClass]="['col-12']">
+            </fr-form-control>
+
+            <fr-form-group [groupName]="'ActionHolder'"
+                           [id]="'ActionHolder'"
+                           [cssClasses]="['custom-field-btn-group', 'col', 'justify-content-end', ' align-content-start']">
+
+                <fr-form-control controlButton
+                                 [presenter]="'Remove'"
+                                 [id]="'Remove'"
+                                 [title]="applicationResource.cancel"
+                                 [text]="''"
+                                 [buttonColor]="'danger'"
+                                 [iconClass]="'ri-delete-bin-6-line'"
+                                 [buttonType]="'button'"
+                                 [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                 [isVisible]="operation === 'Update'"
+                                 (frClick)="onRemove()">
+                </fr-form-control>
+
+                <fr-form-control controlButton
+                                 [presenter]="'Add'"
+                                 [id]="'Add'"
+                                 [title]="(operation === 'Update') ? applicationResource.update : applicationResource.add"
+                                 [text]="''"
+                                 [buttonColor]="'success'"
+                                 [iconClass]="'ri-check-line'"
+                                 [buttonType]="'button'"
+                                 [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                 (frClick)="onAddOrUpdate()">
+                </fr-form-control>
+
+                <fr-form-control controlButton
+                                 [presenter]="'Cancel'"
+                                 [id]="'Cancel'"
+                                 [title]="applicationResource.cancel"
+                                 [buttonColor]="'secondary'"
+                                 [text]="''"
+                                 [iconClass]="'ri-close-line'"
+                                 [buttonType]="'button'"
+                                 [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                                 [isVisible]="operation === 'Update'"
+                                 (frClick)="onCancelUpdate()">
+                </fr-form-control>
+            </fr-form-group>
+
+            <fr-form-control controlSeparator
+                             [cssClass]="['mb-0', 'p-0', 'col-auto', 'col-sm-12']"
+                             [presenter]="'SeparatorBaseInfo'"
+                             [id]="'SeparatorBaseInfo'">
+            </fr-form-control>
+
+            <fr-form-control controlTextbox
+                             [presenter]="'Name'"
+                             [id]="'Name'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.name"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [validators]="isRequired"
+                             [autoComplete]="'off'">
+            </fr-form-control>
+
+            <fr-form-control controlDropdown
+                             [presenter]="'DataType'"
+                             [id]="'DataType'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.dataType"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [items]="dataTypeItems"
+                             (frChange)="onDataTypeChange($event)">
+            </fr-form-control>
+
+            <fr-form-control controlTextbox
+                             [presenter]="'HelpText'"
+                             [id]="'HelpText'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.helpText"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [autoComplete]="'off'">
+            </fr-form-control>
+
+            <fr-form-control controlTextbox
+                             [presenter]="'PlaceHolder'"
+                             [id]="'PlaceHolder'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.placeHolder"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [isVisible]="selectedDataType !== customFieldDataType.Boolean"
+                             [autoComplete]="'off'">
+            </fr-form-control>
+
+            <fr-form-control controlSeparator
+                             [cssClass]="['mb-0', 'p-0', 'col-auto', 'col-sm-12']"
+                             [presenter]="'SeparatorNoPlaceHolder'"
+                             [id]="'SeparatorNoPlaceHolder'"
+                             [isVisible]="selectedDataType === customFieldDataType.Boolean">
+            </fr-form-control>
+
+            <fr-form-control controlCheckbox
+                             [presenter]="'IsRequired'"
+                             [id]="'IsRequired'"
+                             [showLabel]="false"
+                             [label]="customFieldResource.isRequired"
+                             [value]="false"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']">
+            </fr-form-control>
+
+            <fr-form-control controlNumber
+                             [presenter]="'InitialValueNumber'"
+                             [id]="'InitialValueNumber'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.initialValue"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [showSpinner]="false"
+                             [allowNegative]="true"
+                             [allowNull]="true"
+                             [isVisible]="selectedDataType === customFieldDataType.Number"
+                             [validators]="initialValueNumberValidators">
+            </fr-form-control>
+
+            <fr-form-control controlTextbox
+                             [presenter]="'InitialValueString'"
+                             [id]="'InitialValueString'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.initialValue"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [isVisible]="selectedDataType === customFieldDataType.String"
+                             [autoComplete]="'off'"
+                             [validators]="initialValueStringValidators">
+            </fr-form-control>
+
+            <fr-form-group [groupName]="'Date'"
+                           [id]="'Date'"
+                           [isVisible]="selectedDataType === customFieldDataType.Date"
+                           [cssClasses]="['date-time-group', 'col-12', 'col-lg-6']">
+
+                <fr-form-control controlDate
+                                 [presenter]="'InitialValueDate'"
+                                 [id]="'InitialValueDate'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.initialValue"
+                                 [cssClass]="['col', 'ms-2']"
+                                 [controlCssClass]="['col-12']"
+                                 [calendarType]="'persian'"
+                                 [value]="nowDate"
+                                 [isEnable]="!applyCurrentDate">
+                </fr-form-control>
+
+                <fr-form-control controlCheckbox
+                                 [presenter]="'ApplyCurrentDate'"
+                                 [id]="'ApplyCurrentDate'"
+                                 [label]="customFieldResource.applyCurrentDate"
+                                 [showLabel]="false"
+                                 [cssClass]="['col-auto']"
+                                 [controlCssClass]="['col-12']"
+                                 [value]="applyCurrentDate"
+                                 (frChange)="applyCurrentDate = !applyCurrentDate">
+                </fr-form-control>
+            </fr-form-group>
+
+            <fr-form-control controlDropdown
+                             [presenter]="'InitialValueBoolean'"
+                             [id]="'Boolean'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.initialValue"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [isVisible]="selectedDataType === customFieldDataType.Boolean"
+                             [items]="booleanItems">
+            </fr-form-control>
+
+            <fr-form-control controlNumber
+                             [presenter]="'NumberMinValue'"
+                             [id]="'NumberMinValue'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.minValue"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [showSpinner]="false"
+                             [allowNegative]="true"
+                             [allowNull]="true"
+                             [value]="numberValueDefaultRange[0]"
+                             [isVisible]="selectedDataType === customFieldDataType.Number"
+                             [validators]="numberMinValueValidators">
+            </fr-form-control>
+
+            <fr-form-control controlNumber
+                             [presenter]="'NumberMaxValue'"
+                             [id]="'NumberMaxValue'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.maxValue"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [showSpinner]="false"
+                             [allowNegative]="true"
+                             [allowNull]="true"
+                             [value]="numberValueDefaultRange[1]"
+                             [isVisible]="selectedDataType === customFieldDataType.Number">
+            </fr-form-control>
+
+            <fr-form-control controlCheckbox
+                             [presenter]="'IsMultiLine'"
+                             [id]="'IsMultiLine'"
+                             [showLabel]="false"
+                             [label]="customFieldResource.isMultiLine"
+                             [cssClass]="['col-12', 'col-lg-6', 'empty-label']"
+                             [isVisible]="selectedDataType === customFieldDataType.String"
+                             [controlCssClass]="['col-12']">
+            </fr-form-control>
+
+            <fr-form-control controlTextbox
+                             [presenter]="'Regex'"
+                             [id]="'Regex'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.regex"
+                             [placeHolder]="'^\\d+$'"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12', 'dir-ltr', 'text-start']"
+                             [isVisible]="selectedDataType === customFieldDataType.String"
+                             [validators]="regexValidators"
+                             [autoComplete]="'off'">
+            </fr-form-control>
+
+            <fr-form-control controlSeparator
+                             [cssClass]="['mb-0', 'p-0', 'col-auto', 'col-sm-12']"
+                             [presenter]="'SeparatorParentInfo'"
+                             [id]="'SeparatorParentInfo'">
+            </fr-form-control>
+
+            <fr-form-control controlDropdown
+                             [presenter]="'ParentUniqueId'"
+                             [id]="'ParentUniqueId'"
+                             [showLabel]="true"
+                             [label]="customFieldResource.parent"
+                             [cssClass]="['col-12', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [allowNull]="true"
+                             [items]="parentItems"
+                             (frChange)="onParentChange($event)">
+            </fr-form-control>
+
+            <fr-form-group [groupName]="'ParentConditionGroup'"
+                           [id]="'ParentConditionGroup'"
+                           [isVisible]="selectedParentDataType !== undefined"
+                           [cssClasses]="['condition-group', 'col-12', 'col-lg-6']">
+
+                <fr-form-control controlDropdown
+                                 [presenter]="'ParentConditionOperand'"
+                                 [id]="'ParentCondition'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.parentCondition"
+                                 [cssClass]="['col-12', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [allowNull]="false"
+                                 [items]="parentConditionItems"
+                                 [value]="selectedParentCondition"
+                                 (frChange)="onParentConditionChange($event)">
+                </fr-form-control>
+
+                <fr-form-control controlNumber
+                                 [presenter]="'ParentValueNumber'"
+                                 [id]="'ParentValueNumber'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.parentCondition"
+                                 [cssClass]="['col-12', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [showSpinner]="false"
+                                 [allowNegative]="true"
+                                 [allowNull]="true"
+                                 [isVisible]="selectedParentDataType === customFieldDataType.Number"
+                                 [isEnable]="selectedParentCondition !== hasNoConditionValue"
+                                 [validators]="parentValueValidators">
+                </fr-form-control>
+
+                <fr-form-control controlTextbox
+                                 [presenter]="'ParentValueString'"
+                                 [id]="'ParentValueString'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.parentCondition"
+                                 [cssClass]="['col-12', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [autoComplete]="'off'"
+                                 [isVisible]="selectedParentDataType === customFieldDataType.String"
+                                 [isEnable]="selectedParentCondition !== hasNoConditionValue"
+                                 [validators]="parentValueValidators">
+                </fr-form-control>
+
+                <fr-form-control controlDate
+                                 [presenter]="'ParentValueDate'"
+                                 [id]="'ParentValueDate'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.parentCondition"
+                                 [cssClass]="['col-12', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [calendarType]="'persian'"
+                                 [value]="nowDate"
+                                 [isVisible]="selectedParentDataType === customFieldDataType.Date"
+                                 [isEnable]="selectedParentCondition !== hasNoConditionValue"
+                                 [validators]="parentValueValidators">
+                </fr-form-control>
+
+                <fr-form-control controlDropdown
+                                 [presenter]="'ParentValueBoolean'"
+                                 [id]="'ParentValueBoolean'"
+                                 [showLabel]="true"
+                                 [label]="customFieldResource.parentCondition"
+                                 [cssClass]="['col-12', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [isVisible]="selectedParentDataType === customFieldDataType.Boolean"
+                                 [isEnable]="selectedParentCondition !== hasNoConditionValue"
+                                 [items]="booleanItems"
+                                 [validators]="parentValueValidators">
+                </fr-form-control>
+            </fr-form-group>
+        </fr-form>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-5 col-xl-4 custom-field-list">
+        <p *ngIf="customFields.length === 0" class="m-0 text-center">{{ customFieldGroupResource.noCustomFields }}</p>
+
+        <ng-container *ngFor="let customField of customFields; trackBy: trackByIdentifier">
+            <button frButton
+                    type="button"
+                    [color]="'primary'"
+                    [cssClass]="['col-12']"
+                    [disabled]="customField.uniqueId === selectedUniqueId"
+                    (click)="onSelectForUpdate(customField)">
+                {{ customField.name }} <span class="d-block">({{ customField.dataType | itemName:dataTypeItems}})</span>
+            </button>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+/* eslint-disable prefer-const */
+/**
+ * @fileoverview
+ * ⚠️ WARNING: This file is auto-generated. ⚠️
+ *
+ * Any manual changes to this file will be overwritten when the code is regenerated.
+ * If you need to modify the API functionality, please:
+ * 1. Modify the API generator templates
+ * 2. Re-run the code generation process
+ *
+ * Last generated: <%= newDate %>
+ * Generator version: <%= version %>
+ *
+ * @generated
+ */
+
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
+
+import { HttpAuthService } from "../helpers/http-auth.service.generated";
+import { HttpHelper } from "../helpers/helper.generated";
+import { BaseHttpResponse, RequestOptions } from "../helpers/interface.generated";
+import { HttpServiceGeneric } from "../helpers/http.service.generated";
+
+import * as models from "../api-schematics.generator";
+
+@Injectable({ providedIn: 'root' })
+export class <%= classify(serviceName) %>HttpService extends HttpServiceGeneric {
+
+	constructor(http: HttpClient, authService: HttpAuthService) {
+		super(http, authService);
+	}
+
+  <% for(let key in data) { %>
+  <%= generateMethodSignature(data[key]) %>
+  <% } %>
+}

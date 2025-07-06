@@ -1,13 +1,17 @@
-﻿
-using Catalog.Domain.Models;
-using Catalog.Infrastructure.Persistence.Configurations;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Catalog.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Catalog.Infrastructure.Persistence;
 
-public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options) : DbContext(options)
+public partial class AlmasGalleryContext : DbContext
 {
+    public AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options)
+        : base(options)
+    {
+    }
+
     public virtual DbSet<CustomField> CustomFields { get; set; }
 
     public virtual DbSet<CustomFieldGroup> CustomFieldGroups { get; set; }
@@ -28,12 +32,57 @@ public partial class AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> o
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new Configurations.CustomFieldConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ProductConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ProductCategoryConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ProductCategoryCustomFieldGroupConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ProductInventoryConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ProductPriceConfiguration());
+        modelBuilder.Entity<CustomField>(entity =>
+        {
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+
+            entity.HasOne(d => d.CustomFieldGroup).WithMany(p => p.CustomFields)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CustomField_CustomFieldGroup");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_CustomField_CustomField");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasOne(d => d.ProductCategory).WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Product_ProductCategory");
+        });
+
+        modelBuilder.Entity<ProductCategory>(entity =>
+        {
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent).HasConstraintName("FK_ProductCategory_ProductCategory");
+        });
+
+        modelBuilder.Entity<ProductCategoryCustomFieldGroup>(entity =>
+        {
+            entity.HasOne(d => d.CustomFieldGroup).WithMany(p => p.ProductCategoryCustomFieldGroups)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductCategoryCustomFieldGroup_CustomFieldGroup");
+
+            entity.HasOne(d => d.ProductCategory).WithMany(p => p.ProductCategoryCustomFieldGroups)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductCategoryCustomFieldGroup_ProductCategory");
+        });
+
+        modelBuilder.Entity<ProductInventory>(entity =>
+        {
+            entity.HasOne(d => d.Inventory).WithMany(p => p.ProductInventories)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductInventory_Inventory");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductInventories)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductInventory_Product");
+        });
+
+        modelBuilder.Entity<ProductPrice>(entity =>
+        {
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductPrices)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProductPrice_Product");
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }

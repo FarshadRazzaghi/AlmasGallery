@@ -1,0 +1,14 @@
+<fr-modal [id]="id"
+          [bodyCssClass]="['overflow-hidden']"
+          [size]="ModalSize.medium"
+          [hasHeaderDismissButton]="false"
+          [hasSubmitButton]="true"
+          [submitButtonTitle]="applicationResource.yes"
+          [submitButtonColor]="'danger'"
+          [hasDismissButton]="true"
+          [dismissButtonTitle]="applicationResource.no">
+
+    <div class="font-16 d-flex justify-content-start">
+        {{ applicationResource.productCategoryResource.deleteConfirmationMessage }}
+    </div>
+</fr-modal>

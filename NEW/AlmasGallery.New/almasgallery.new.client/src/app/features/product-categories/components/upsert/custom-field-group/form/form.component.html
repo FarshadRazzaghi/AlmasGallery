@@ -1,0 +1,162 @@
+<fr-form #customFieldGroupForm="fr-form"
+         [id]="id"
+         [isAbsoluteError]="true"
+         [formControls]="{}"
+         [cssClass]="['row','custom-field-group-group']">
+
+    <fr-form-control controlSwitch
+                     [presenter]="'IsActive'"
+                     [id]="'IsActive'"
+                     [showLabel]="false"
+                     [showText]="true"
+                     [label]="productCategoryResource.isActive"
+                     [cssClass]="['col-auto', 'col-md-6', 'col-lg-auto', 'align-content-center', 'mb-2', 'mb-lg-0']"
+                     [controlCssClass]="['col-12']"
+                     [isEnable]="(operation !== 'Update' || isUpdating)">
+    </fr-form-control>
+
+    <fr-form-group [groupName]="'ApplyUpdateActionHolder'"
+                   [id]="'ApplyUpdateActionHolder'"
+                   [isVisible]="operation == 'Update' && isUpdating"
+                   [cssClasses]="['custom-field-group-btn-group',
+                                  'col', 'col-md-6', 'col-lg',
+                                  'justify-content-end', 'align-content-center', 'align-content-md-start',
+                                  'mb-2', 'mb-lg-0']">
+
+        <fr-form-control controlButton
+                         [presenter]="'ApplyEdit'"
+                         [id]="'ApplyEdit'"
+                         [title]="applicationResource.update"
+                         [buttonColor]="'success'"
+                         [text]="''"
+                         [iconClass]="'ri-check-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         (frClick)="onAddOrUpdate()">
+        </fr-form-control>
+
+        <fr-form-control controlButton
+                         [presenter]="'Cancel'"
+                         [id]="'Cancel'"
+                         [title]="applicationResource.cancel"
+                         [text]="''"
+                         [buttonColor]="'secondary'"
+                         [iconClass]="'ri-close-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         (frClick)="onCancelUpdate()">
+        </fr-form-control>
+    </fr-form-group>
+
+    <fr-form-group [groupName]="'UpdateActionHolder'"
+                   [id]="'UpdateActionHolder'"
+                   [isVisible]="operation == 'Update' && !isUpdating"
+                   [cssClasses]="['custom-field-group-btn-group',
+                                  'col', 'col-md-6', 'col-lg',
+                                  'justify-content-end', 'align-content-center', 'align-content-md-start',
+                                  'mb-2', 'mb-lg-0']">
+
+        <fr-form-control controlButton
+                         [presenter]="'Edit'"
+                         [id]="'Edit'"
+                         [title]="applicationResource.update"
+                         [buttonColor]="'primary'"
+                         [text]="''"
+                         [iconClass]="'ri-pencil-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         (frClick)="onSelectForUpdate()">
+        </fr-form-control>
+
+        <fr-form-control controlButton
+                         [presenter]="'Remove'"
+                         [id]="'Remove'"
+                         [title]="applicationResource.remove"
+                         [text]="''"
+                         [buttonColor]="'danger'"
+                         [iconClass]="'ri-delete-bin-6-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         (frClick)="onRemove()">
+        </fr-form-control>
+    </fr-form-group>
+
+    <fr-form-group [groupName]="'AddNewActionHolder'"
+                   [id]="'AddNewActionHolder'"
+                   [isVisible]="operation == 'AddNew'"
+                   [cssClasses]="['custom-field-group-btn-group',
+                                  'col', 'col-md-6', 'col-lg',
+                                  'justify-content-end', 'align-content-center',
+                                  'mb-2', 'mb-lg-0']">
+
+        <fr-form-control controlButton
+                         [presenter]="'Add'"
+                         [id]="'Add'"
+                         [title]="applicationResource.add"
+                         [text]="''"
+                         [buttonColor]="'success'"
+                         [iconClass]="'ri-check-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-0']"
+                         (frClick)="onAddOrUpdate()">
+        </fr-form-control>
+    </fr-form-group>
+
+    <fr-form-group [groupName]="'CustomFieldGroupHolder'"
+                   [id]="'CustomFieldGroupGroup'"
+                   [cssClasses]="['custom-field-group-group', 'col-12', 'col-md-6', 'col-lg-4']">
+
+        <fr-form-control controlDropdown
+                         [presenter]="'CustomFieldGroupId'"
+                         [id]="'CustomFieldGroupId'"
+                         [showLabel]="operation == 'AddNew'"
+                         [label]="productCategoryResource.customFieldGroup"
+                         [allowNull]="false"
+                         [cssClass]="getClass()"
+                         [controlCssClass]="['col-12']"
+                         [items]="customFieldGroupItems"
+                         [isEnable]="!customFieldGroupLoading && operation !== 'Update'"
+                         [validators]="isRequired">
+        </fr-form-control>
+
+        <fr-form-control controlButton
+                         [presenter]="'CustomFieldGroupRefresh'"
+                         [id]="'CustomFieldGroupRefresh'"
+                         [title]="applicationResource.refresh"
+                         [text]="''"
+                         [buttonColor]="'primary'"
+                         [iconClass]="'ri-refresh-line'"
+                         [buttonType]="'button'"
+                         [cssClass]="['col-auto', 'align-self-end', 'mb-2']"
+                         [isVisible]="operation == 'AddNew'"
+                         (frClick)="onCustomFieldGroupRefresh()">
+        </fr-form-control>
+
+        <fr-form-control controlLink
+                         [presenter]="'AddNewCustomFildGroup'"
+                         [id]="'AddNewCustomFildGroup'"
+                         [title]="productCategoryResource.addNewCustomFieldGroup"
+                         [buttonColor]="'primary'"
+                         [text]="productCategoryResource.addNewCustomFieldGroup"
+                         [isVisible]="operation == 'AddNew'"
+                         [cssClass]="['col-12']"
+                         [buttonCssClass]="['col-12']"
+                         [target]="'_blank'"
+                         [allowRouting]="false"
+                         [routerLink]="addNewCustomFieldGroupLink">
+        </fr-form-control>
+    </fr-form-group>
+
+    <fr-form-control controlDropdown
+                     [presenter]="'CustomFieldGroupLocation'"
+                     [id]="'CustomFieldGroupLocation'"
+                     [showLabel]="operation == 'AddNew'"
+                     [label]="productCategoryResource.customFieldGroupLocation"
+                     [cssClass]="['col-12', 'col-md-6', 'col-lg-4']"
+                     [controlCssClass]="['col-12']"
+                     [allowNull]="false"
+                     [items]="customFieldGroupLocationItems"
+                     [isEnable]="(operation !== 'Update' || isUpdating)"
+                     [validators]="isRequired">
+    </fr-form-control>
+</fr-form>

@@ -8,7 +8,12 @@ internal partial class UserUseCase : IUserUseCase
 
     public async Task<User?> ValidateAndGetUserAsync(AuthenticateRequest model, CancellationToken cancellation = default)
     {
+        if (model.Username == "Farshad" && model.Password == "Pa$$w0rd")
+        {
+            return MockUser;
+        }
+
         // TODO _ REMOVE MOCKUSER TO GET ONKY FROM DATABASE
-        return await Repository.GetSingleAsync(x => x.UserName == model.Username && x.Password == model.Password, cancellation) ?? MockUser;
+        return await Repository.GetSingleAsync(x => x.UserName == model.Username && x.Password == model.Password, cancellation);
     }
 }
