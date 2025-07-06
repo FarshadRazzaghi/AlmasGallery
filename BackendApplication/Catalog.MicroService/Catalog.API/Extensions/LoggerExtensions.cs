@@ -2,7 +2,7 @@
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace Catalog.API.Extensions;
+namespace AlmasGallery.Catalog.API.Extensions;
 
 public static class LoggerExtensions
 {

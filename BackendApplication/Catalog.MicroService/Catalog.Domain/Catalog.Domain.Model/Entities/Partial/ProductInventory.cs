@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Models;
+﻿namespace AlmasGallery.Catalog.Domain.Models;
 
 public partial class ProductInventory : IBaseEntity
 {

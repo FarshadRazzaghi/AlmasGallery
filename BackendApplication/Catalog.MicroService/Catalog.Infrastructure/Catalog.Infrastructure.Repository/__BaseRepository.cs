@@ -1,15 +1,15 @@
-﻿using Catalog.Infrastructure.Repository.Extensions;
+﻿using AlmasGallery.Catalog.Infrastructure.Repository.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
-namespace Catalog.Infrastructure.Repository;
+namespace AlmasGallery.Catalog.Infrastructure.Repository;
 
 /// <summary>
 /// Base repository class providing common data access methods.
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity.</typeparam>
-internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManager)
+internal partial class BaseRepository<TEntity>(AlmasGalleryDbContext contextManager)
     : IBaseRepository<TEntity> where TEntity : class, IBaseEntity
 {
     #region Initialize
@@ -21,7 +21,7 @@ internal partial class BaseRepository<TEntity>(AlmasGalleryContext contextManage
     /// <summary>
     /// Gets the database context.
     /// </summary>
-    protected AlmasGalleryContext Context { get; private set; } = contextManager ?? throw new ArgumentNullException(nameof(contextManager));
+    protected AlmasGalleryDbContext Context { get; private set; } = contextManager ?? throw new ArgumentNullException(nameof(contextManager));
 
     /// <summary>
     /// Gets the database set for the entity.

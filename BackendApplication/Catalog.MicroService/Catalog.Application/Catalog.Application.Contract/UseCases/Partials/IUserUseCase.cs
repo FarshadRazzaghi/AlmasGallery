@@ -1,6 +1,6 @@
-﻿using Catalog.Domain.Model.Authentication;
+﻿using AlmasGallery.Catalog.Domain.Model.Authentication;
 
-namespace Catalog.Application.Contract.UseCase;
+namespace AlmasGallery.Catalog.Application.Contract.UseCase;
 
 public partial interface IUserUseCase
 {

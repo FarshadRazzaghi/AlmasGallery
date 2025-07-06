@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<NoWarn>CS1591</NoWarn>
+		<NoWarn>CS1591; IDE0130</NoWarn>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<OpenApiDocumentsDirectory>.</OpenApiDocumentsDirectory>
 		<OpenApiGenerateDocumentsOptions>--file-name open-api --document-name v1</OpenApiGenerateDocumentsOptions>
@@ -29,7 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\NEW\AlmasGallery.New\almasgallery.new.client\almasgallery.new.esproj" />
 		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Contract\Catalog.Application.Contract.csproj" />
 		<ProjectReference Include="..\Catalog.Application\Catalog.Application.Model\Catalog.Application.Model.csproj" />
 		<ProjectReference Include="..\Catalog.Common\Catalog.Common.DependencyInjection\Catalog.Common.DependencyInjection.csproj" />

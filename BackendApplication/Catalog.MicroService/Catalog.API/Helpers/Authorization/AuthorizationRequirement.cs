@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Helpers.Authorization;
+﻿namespace AlmasGallery.Catalog.API.Helpers.Authorization;
 
 public class AuthorizationRequirement(string condition) : IAuthorizationRequirement
 {

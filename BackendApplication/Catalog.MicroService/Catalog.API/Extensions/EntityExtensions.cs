@@ -1,6 +1,4 @@
-﻿using Catalog.Application.Models.Responses;
-
-namespace Catalog.API.Extensions;
+﻿namespace AlmasGallery.Catalog.API.Extensions;
 
 public static class EntityExtensions
 {

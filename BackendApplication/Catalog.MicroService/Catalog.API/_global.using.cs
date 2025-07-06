@@ -1,13 +1,11 @@
-﻿global using Carter;
-
-global using Catalog.API.Helpers.Authorization;
-global using Catalog.API.Extensions;
-global using Catalog.Application.Contract.UseCase;
-
-global using Catalog.Application.Models;
-global using Catalog.Application.Models.Filters;
-
-//global using Catalog.Domain.Model;
-global using Catalog.Domain.Models;
-
+﻿global using AlmasGallery.Catalog.API.Extensions;
+global using AlmasGallery.Catalog.API.Helpers.Authorization;
+global using AlmasGallery.Catalog.Application.Contract.UseCase;
+global using AlmasGallery.Catalog.Application.Models;
+global using AlmasGallery.Catalog.Application.Models.Filters;
+global using AlmasGallery.Catalog.Application.Models.Requests;
+global using AlmasGallery.Catalog.Application.Models.Responses;
+//global using AlmasGallery.Catalog.Domain.Model;
+global using AlmasGallery.Catalog.Domain.Models;
+global using Carter;
 global using Microsoft.AspNetCore.Authorization;

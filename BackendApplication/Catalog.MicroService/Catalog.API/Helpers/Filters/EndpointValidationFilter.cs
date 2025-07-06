@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 
-namespace Catalog.API.Helpers.Filters;
+namespace AlmasGallery.Catalog.API.Helpers.Filters;
 
 public class EndpointValidationFilter : IEndpointFilter
 {

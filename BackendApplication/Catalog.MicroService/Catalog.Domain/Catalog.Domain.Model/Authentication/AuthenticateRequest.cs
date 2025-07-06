@@ -1,4 +1,4 @@
-﻿namespace Catalog.Domain.Model.Authentication;
+﻿namespace AlmasGallery.Catalog.Domain.Model.Authentication;
 
 public class AuthenticateRequest
 {

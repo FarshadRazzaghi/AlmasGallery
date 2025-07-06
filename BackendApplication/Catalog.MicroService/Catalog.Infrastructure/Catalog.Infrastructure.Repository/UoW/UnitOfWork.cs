@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Catalog.Infrastructure.Repository;
+namespace AlmasGallery.Catalog.Infrastructure.Repository;
 
 /// <summary>
 /// Implementation of the Unit of Work pattern, providing methods to manage database transactions and changes.
@@ -11,7 +10,7 @@ internal partial class UnitOfWork : IUnitOfWork, IDisposable
     private IDbContextTransaction? _transaction;
 
     /// <inheritdoc />
-    public AlmasGalleryContext? Context { get; } = almasGalleryContext ?? throw new NotImplementedException();
+    public AlmasGalleryDbContext? Context { get; } = almasGalleryDbContext ?? throw new NotImplementedException();
 
     /// <inheritdoc />
     public virtual async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)

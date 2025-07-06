@@ -1,11 +1,11 @@
-﻿using Catalog.Common.Extensions;
+﻿using AlmasGallery.Catalog.Common.Extensions;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Catalog.API.Helpers;
+namespace AlmasGallery.Catalog.API.Helpers;
 
 public class OpenApiSchemaTransformer : IOpenApiSchemaTransformer
 {

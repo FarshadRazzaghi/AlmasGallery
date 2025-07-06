@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace AlmasGallery.Catalog.Infrastructure.Persistence;
 
 internal static class RegisterServices
 {
@@ -11,7 +11,7 @@ internal static class RegisterServices
     {
         ArgumentNullException.ThrowIfNull(connectionString);
 
-        services.AddDbContext<AlmasGalleryContext>(options =>
+        services.AddDbContext<AlmasGalleryDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
             options.LogTo((message) => Debug.Write(message),
@@ -22,6 +22,6 @@ internal static class RegisterServices
             options.EnableSensitiveDataLogging();
         });
 
-        services.AddScoped<DbContext, AlmasGalleryContext>();
+        services.AddScoped<DbContext, AlmasGalleryDbContext>();
     }
 }

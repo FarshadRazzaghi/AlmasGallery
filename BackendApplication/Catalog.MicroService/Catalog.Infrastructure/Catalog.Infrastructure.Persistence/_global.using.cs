@@ -2,4 +2,4 @@
 
 [assembly: InternalsVisibleTo("Catalog.Infrastructure.Repository")]
 [assembly: InternalsVisibleTo("Catalog.Common.DependencyInjection")]
-namespace Catalog.Infrastructure.Persistence;
+namespace AlmasGallery.Catalog.Infrastructure.Persistence;

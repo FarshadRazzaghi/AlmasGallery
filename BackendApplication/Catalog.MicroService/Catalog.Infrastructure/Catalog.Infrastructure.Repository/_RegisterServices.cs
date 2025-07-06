@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Infrastructure.Repository;
+namespace AlmasGallery.Catalog.Infrastructure.Repository;
 
 internal partial class RegisterServices
 {

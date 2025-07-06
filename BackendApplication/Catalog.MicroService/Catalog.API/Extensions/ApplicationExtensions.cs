@@ -1,6 +1,6 @@
 ﻿using Scalar.AspNetCore;
 
-namespace Catalog.API.Extensions;
+namespace AlmasGallery.Catalog.API.Extensions;
 
 public static class ApplicationExtensions
 {

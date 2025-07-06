@@ -1,7 +1,7 @@
-﻿using Catalog.Common;
+﻿using AlmasGallery.Catalog.Common;
 using FluentValidation;
 
-namespace Catalog.Application.Models.Filters;
+namespace AlmasGallery.Catalog.Application.Models.Filters;
 
 /// <summary>
 /// Validator for the <see cref="CustomFieldGroupFilter"/> class.

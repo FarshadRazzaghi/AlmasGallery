@@ -1,7 +1,4 @@
-﻿using Catalog.Application.Models.Requests;
-using Catalog.Application.Models.Responses;
-
-namespace Catalog.API.Endpoints;
+﻿namespace AlmasGallery.Catalog.API.Endpoints;
 
 /// <summary>
 /// Configures the routes for the CustomFieldGroup endpoints.

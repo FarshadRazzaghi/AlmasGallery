@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Models.Responses;
+﻿namespace AlmasGallery.Catalog.Application.Models.Responses;
 
 /// <summary>
 /// Represents a response object for a dropdown item.

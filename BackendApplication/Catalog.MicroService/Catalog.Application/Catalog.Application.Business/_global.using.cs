@@ -1,9 +1,9 @@
-﻿global using Catalog.Application.Contract.Persistence;
-global using Catalog.Application.Contract.UseCase;
-global using Catalog.Application.Models;
-global using Catalog.Domain.Models;
+﻿global using AlmasGallery.Catalog.Application.Contract.Persistence;
+global using AlmasGallery.Catalog.Application.Contract.UseCase;
+global using AlmasGallery.Catalog.Application.Models;
+global using AlmasGallery.Catalog.Domain.Models;
 
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Catalog.Common.DependencyInjection")]
-namespace Catalog.Application.Business;
+namespace AlmasGallery.Catalog.Application.Business;

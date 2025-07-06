@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 internal partial class ProductCategoryCustomFieldGroupUseCase : IProductCategoryCustomFieldGroupUseCase
 {

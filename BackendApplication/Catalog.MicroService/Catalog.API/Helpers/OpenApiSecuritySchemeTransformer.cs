@@ -1,8 +1,8 @@
-﻿using Catalog.Common.Extensions;
+﻿using AlmasGallery.Catalog.Common.Extensions;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace Catalog.API.Helpers;
+namespace AlmasGallery.Catalog.API.Helpers;
 
 public class OpenApiDocumentSecurityTransformer : IOpenApiDocumentTransformer
 {

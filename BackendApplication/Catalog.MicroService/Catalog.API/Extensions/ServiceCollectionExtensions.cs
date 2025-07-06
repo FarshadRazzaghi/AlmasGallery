@@ -1,6 +1,6 @@
-﻿using Catalog.API.Helpers;
+﻿using AlmasGallery.Catalog.API.Helpers;
 
-namespace Catalog.API.Extensions;
+namespace AlmasGallery.Catalog.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {

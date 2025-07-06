@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [Table("Inventory")]
 public partial class Inventory : IBaseEntity
@@ -31,5 +28,5 @@ public partial class Inventory : IBaseEntity
     public long? ModifierId { get; set; }
 
     [InverseProperty("Inventory")]
-    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
+    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = [];
 }

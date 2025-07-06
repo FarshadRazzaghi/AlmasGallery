@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Contract.UseCase;
+﻿namespace AlmasGallery.Catalog.Application.Contract.UseCase;
 
 public partial interface IProductCategoryCustomFieldGroupUseCase
 {

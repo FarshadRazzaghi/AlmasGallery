@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Catalog.Common.Extensions;
+namespace AlmasGallery.Catalog.Common.Extensions;
 
 public static partial class RegexHelper
 {

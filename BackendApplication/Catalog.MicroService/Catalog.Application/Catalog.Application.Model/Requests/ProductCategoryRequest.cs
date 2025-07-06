@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Catalog.Application.Models.Requests;
+namespace AlmasGallery.Catalog.Application.Models.Requests;
 
 /// <summary>
 /// Validator for the <see cref="ProductCategoryRequest"/> class.

@@ -1,7 +1,7 @@
-﻿using Catalog.Application.Models.Filters;
-using Catalog.Application.Models.Requests;
+﻿using AlmasGallery.Catalog.Application.Models.Filters;
+using AlmasGallery.Catalog.Application.Models.Requests;
 
-namespace Catalog.Application.Contract.UseCase;
+namespace AlmasGallery.Catalog.Application.Contract.UseCase;
 
 /// <summary>
 /// Interface for the product category use case.
