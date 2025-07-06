@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <p class="m-0 p-3">{{productCategoryResource.baseInfo}}</p>
+    </div>
+</div>
+
+<div class="row m-0 form-holder">
+    <div class="col-12 col-md-12 col-lg-12 col-xl-12 base-info-form">
+        <fr-form #baseInfoForm="fr-form"
+                 [id]="'BaseInfoForm'"
+                 [isAbsoluteError]="true"
+                 [formControls]="{}"
+                 [cssClass]="['row']">
+
+            <fr-form-group [groupName]="'BaseInfoHolder'"
+                           [id]="'BaseInfoHolder'"
+                           [cssClasses]="['row', 'm-0', 'p-0', 'col-12', 'col-md-12', 'col-lg-7', 'col-xl-8']">
+
+                <fr-form-control controlTextbox
+                                 [presenter]="'name'"
+                                 [id]="'name'"
+                                 [showLabel]="true"
+                                 [label]="productCategoryResource.name"
+                                 [cssClass]="['col-12', 'col-md-6', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [validators]="isRequired">
+                </fr-form-control>
+
+                <fr-form-control controlDropdown
+                                 [presenter]="'ParentId'"
+                                 [id]="'ParentId'"
+                                 [showLabel]="true"
+                                 [label]="productCategoryResource.parent"
+                                 [cssClass]="['col-12', 'col-md-6', 'col-lg-6']"
+                                 [controlCssClass]="['col-12']"
+                                 [allowNull]="true"
+                                 [items]="parentItems">
+                </fr-form-control>
+            </fr-form-group>
+
+            <fr-form-control controlSeparator
+                             [cssClass]="['mb-0']"
+                             [presenter]="'Separator'"
+                             [id]="'Separator'">
+            </fr-form-control>
+
+            <fr-form-control controlEditor
+                             [presenter]="'Description'"
+                             [id]="'Description'"
+                             [showLabel]="true"
+                             [label]="productCategoryResource.description"
+                             [cssClass]="['col-12']"
+                             [controlCssClass]="['col-12']"
+                             [validators]="isRequired"
+                             [toolbarOptions]="descriptionToolbarOptions">
+            </fr-form-control>
+        </fr-form>
+    </div>
+</div>

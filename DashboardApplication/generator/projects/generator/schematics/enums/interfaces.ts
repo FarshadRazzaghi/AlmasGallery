@@ -1,3 +1,3 @@
-export interface GeneratorSchema {
+export interface EnumGeneratorSchema {
   path: string;
 }

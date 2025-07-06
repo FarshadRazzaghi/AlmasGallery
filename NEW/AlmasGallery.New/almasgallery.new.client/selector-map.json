@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Glossary of abbreviations and selector conventions used in Angular components throughout the project.",
+  "abbreviations": {
+    "pc": "Product Category",
+    "cfg": "Custom Field Group",
+    "cf": "Custom Field",
+    "upsert": "Create or Update component",
+    "list": "Component to list items",
+    "form": "Form component",
+    "modal": "Modal/dialog component",
+    "app": "Global prefix used for all Angular components (standard Angular practice)"
+  },
+  "usage": {
+    "app-cfg-list": "CustomFieldGroupListComponent",
+    "app-cfg-upsert": "CustomFieldGroupUpsertComponent",
+    "app-cfg-upsert-base-info": "CustomFieldGroupUpsertGroupComponent",
+    "app-cfg-upsert-cf": "CustomFieldGroupUpsertCustomFieldComponent",
+    "app-cfg-delete-modal": "CustomFieldGroupDeleteModalComponent"
+    "app-pc-list": "ProductCategoryListComponent",
+    "app-pc-upsert": "ProductCategoryUpsertComponent",
+    "app-pc-upsert-base-info": "ProductCategoryUpsertBaseInfoComponent",
+    "app-pc-upsert-cfg": "ProductCategoryUpsertCustomFieldGroupComponent",
+    "app-pc-upsert-cfg-form": "ProductCategoryUpsertCustomFieldGroupFormComponent"
+  }
+}

@@ -1,0 +1,130 @@
+/**
+ * @fileoverview Authentication Service Generator
+ * ⚠️ WARNING: This file is auto-generated. Do not modify directly. ⚠️
+ *
+ * @description
+ * This service handles authentication configuration and header generation for API requests.
+ * It supports multiple authentication types and manages authorization headers dynamically.
+ *
+ * Supported Authentication Types:
+ * - None: No authentication headers
+ * - Basic: Base64 encoded username:password
+ * - Bearer: Token-based authentication
+ * - Custom: User-defined header format
+ *
+ * Key Features:
+ * 1. Dynamic Authentication:
+ *    - Runtime configuration of auth settings
+ *    - Flexible authentication type switching
+ *    - Secure credentials handling
+ *
+ * 2. Header Management:
+ *    - Automatic header generation
+ *    - Type-safe header construction
+ *    - Support for standard auth schemes
+ *
+ * Last generated: 2025-05-16T11:05:38.652Z
+ * Generator version: 1.0.0
+ *
+ * Usage Example:
+ * ```typescript
+ * // Basic Auth
+ * authService.setAuthConfig({
+ *   type: AuthType.Basic,
+ *   credentials: 'username:password'
+ * });
+ *
+ * // Bearer Token
+ * authService.setAuthConfig({
+ *   type: AuthType.Bearer,
+ *   token: 'your-jwt-token'
+ * });
+ *
+ * // Custom Header
+ * authService.setAuthConfig({
+ *   type: AuthType.Custom,
+ *   customHeader: 'Custom-Auth-Scheme value'
+ * });
+ * ```
+ *
+ * Configuration Interface:
+ * ```typescript
+ * interface AuthConfig {
+ *   type: AuthType;        // Authentication type
+ *   credentials?: string;   // Basic auth credentials
+ *   token?: string;        // Bearer token
+ *   customHeader?: string; // Custom header value
+ * }
+ * ```
+ *
+ * @injectable Provided in 'root' for application-wide availability
+ * @dependencies
+ * - @angular/core
+ * - @angular/common/http
+ *
+ * @see {@link AuthConfig} For authentication configuration options
+ * @see {@link AuthType} For supported authentication types
+ * @generated
+ */
+
+/**
+ * Service responsible for managing HTTP authentication headers.
+ * Supports multiple authentication types including None, Basic, Bearer, and Custom.
+ */
+import { Injectable } from "@angular/core";
+import { AuthConfig, AuthType } from "./interface.generated";
+import { HttpHeaders } from "@angular/common/http";
+
+@Injectable({ providedIn: 'root' })
+export class HttpAuthService {
+
+	/**
+	 * Current authentication configuration.
+	 * @private
+	 */
+	protected authConfig?: AuthConfig;
+
+	/**
+	 * Sets the authentication configuration for the service.
+	 * @param config - The authentication configuration object
+	 * @example
+	 * setAuthConfig({
+	 *   type: AuthType.Bearer,
+	 *   token: 'your-jwt-token'
+	 * });
+	 */
+	public setAuthConfig(config: AuthConfig): void {
+		this.authConfig = config;
+	}
+
+	/**
+	 * Generates HTTP headers based on the current authentication configuration.
+	 * @returns HttpHeaders object containing appropriate authorization headers
+	 * @throws Never throws - returns empty headers if configuration is invalid
+	 * @example
+	 * const headers = authService.getAuthHeaders();
+	 * // For Bearer token: { Authorization: 'Bearer xyz...' }
+	 */
+	public getAuthHeaders(): HttpHeaders {
+		if (!this.authConfig) {
+			return new HttpHeaders();
+		}
+
+		switch (this.authConfig.type) {
+			case AuthType.None:
+				return new HttpHeaders();
+
+			case AuthType.Basic:
+				return new HttpHeaders({ 'Authorization': `Basic ${btoa(this.authConfig.credentials || '')}` });
+
+			case AuthType.Bearer:
+				return new HttpHeaders({ 'Authorization': `Bearer ${this.authConfig.token}` });
+
+			case AuthType.Custom:
+				return new HttpHeaders(this.authConfig.customHeader ? { 'Authorization': this.authConfig.customHeader } : {});
+
+			default:
+				return new HttpHeaders();
+		}
+	}
+}

@@ -1,0 +1,20 @@
+/**
+ * @fileoverview
+ * ⚠️ WARNING: This file is auto-generated. ⚠️
+ *
+ * Any manual changes to this file will be overwritten when the code is regenerated.
+ * If you need to modify the API functionality, please:
+ * 1. Modify the API generator templates
+ * 2. Re-run the code generation process
+ *
+ * Last generated: <%= newDate %>
+ * Generator version: <%= version %>
+ *
+ * @generated
+ */
+
+<% for(let key in data) { %>
+export enum <%= classify(key) %> {<% for(let child in data[key]) { %>
+  <%= camelize(child) %> = <%= data[key][child] %>,<% } %>
+}
+<% } %>

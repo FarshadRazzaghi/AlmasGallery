@@ -21,6 +21,19 @@ public partial interface IProductCategoryUseCase : IBaseUseCase<ProductCategory>
     Task<(ProductCategory[] list, long totalCount)> GetListAsync(ProductCategoryFilter filter, CancellationToken cancellationToken = default!);
 
     /// <summary>
+    /// Gets a list of product categories for use in dropdowns, based on the provided filter.
+    /// Supports pagination and filtering by parent category or other optional conditions.
+    /// </summary>
+    /// <param name="filter">The filter used to determine which product categories to include in the dropdown.</param>
+    /// <param name="cancellation">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a tuple where:
+    /// - The first item is an array of filtered product categories.
+    /// - The second item is the total count of matching product categories (useful for paginated dropdowns).
+    /// </returns>
+    Task<(ProductCategory[] list, long totalCount)> GetListForDropdownAsync(ProductCategoryDropdownFilter filter, CancellationToken cancellation = default!);
+
+    /// <summary>
     /// Gets a single product category including its custom field groups by ID.
     /// </summary>
     /// <param name="productCategoryId">The ID of the product category.</param>

@@ -636,6 +636,39 @@
         "summary": "Retrieve Product Categories for Dropdown",
         "description": "Fetches a list of product categories formatted as key-value pairs for use in dropdown options.",
         "operationId": "GetProductCategoriesForDropdown",
+        "parameters": [
+          {
+            "name": "parentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "removeChildren",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1143,6 +1176,11 @@
             "type": "boolean",
             "description": "Gets or sets a value indicating whether the custom field group is active."
           },
+          "order": {
+            "type": "integer",
+            "description": "Gets or sets the order in which the custom field group should be displayed or processed.",
+            "format": "int32"
+          },
           "customFieldGroupId": {
             "type": "integer",
             "description": "Gets or sets the ID of the custom field group.",
@@ -1163,6 +1201,11 @@
           "isActive": {
             "type": "boolean",
             "description": "Gets or sets a value indicating whether the custom field group is active."
+          },
+          "order": {
+            "type": "integer",
+            "description": "Gets or sets the order in which the custom field group should be displayed or processed.",
+            "format": "int32"
           },
           "id": {
             "type": "integer",

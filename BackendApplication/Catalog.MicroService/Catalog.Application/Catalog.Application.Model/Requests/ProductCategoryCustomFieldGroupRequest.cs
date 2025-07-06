@@ -27,6 +27,11 @@ public class ProductCategoryCustomFieldGroupRequest
     public bool IsActive { get; set; }
 
     /// <summary>
+    /// Gets or sets the order in which the custom field group should be displayed or processed.
+    /// </summary>
+    public int Order { get; set; }
+
+    /// <summary>
     /// Gets or sets the ID of the custom field group.
     /// </summary>
     public long CustomFieldGroupId { get; set; }

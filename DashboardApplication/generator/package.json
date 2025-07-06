@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build && npm run build-schematic",
     "build-schematic": "cd projects/generator && npm run build",
-    "pack": "npm run build && cd  \"E:\\Application Projects\\Almas-Gallery\\DashboardApplication\\generator\\dist\\generator\" && npm pack --pack-destination=\"..\"",
+    "pack": "npm run build && cd ./dist/generator && npm pack --pack-destination=..",
+    "publish": "npm run build && cd ./dist/generator && npm publish --registry=http://localhost:4873/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

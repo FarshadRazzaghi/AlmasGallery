@@ -1,0 +1,20 @@
+<div class="row pb-5">
+    @if(customFieldLoaded){
+    <div class="col-12">
+        <fr-card #customFieldGroupCard="fr-card"
+                 [id]="'CustomFieldGroupCard'"
+                 [isCollapsible]="false"
+                 [isDeletable]="false"
+                 [isUpdatable]="false">
+
+            <custom-field-group [id]="'CustomFieldGroupForm'"></custom-field-group>
+        </fr-card>
+    </div>
+
+    <custom-field-option [id]="'CustomFieldOptionForm'"></custom-field-option>
+    }
+</div>
+
+@if(operation === 'Update'){
+<!-- <custom-field-delete-modal [id]="deleteModalId"></custom-field-delete-modal> -->
+}

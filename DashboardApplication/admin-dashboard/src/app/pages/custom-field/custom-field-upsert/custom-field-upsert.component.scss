@@ -1,0 +1,70 @@
+@mixin custom-field-upsert($direction) {
+	custom-field-upsert {
+		.full-height {
+			height: calc(100% - 24px) !important;
+		}
+
+		.is-active {
+			padding-top: 0 !important;
+
+			@include mediaQuery(xl) {
+				&.no-label {
+					padding-top: 0 !important;
+				}
+			}
+		}
+
+		@include mediaQuery(xl) {
+			.no-label {
+				padding-top: 0.5rem !important;
+			}
+		}
+
+		.custom-field-options {
+			button {
+				& + button {
+					margin-top: 0.5rem !important;
+				}
+			}
+		}
+
+		.option-btn-group,
+		.date-time-group,
+		.condition-group {
+			& > div {
+				& + div {
+					@if $direction == "ltr" {
+						margin-left: 0.5rem !important;
+					} @else {
+						margin-right: 0.5rem !important;
+					}
+				}
+
+				button {
+					i {
+						padding: 0 !important;
+					}
+				}
+			}
+		}
+
+		.date-time-group,
+		.condition-group {
+			.no-label {
+				@include mediaQuery(xl) {
+					.no-label {
+						padding-top: 28.5px !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+html[dir="rtl"] {
+	@include custom-field-upsert("rtl");
+}
+
+html[dir="ltr"] {
+	@include custom-field-upsert("ltr");
+}

@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-12">
+        <p class="m-0 p-3">{{customFieldGroupResource.baseInfo}}</p>
+    </div>
+</div>
+
+<div class="row m-0 form-holder">
+    <div class="col-12 col-md-12 col-lg-7 col-xl-8 base-info-form">
+        <fr-form #baseInfoForm="fr-form"
+                 [id]="'BaseInfoForm'"
+                 [isAbsoluteError]="true"
+                 [formControls]="{}"
+                 [cssClass]="['row']">
+
+            <fr-form-control controlTextbox
+                             [presenter]="'name'"
+                             [id]="'name'"
+                             [showLabel]="true"
+                             [label]="customFieldGroupResource.name"
+                             [cssClass]="['col-12', 'col-md-6', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [validators]="isRequired">
+            </fr-form-control>
+
+            <fr-form-control controlDropdown
+                             [presenter]="'EntityType'"
+                             [id]="'EntityType'"
+                             [showLabel]="true"
+                             [label]="customFieldGroupResource.entityType"
+                             [cssClass]="['col-12', 'col-md-6', 'col-lg-6']"
+                             [controlCssClass]="['col-12']"
+                             [allowNull]="true"
+                             [items]="customFieldGroupEntityTypes"
+                             [validators]="isRequired">
+            </fr-form-control>
+        </fr-form>
+    </div>
+</div>

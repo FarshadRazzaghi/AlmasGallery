@@ -1,0 +1,23 @@
+@mixin product-upsert($direction) {
+	product-organize {
+		.group-holder {
+			& > div {
+				& + div {
+					@if $direction == "ltr" {
+						margin-left: 0.5rem !important;
+					} @else {
+						margin-right: 0.5rem !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+html[dir="rtl"] {
+	@include product-upsert("rtl");
+}
+
+html[dir="ltr"] {
+	@include product-upsert("ltr");
+}

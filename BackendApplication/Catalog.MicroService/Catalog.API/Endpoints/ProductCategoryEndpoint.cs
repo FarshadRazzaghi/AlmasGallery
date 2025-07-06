@@ -130,16 +130,16 @@ public static class ProductCategoryMethods
     /// <summary>
     /// Retrieves a list of product categories formatted for use in dropdown menus.
     /// </summary>
+    /// <param name="filter">The filter criteria for retrieving product categories.</param>
     /// <param name="productCategoryService">The service to handle product category operations.</param>
     /// <param name="cancellation">A token to monitor for cancellation requests.</param>
     /// <returns>
     /// A result containing a list of product categories as dropdown options.
     /// Each option includes a key (ID) and value (Name).
     /// </returns>
-    public static async Task<IResult> GetProductCategoryListForDropdownAsync(IProductCategoryUseCase productCategoryService, CancellationToken cancellation = default!)
+    public static async Task<IResult> GetProductCategoryListForDropdownAsync([AsParameters] ProductCategoryDropdownFilter filter, IProductCategoryUseCase productCategoryService, CancellationToken cancellation = default!)
     {
-        var filter = new ProductCategoryFilter();
-        var (list, _) = await productCategoryService.GetListAsync(filter, cancellation);
+        var (list, _) = await productCategoryService.GetListForDropdownAsync(filter, cancellation);
         return TypedResults.Ok(list.AsDropdownObjectResult());
     }
 

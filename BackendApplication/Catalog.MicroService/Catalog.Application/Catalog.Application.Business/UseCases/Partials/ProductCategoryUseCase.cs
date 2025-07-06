@@ -1,9 +1,7 @@
 ﻿using Catalog.Application.Models.Filters;
 using Catalog.Application.Models.Requests;
 using Catalog.Common.Exceptions;
-using Catalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -31,6 +29,36 @@ internal partial class ProductCategoryUseCase : IProductCategoryUseCase
 
         var page = filter.Page ?? 1;
         var pageSize = filter.PageSize ?? 100;
+        query = query.OrderBy(x => x.Id)
+                     .Skip((page - 1) * pageSize)
+                     .Take(pageSize);
+
+        var list = await query.ToArrayAsync(cancellationToken);
+
+        return (list, totalCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<(ProductCategory[] list, long totalCount)> GetListForDropdownAsync(ProductCategoryDropdownFilter filter, CancellationToken cancellationToken = default)
+    {
+        Expression<Func<ProductCategory, bool>> filterExpression = x => true;
+        if (filter.ParentId.HasValue)
+        {
+            filterExpression = filterExpression.And(x => x.Id != filter.ParentId.Value);
+
+            if (filter.RemoveChildren.GetValueOrDefault(false))
+            {
+                filterExpression = filterExpression.And(x => x.ParentId != filter.ParentId.Value);
+            }
+        }
+
+        var totalCount = await Repository.GetCountAsync(expression: filterExpression, cancellationToken: cancellationToken);
+
+        var query = Repository.GetQueryableAsNoTracking(expression: filterExpression);
+
+        var page = filter.Page ?? 1;
+        var pageSize = filter.PageSize ?? 100;
+
         query = query.OrderBy(x => x.Id)
                      .Skip((page - 1) * pageSize)
                      .Take(pageSize);
@@ -70,6 +98,7 @@ internal partial class ProductCategoryUseCase : IProductCategoryUseCase
                 ProductCategoryCustomFieldGroups = [.. productCategory.CustomFieldGroups
                                                                       .Select(cf => new ProductCategoryCustomFieldGroup
                                                                       {
+                                                                          Order = cf.Order,
                                                                           CustomFieldGroupId = cf.CustomFieldGroupId,
                                                                           CustomFieldGroupLocation = (byte)cf.CustomFieldGroupLocation,
                                                                           IsActive = cf.IsActive,
@@ -139,7 +168,8 @@ internal partial class ProductCategoryUseCase : IProductCategoryUseCase
                         CustomFieldGroupId = newRelation.CustomFieldGroupId,
                         CustomFieldGroupLocation = (byte)newRelation.CustomFieldGroupLocation,
                         IsActive = newRelation.IsActive,
-                        ProductCategoryId = category.Id
+                        ProductCategoryId = category.Id,
+                        Order = newRelation.Order,
                     };
                     UnitOfWork.ProductCategoryCustomFieldGroupRepository.Add(relation);
                 }
@@ -147,6 +177,7 @@ internal partial class ProductCategoryUseCase : IProductCategoryUseCase
                 {
                     existingRelation.CustomFieldGroupLocation = (byte)newRelation.CustomFieldGroupLocation;
                     existingRelation.IsActive = newRelation.IsActive;
+                    existingRelation.Order = newRelation.Order;
                     UnitOfWork.ProductCategoryCustomFieldGroupRepository.Modify(existingRelation);
                 }
             }

@@ -1,7 +1,0 @@
-<% for(let key in data) { %>
-export enum <%= classify(key) %> {
-<% for(let index = 0; index < data[key].length; index++) { %>
-  <%= camelize(data[key][index].name) %> = <%= data[key][index].value %>,
-<% } %>
-}
-<% } %>

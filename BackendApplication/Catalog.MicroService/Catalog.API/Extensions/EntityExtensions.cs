@@ -48,6 +48,7 @@ public static class EntityExtensions
               {
                   Id = r.CustomFieldGroupId,
                   IsActive = r.IsActive,
+                  Order = r.Order ?? 0,
                   Name = r.CustomFieldGroup?.Name ?? string.Empty,
                   Location = (Common.CustomFieldGroupLocationType)r.CustomFieldGroupLocation,
                   EntityType = Common.CustomFieldGroupEntityType.Product,

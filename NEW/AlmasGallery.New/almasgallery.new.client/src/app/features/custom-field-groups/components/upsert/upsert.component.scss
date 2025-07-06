@@ -1,0 +1,125 @@
+@use "@fr-widget/sdk/styles/__mixins" as mixins;
+
+@mixin custom-field-group-upsert($direction) {
+  app-cfg-upsert {
+    .card-body-holder {
+      padding: 0 !important;
+    }
+  }
+
+  app-cfg-upsert-base-info {
+    .form-holder {
+      margin-top: 1rem;
+      border-top: 1px solid #ccc;
+
+      .base-info-form {
+        padding: 1rem;
+      }
+    }
+  }
+
+  app-cfg-upsert-cf {
+    .full-height {
+      height: calc(100% - 24px) !important;
+    }
+
+    .card {
+      height: 100% !important;
+      margin-bottom: 0 !important;
+    }
+
+    .is-active {
+      padding-top: 0 !important;
+
+      @include mixins.mediaQuery(xl) {
+        &.no-label {
+          padding-top: 0 !important;
+        }
+      }
+    }
+
+    @include mixins.mediaQuery(xl) {
+      .no-label {
+        padding-top: 0.5rem !important;
+      }
+    }
+
+    .form-holder {
+      margin-top: 1rem;
+      border-top: 1px solid #ccc;
+
+      .custom-field-form {
+        padding: 1rem;
+      }
+
+      .custom-field-list {
+        @if $direction == "ltr" {
+          border-left: 1px solid #ccc;
+        }
+        @else {
+          border-right: 1px solid #ccc;
+        }
+
+        padding: 1rem;
+
+        @include mixins.mediaQuery(sm) {
+          border-left: 0;
+          border-right: 0;
+          border-top: 1px solid #ccc;
+        }
+
+        .btn + .btn {
+          margin-top: 0.5rem !important;
+        }
+      }
+    }
+
+    .custom-field-options {
+      button {
+        & + button {
+          margin-top: 0.5rem !important;
+        }
+      }
+    }
+
+    .custom-field-btn-group,
+    .date-time-group,
+    .condition-group {
+      & > div {
+        & + div {
+          @if $direction == "ltr" {
+            padding-left: 0.5rem !important;
+          }
+          @else {
+            padding-right: 0.5rem !important;
+          }
+        }
+
+        button {
+          i {
+            padding: 0 !important;
+          }
+        }
+      }
+    }
+
+    .date-time-group,
+    .condition-group {
+      .no-label {
+        @include mixins.mediaQuery(xl) {
+          .no-label {
+            padding-top: 28.5px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+html[dir="rtl"] {
+  @include custom-field-group-upsert("rtl");
+}
+
+html[dir="ltr"] {
+  @include custom-field-group-upsert("ltr");
+}

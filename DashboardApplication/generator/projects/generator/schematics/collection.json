@@ -6,9 +6,14 @@
       "factory": "./ng-add/index#ngAdd"
     },
     "enums": {
-      "description": "This schematic generates super component.",
+      "description": "This schematic generates enums related to Almas Gallery API.",
       "factory": "./enums/index#enumGenerator",
       "schema": "./enums/schema.json"
+    },
+    "endpoints": {
+      "description": "This schematic generates endpoints and all relation classes related to Almas Gallery API.",
+      "factory": "./endpoints/index#endpointGenerator",
+      "schema": "./endpoints/schema.json"
     }
   }
 }

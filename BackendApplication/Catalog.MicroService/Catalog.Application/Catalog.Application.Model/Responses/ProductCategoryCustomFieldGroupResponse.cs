@@ -16,4 +16,9 @@ public class ProductCategoryCustomFieldGroupResponse : CustomFieldGroupResponse
     /// Gets or sets a value indicating whether the custom field group is active.
     /// </summary>
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// Gets or sets the order in which the custom field group should be displayed or processed.
+    /// </summary>
+    public int Order { get; set; }
 }

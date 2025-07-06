@@ -1,6 +1,6 @@
 {
   "name": "@almas-gallery/generator",
-  "version": "0.0.1",
+  "version": "0.1.5",
   "scripts": {
     "build": "tsc -p tsconfig.schematics.json",
     "postbuild": "copyfiles schematics/collection.json schematics/*/schema.json schematics/*/files/** ../../dist/generator"

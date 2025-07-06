@@ -1,0 +1,145 @@
+export interface Resource {
+	remove: string;
+	add: string;
+	update: string;
+	edit: string;
+	cancel: string;
+	yes: string;
+	no: string;
+	recommended: string;
+	backToPrevious: string;
+	submit: string;
+	refresh: string;
+
+	routingResource: RoutingResource;
+	productResource: ProductResource;
+	productCategoryResource: ProductCategoryResource;
+	customFieldResource: CustomFieldResource;
+	enumResources: EnumResource;
+	dropDown: {
+		selectItem: string;
+	}
+}
+
+export interface RoutingResource {
+	navigation: string;
+	dashboards: string;
+	settings: string;
+	customFields: string;
+	customFieldsAdd: string;
+	products: string;
+	productsAdd: string;
+	productsList: string;
+	productCategories: string;
+	productCategoriesAdd: string;
+	productCategoriesList: string;
+}
+
+export interface ProductResource {
+	productInformation: string;
+	productImage: string;
+	productPricing: string;
+	productOrganization: string;
+	productVariant: string;
+	productInventory: string;
+	name: string;
+	description: string;
+	stockKeepingUnit: string;
+	barCode: string;
+	basePrice: string;
+	discount: string;
+	chargeTax: string;
+	inStock: string;
+	vendor: string;
+	category: string;
+	collection: string;
+	publishStatus: string;
+	tags: string;
+	options: string;
+	variantValue: string;
+	addNewVariant: string;
+	addNewCategory: string;
+	restock: string;
+	shipping: string;
+	globalDelivery: string;
+	attributes: string;
+	advanced: string;
+	addToStocks: string;
+	quantity: string;
+	currentQuantity: string;
+	deliveryQuantity: string;
+	restockedLastTime: string;
+	overallQuantity: string;
+	shippingType: string;
+	sellerFulfilled: string;
+	sellerFulfilledDescription: string;
+	companyFulfilled: string;
+	companyFulfilledDescription: string;
+	worldwideDelivery: string;
+	worldwideDeliveryDescription: string;
+	selectedCountries: string;
+	localDelivery: string;
+	localDeliveryDescription: string;
+	isFragile: string;
+	isBiodegradable: string;
+	isFrozen: string;
+	maxAllowedTemperature: string;
+	expiryDate: string;
+	identifierType: string;
+	identifier: string;
+	identifierPlaceHolder: string;
+}
+
+export interface ProductCategoryResource {
+	name: string;
+	parent: string;
+	noParent: string;
+	customFieldGroup: string;
+	customFieldLocation: string;
+	isActive: string;
+	addNewCustomField: string;
+	description: string;
+	deleteConfirmationMessage: string;
+}
+
+export interface CustomFieldResource {
+	groupName: string;
+	groupEntityType: string;
+	name: string;
+	dataType: string;
+	initialValue: string;
+	helpText: string;
+	placeHolder: string;
+	regex: string;
+	isRequired: string;
+	isMultiLine: string;
+	applyCurrentDate: string;
+	noParentCondition: string;
+	isActive: string;
+	maxValue: string;
+	minValue: string;
+	minValueCustomErrorMessage: string;
+	initialValueNumberCustomErrorMessage: string;
+	deleteConfirmationMessage: string;
+	parent: string;
+	parentCondition: string;
+	noOptions: string;
+}
+
+export interface EnumResource {
+	customFieldGroupType: {
+		product: string;
+	},
+	customFieldGroupLocationType: {
+		pageSection: string;
+		pricingSection: string;
+		descriptionSection: string;
+	},
+	customFieldDataType:
+	{
+		number: string;
+		string: string;
+		date: string;
+		boolean: string;
+	}
+}
