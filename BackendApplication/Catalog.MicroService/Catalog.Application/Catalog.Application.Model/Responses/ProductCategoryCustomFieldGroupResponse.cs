@@ -1,6 +1,6 @@
-﻿using Catalog.Common;
+﻿using AlmasGallery.Catalog.Common;
 
-namespace Catalog.Application.Models.Responses;
+namespace AlmasGallery.Catalog.Application.Models.Responses;
 
 /// <summary>
 /// Represents a response object for a product category custom field group.

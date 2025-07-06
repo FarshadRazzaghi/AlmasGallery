@@ -1,7 +1,6 @@
 ﻿using System.Data;
-using System.Reflection;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 /// <summary>
 /// Shared use case class providing common functionality across the application.
@@ -37,8 +36,7 @@ internal partial class SharedUseCase() : ISharedUseCase
     /// </summary>
     /// <returns>An array of types from the valid namespaces.</returns>
     private Type[] GetProjectTypes()
-        => AppDomain.CurrentDomain.GetAssemblies()
-                                  .Where(assembly => !string.IsNullOrEmpty(assembly.FullName) && ValidNamespaces.Any(ns => assembly.FullName.Contains(ns)))
-                                  .SelectMany(x => x.GetTypes())
-                                  .ToArray();
+        => [.. AppDomain.CurrentDomain.GetAssemblies()
+                                      .Where(assembly => !string.IsNullOrEmpty(assembly.FullName) && ValidNamespaces.Any(ns => assembly.FullName.Contains(ns)))
+                                      .SelectMany(x => x.GetTypes())];
 }

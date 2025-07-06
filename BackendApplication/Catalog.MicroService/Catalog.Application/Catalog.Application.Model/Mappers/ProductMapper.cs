@@ -1,6 +1,6 @@
-﻿using Catalog.Domain.Models;
+﻿using AlmasGallery.Catalog.Domain.Models;
 
-namespace Catalog.Application.Models.Mappers;
+namespace AlmasGallery.Catalog.Application.Models.Mappers;
 
 /// <summary>
 /// Provides extension methods for mapping between product-related DTOs and domain models.

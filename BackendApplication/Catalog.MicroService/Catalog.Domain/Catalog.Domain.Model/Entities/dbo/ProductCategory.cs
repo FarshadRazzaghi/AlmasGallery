@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [Table("ProductCategory")]
 [Index("Name", Name = "IX_ProductCategory_Name", IsUnique = true)]
@@ -36,15 +34,15 @@ public partial class ProductCategory : IBaseEntity
     public long? ParentId { get; set; }
 
     [InverseProperty("Parent")]
-    public virtual ICollection<ProductCategory> InverseParent { get; set; } = new List<ProductCategory>();
+    public virtual ICollection<ProductCategory> InverseParent { get; set; } = [];
 
     [ForeignKey("ParentId")]
     [InverseProperty("InverseParent")]
     public virtual ProductCategory? Parent { get; set; }
 
     [InverseProperty("ProductCategory")]
-    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = new List<ProductCategoryCustomFieldGroup>();
+    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = [];
 
     [InverseProperty("ProductCategory")]
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public virtual ICollection<Product> Products { get; set; } = [];
 }

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 /// <summary>
 /// Extension methods for combining predicates.

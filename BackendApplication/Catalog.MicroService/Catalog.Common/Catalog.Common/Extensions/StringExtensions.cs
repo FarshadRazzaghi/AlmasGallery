@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Catalog.Common.Extensions;
+namespace AlmasGallery.Catalog.Common.Extensions;
 
 public static partial class StringExtensions
 {

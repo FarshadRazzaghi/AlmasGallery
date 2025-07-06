@@ -1,4 +1,4 @@
-﻿namespace Catalog.Common.Exceptions;
+﻿namespace AlmasGallery.Catalog.Common.Exceptions;
 
 public class RelationException(string message) : Exception(message)
 {

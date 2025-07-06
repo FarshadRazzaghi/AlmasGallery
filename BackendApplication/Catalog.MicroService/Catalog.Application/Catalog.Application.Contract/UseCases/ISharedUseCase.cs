@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Contract.UseCase;
+﻿namespace AlmasGallery.Catalog.Application.Contract.UseCase;
 
 /// <summary>
 /// Interface for shared use cases providing common functionality across the application.

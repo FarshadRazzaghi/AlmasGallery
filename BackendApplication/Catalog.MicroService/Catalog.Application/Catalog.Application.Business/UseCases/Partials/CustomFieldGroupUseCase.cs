@@ -1,14 +1,11 @@
-﻿using Catalog.Application.Models.Requests;
-using Catalog.Application.Models.Filters;
-using Catalog.Common;
-using Catalog.Common.Exceptions;
-using Catalog.Infrastructure.Repository;
+﻿using AlmasGallery.Catalog.Application.Models.Filters;
+using AlmasGallery.Catalog.Application.Models.Requests;
+using AlmasGallery.Catalog.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 /// <summary>
 /// Implementation of the custom field group use case, providing methods to manage custom field groups.

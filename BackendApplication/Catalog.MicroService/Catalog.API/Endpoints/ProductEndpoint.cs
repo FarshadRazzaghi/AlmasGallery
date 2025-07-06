@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Endpoints;
+﻿namespace AlmasGallery.Catalog.API.Endpoints;
 
 public class ProductEndpoint : ICarterModule
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Catalog.API.Helpers.Authorization;
+namespace AlmasGallery.Catalog.API.Helpers.Authorization;
 
 public class AuthorizationHandler(IServiceScopeFactory serviceScope) : AuthorizationHandler<AuthorizationRequirement>
 {

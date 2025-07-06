@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [PrimaryKey("ProductCategoryId", "CustomFieldGroupId")]
 [Table("ProductCategoryCustomFieldGroup")]

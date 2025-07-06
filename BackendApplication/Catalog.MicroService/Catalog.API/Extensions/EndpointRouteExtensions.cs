@@ -1,6 +1,6 @@
-﻿using Catalog.API.Helpers.Filters;
+﻿using AlmasGallery.Catalog.API.Helpers.Filters;
 
-namespace Catalog.API.Extensions;
+namespace AlmasGallery.Catalog.API.Extensions;
 
 public static class EndpointRouteExtensions
 {

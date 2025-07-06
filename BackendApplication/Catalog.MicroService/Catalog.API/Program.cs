@@ -1,4 +1,4 @@
-using Catalog.Common.Exceptions;
+using AlmasGallery.Catalog.Common.Exceptions;
 using FluentValidation;
 using Serilog;
 

@@ -1,10 +1,10 @@
 ﻿{
   "CodeGenerationMode": 5,
-  "ContextClassName": "AlmasGalleryContext",
-  "ContextNamespace": "Catalog.Infrastructure.Persistence",
+  "ContextClassName": "AlmasGalleryDbContext",
+  "ContextNamespace": "AlmasGallery.Catalog.Infrastructure.Persistence",
   "FilterSchemas": false,
   "IncludeConnectionString": false,
-  "ModelNamespace": "Catalog.Domain.Models",
+  "ModelNamespace": "AlmasGallery.Catalog.Domain.Models",
   "OutputContextPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Infrastructure\\Catalog.Infrastructure.Persistence\\",
   "OutputPath": "E:\\Application Projects\\Almas-Gallery\\BackendApplication\\Catalog.MicroService\\Catalog.Domain\\Catalog.Domain.Model\\Entities\\",
   "PreserveCasingWithRegex": true,

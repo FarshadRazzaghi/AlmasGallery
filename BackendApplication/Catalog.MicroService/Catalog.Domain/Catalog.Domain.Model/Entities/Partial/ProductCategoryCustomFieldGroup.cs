@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 public partial class ProductCategoryCustomFieldGroup : IBaseEntity
 {

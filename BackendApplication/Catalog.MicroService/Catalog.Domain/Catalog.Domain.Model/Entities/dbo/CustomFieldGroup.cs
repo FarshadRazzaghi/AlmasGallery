@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [Table("CustomFieldGroup")]
 public partial class CustomFieldGroup : IBaseEntity
@@ -23,8 +20,8 @@ public partial class CustomFieldGroup : IBaseEntity
     public byte EntityType { get; set; }
 
     [InverseProperty("CustomFieldGroup")]
-    public virtual ICollection<CustomField> CustomFields { get; set; } = new List<CustomField>();
+    public virtual ICollection<CustomField> CustomFields { get; set; } = [];
 
     [InverseProperty("CustomFieldGroup")]
-    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = new List<ProductCategoryCustomFieldGroup>();
+    public virtual ICollection<ProductCategoryCustomFieldGroup> ProductCategoryCustomFieldGroups { get; set; } = [];
 }

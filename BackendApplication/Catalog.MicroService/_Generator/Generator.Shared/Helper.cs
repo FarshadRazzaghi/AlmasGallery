@@ -60,9 +60,7 @@ internal static class Helper
 
         if (dataBaseObjectsOnly)
         {
-            return allModels.Where(x => x.Interfaces.Length > 0)
-                            .Where(x => x.Interfaces.Any(x => x.Name.Equals(Constants.BaseEntityInterfaceName)))
-                            .ToArray();
+            return [.. allModels.Where(x => x.Interfaces.Length > 0).Where(x => x.Interfaces.Any(x => x.Name.Equals(Constants.BaseEntityInterfaceName)))];
         }
 
         return [.. allModels];

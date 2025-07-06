@@ -1,6 +1,6 @@
-﻿using Catalog.Application.Models.Mappers;
+﻿using AlmasGallery.Catalog.Application.Models.Mappers;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 internal partial class ProductUseCase : IProductUseCase
 {

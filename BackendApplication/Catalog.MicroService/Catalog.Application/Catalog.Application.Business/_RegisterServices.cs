@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 internal partial class RegisterServices
 {

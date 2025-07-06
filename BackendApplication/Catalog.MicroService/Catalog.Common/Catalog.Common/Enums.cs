@@ -1,4 +1,4 @@
-﻿namespace Catalog.Common;
+﻿namespace AlmasGallery.Catalog.Common;
 
 /// <summary>
 /// Represents the status of an entity.

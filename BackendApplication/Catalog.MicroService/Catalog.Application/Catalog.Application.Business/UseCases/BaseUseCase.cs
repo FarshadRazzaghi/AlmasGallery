@@ -1,6 +1,6 @@
-﻿using Catalog.Infrastructure.Repository;
+﻿using AlmasGallery.Catalog.Infrastructure.Repository;
 
-namespace Catalog.Application.Business.UseCase;
+namespace AlmasGallery.Catalog.Application.Business.UseCase;
 
 /// <summary>
 /// Base use case class providing common functionality for use cases.

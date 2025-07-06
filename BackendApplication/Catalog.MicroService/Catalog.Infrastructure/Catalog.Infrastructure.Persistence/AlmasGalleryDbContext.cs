@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Catalog.Domain.Models;
+﻿using AlmasGallery.Catalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace AlmasGallery.Catalog.Infrastructure.Persistence;
 
-public partial class AlmasGalleryContext : DbContext
+public partial class AlmasGalleryDbContext(DbContextOptions<AlmasGalleryDbContext> options) : DbContext(options)
 {
-    public AlmasGalleryContext(DbContextOptions<AlmasGalleryContext> options)
-        : base(options)
-    {
-    }
-
     public virtual DbSet<CustomField> CustomFields { get; set; }
 
     public virtual DbSet<CustomFieldGroup> CustomFieldGroups { get; set; }

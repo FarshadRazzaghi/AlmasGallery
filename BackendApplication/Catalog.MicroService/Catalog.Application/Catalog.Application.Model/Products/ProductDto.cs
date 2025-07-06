@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Models;
+﻿namespace AlmasGallery.Catalog.Application.Models;
 
 /// <summary>
 /// Represents a product data transfer object.

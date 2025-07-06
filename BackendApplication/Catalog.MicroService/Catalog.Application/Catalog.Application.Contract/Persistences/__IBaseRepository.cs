@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
-namespace Catalog.Application.Contract.Persistence;
+namespace AlmasGallery.Catalog.Application.Contract.Persistence;
 
 /// <summary>
 /// Interface for the base repository providing common data access methods.

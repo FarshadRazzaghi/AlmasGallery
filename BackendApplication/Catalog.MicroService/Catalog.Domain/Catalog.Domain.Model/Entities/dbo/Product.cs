@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [Table("Product")]
 [Index("ProductCategoryId", "Name", Name = "IX_Product_ProductCategoryId_Name", IsUnique = true)]
@@ -58,8 +56,8 @@ public partial class Product : IBaseEntity
     public virtual ProductCategory ProductCategory { get; set; } = null!;
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new List<ProductInventory>();
+    public virtual ICollection<ProductInventory> ProductInventories { get; set; } = [];
 
     [InverseProperty("Product")]
-    public virtual ICollection<ProductPrice> ProductPrices { get; set; } = new List<ProductPrice>();
+    public virtual ICollection<ProductPrice> ProductPrices { get; set; } = [];
 }

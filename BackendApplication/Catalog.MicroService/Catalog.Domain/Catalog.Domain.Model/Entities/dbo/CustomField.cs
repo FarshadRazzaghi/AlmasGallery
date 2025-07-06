@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Domain.Models;
+namespace AlmasGallery.Catalog.Domain.Models;
 
 [Table("CustomField")]
 [Index("CustomFieldGroupId", "Name", Name = "IX_CustomField_CustomFieldGroupId_Name", IsUnique = true)]
@@ -53,7 +51,7 @@ public partial class CustomField : IBaseEntity
     public virtual CustomFieldGroup CustomFieldGroup { get; set; } = null!;
 
     [InverseProperty("Parent")]
-    public virtual ICollection<CustomField> InverseParent { get; set; } = new List<CustomField>();
+    public virtual ICollection<CustomField> InverseParent { get; set; } = [];
 
     [ForeignKey("ParentId")]
     [InverseProperty("InverseParent")]

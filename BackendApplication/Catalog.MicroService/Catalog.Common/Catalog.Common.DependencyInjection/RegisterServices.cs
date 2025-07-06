@@ -1,8 +1,7 @@
-﻿using Catalog.Domain.Model;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Common.DependencyInjection;
+namespace AlmasGallery.Catalog.Common.DependencyInjection;
 
 public static class RegisterServices
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Catalog.Application.Models.Filters;
+namespace AlmasGallery.Catalog.Application.Models.Filters;
 
 /// <summary>
 /// Validator for the <see cref="ProductCategoryDropdownFilter"/> class.

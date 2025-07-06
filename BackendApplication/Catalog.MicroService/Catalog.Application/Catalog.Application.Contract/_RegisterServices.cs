@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Catalog.Application.Contract;
+﻿namespace AlmasGallery.Catalog.Application.Contract;
 
 internal static class RegisterServices
 {

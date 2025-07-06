@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Catalog.Infrastructure.Repository;
+namespace AlmasGallery.Catalog.Infrastructure.Repository;
 
 /// <summary>
 /// Interface for the Unit of Work pattern, providing methods to manage database transactions and changes.
@@ -11,7 +10,7 @@ internal partial interface IUnitOfWork
     /// <summary>
     /// Gets the database context associated with the unit of work.
     /// </summary>
-    AlmasGalleryContext? Context { get; }
+    AlmasGalleryDbContext? Context { get; }
 
     /// <summary>
     /// Begins a new database transaction asynchronously.
